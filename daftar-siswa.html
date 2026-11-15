@@ -3,111 +3,212 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f1f6ff">
+  <meta name="theme-color" content="#f3f7ff">
   <title>Pendaftaran Siswa | Absensi Sekolah</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
     }
 
     body {
       min-height: 100vh;
-      padding: 35px 18px;
+      padding: 24px 16px;
       display: flex;
-      justify-content: center;
       align-items: center;
-      font-family: Arial, sans-serif;
-      color: #263e63;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      color: #243451;
       background:
-        radial-gradient(circle at 10% 10%, #dceaff 0, transparent 35%),
-        radial-gradient(circle at 90% 90%, #e3edff 0, transparent 35%),
-        #f5f8ff;
+        radial-gradient(circle at top left, #e1edff 0, transparent 38%),
+        linear-gradient(135deg, #f4f8ff, #edf3fc);
     }
 
     .container {
       width: 100%;
-      max-width: 490px;
-      padding: 32px;
-      background: rgba(255,255,255,.96);
-      border: 1px solid #e5edfa;
-      border-radius: 25px;
-      box-shadow: 0 18px 55px rgba(48,83,135,.10);
-      animation: masuk .65s ease both;
+      max-width: 470px;
+      animation: appear .55s ease;
     }
 
-    @keyframes masuk {
-      from {
-        opacity: 0;
-        transform: translateY(25px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .header {
+    .brand {
       text-align: center;
-      margin-bottom: 27px;
+      margin-bottom: 22px;
     }
 
-    .logo {
-      width: 68px;
-      height: 68px;
-      margin: 0 auto 17px;
+    .brand-icon {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 12px;
       display: grid;
       place-items: center;
-      border-radius: 21px;
-      background: linear-gradient(145deg, #e5efff, #d5e6ff);
-      box-shadow: 0 8px 20px #8eb5ed30;
-      font-size: 31px;
-      animation: melayang 3s ease-in-out infinite;
-    }
-
-    @keyframes melayang {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-    }
-
-    .header h1 {
+      border-radius: 18px;
+      color: white;
+      background: linear-gradient(135deg, #3679dc, #2858b5);
+      box-shadow: 0 8px 20px #376fbd35;
       font-size: 25px;
-      color: #244a85;
-      margin-bottom: 10px;
+      font-weight: 800;
     }
 
-    .header p {
+    .brand h1 {
+      font-size: 21px;
+      font-weight: 800;
+      color: #203b65;
+    }
+
+    .brand p {
+      margin-top: 6px;
+      color: #7a8ba5;
+      font-size: 13px;
+    }
+
+    .card {
+      padding: 30px;
+      border: 1px solid #e6edf7;
+      border-radius: 22px;
+      background: rgba(255,255,255,.96);
+      box-shadow: 0 15px 45px #294d7912;
+    }
+
+    .heading {
+      margin-bottom: 24px;
+    }
+
+    .heading h2 {
+      font-size: 22px;
+      color: #233c63;
+      margin-bottom: 8px;
+    }
+
+    .heading p {
       font-size: 13px;
       line-height: 1.7;
-      color: #8190a7;
+      color: #7b8ba2;
     }
 
-    .label-peran {
-      display: inline-block;
-      margin-top: 14px;
-      padding: 7px 13px;
-      border-radius: 30px;
-      background: #edf4ff;
-      color: #4b7fbd;
+    .info {
+      padding: 13px 14px;
+      margin-bottom: 22px;
+      border: 1px solid #dce9fc;
+      border-radius: 12px;
+      background: #f2f7ff;
+      color: #45658f;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .info strong {
+      color: #315d9e;
+    }
+
+    .form-group {
+      margin-bottom: 19px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #405574;
+    }
+
+    input {
+      width: 100%;
+      height: 48px;
+      padding: 0 14px;
+      outline: none;
+      border: 1px solid #dce5f1;
+      border-radius: 11px;
+      background: #fbfdff;
+      color: #263d5d;
+      font-family: inherit;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    input:focus {
+      border-color: #5b91e3;
+      box-shadow: 0 0 0 3px #5b91e31c;
+      background: white;
+    }
+
+    input::placeholder {
+      color: #a8b4c5;
+    }
+
+    .hint {
+      margin-top: 7px;
       font-size: 11px;
-      font-weight: bold;
+      color: #91a0b4;
     }
 
-    .foto-area {
-      display: flex;
-      align-items: center;
-      gap: 17px;
-      padding: 17px;
-      margin-bottom: 25px;
-      background: #f7faff;
-      border: 1px solid #e8effb;
-      border-radius: 17px;
-      animation: naik .7s ease .1s both;
+    .class-info {
+      padding: 13px 14px;
+      margin-bottom: 19px;
+      border: 1px dashed #b9cce9;
+      border-radius: 11px;
+      background: #f8faff;
+      font-size: 12px;
+      color: #657c9e;
+      line-height: 1.7;
     }
 
-    @keyframes naik {
+    .class-info strong {
+      color: #315d9e;
+    }
+
+    .submit-btn {
+      width: 100%;
+      height: 49px;
+      border: none;
+      border-radius: 11px;
+      background: linear-gradient(110deg, #397bd7, #3265c0);
+      color: white;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 7px 17px #397bd72c;
+      transition: .2s;
+    }
+
+    .submit-btn:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+
+    .submit-btn:active {
+      transform: scale(.99);
+    }
+
+    .back {
+      display: block;
+      margin-top: 21px;
+      text-align: center;
+      text-decoration: none;
+      color: #6682a9;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .back:hover {
+      color: #3265c0;
+    }
+
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      color: #99a8ba;
+      font-size: 11px;
+    }
+
+    @keyframes appear {
       from {
         opacity: 0;
         transform: translateY(12px);
@@ -118,312 +219,104 @@
       }
     }
 
-    .foto-bulat {
-      width: 68px;
-      height: 68px;
-      flex-shrink: 0;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: #e5efff;
-      border: 3px solid white;
-      box-shadow: 0 3px 12px #7899c52b;
-      font-size: 27px;
-      overflow: hidden;
-    }
-
-    .foto-bulat img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .foto-info h3 {
-      font-size: 14px;
-      color: #36577f;
-      margin-bottom: 6px;
-    }
-
-    .foto-info p {
-      font-size: 11px;
-      color: #8998ad;
-      line-height: 1.5;
-    }
-
-    .form-title {
-      font-size: 15px;
-      color: #36577f;
-      margin-bottom: 19px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 9px;
-      color: #435d7e;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .input-wrap {
-      position: relative;
-    }
-
-    .input-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 16px;
-      pointer-events: none;
-    }
-
-    input {
-      width: 100%;
-      height: 49px;
-      padding: 0 14px 0 43px;
-      border: 1px solid #dce6f5;
-      border-radius: 12px;
-      outline: none;
-      background: #fbfdff;
-      color: #263e63;
-      font-size: 13px;
-      transition: .25s;
-    }
-
-    input::placeholder {
-      color: #aab6c8;
-    }
-
-    input:focus {
-      border-color: #77a8e8;
-      background: white;
-      box-shadow: 0 0 0 4px #e6f0ff;
-    }
-
-    .keterangan {
-      margin-top: 8px;
-      color: #98a5b7;
-      font-size: 11px;
-    }
-
-    .info-box {
-      display: flex;
-      gap: 10px;
-      padding: 13px;
-      margin: 23px 0;
-      border-radius: 12px;
-      background: #f0f6ff;
-      color: #6482aa;
-      font-size: 11px;
-      line-height: 1.6;
-    }
-
-    .info-box span {
-      font-size: 17px;
-    }
-
-    .lanjut {
-      width: 100%;
-      height: 51px;
-      border: none;
-      border-radius: 13px;
-      background: linear-gradient(110deg, #6095e0, #477ecb);
-      color: white;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 7px 17px #548bd33b;
-      transition: .25s;
-    }
-
-    .lanjut:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 11px 22px #548bd34a;
-    }
-
-    .lanjut:active {
-      transform: scale(.98);
-    }
-
-    .kembali {
-      display: block;
-      margin-top: 21px;
-      text-align: center;
-      color: #7894b8;
-      font-size: 12px;
-      text-decoration: none;
-      transition: .2s;
-    }
-
-    .kembali:hover {
-      color: #386eaf;
-    }
-
-    .footer {
-      margin-top: 27px;
-      padding-top: 19px;
-      border-top: 1px solid #edf1f7;
-      text-align: center;
-      color: #a3afbf;
-      font-size: 10px;
-    }
-
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 25px;
-      transform: translate(-50%, 20px);
-      padding: 13px 20px;
-      width: max-content;
-      max-width: calc(100% - 35px);
-      border-radius: 12px;
-      background: #315c91;
-      color: white;
-      font-size: 12px;
-      text-align: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: .3s;
-      box-shadow: 0 8px 25px #203d632e;
-    }
-
-    .toast.tampil {
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
-
-    @media(max-width: 480px) {
+    @media (max-width: 480px) {
       body {
         padding: 20px 14px;
       }
 
-      .container {
-        padding: 27px 21px;
-        border-radius: 21px;
+      .card {
+        padding: 23px 19px;
+        border-radius: 18px;
       }
 
-      .header h1 {
-        font-size: 23px;
+      .heading h2 {
+        font-size: 20px;
       }
     }
 
-    @media(prefers-reduced-motion: reduce) {
+    @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
-        animation: none !important;
-        transition: none !important;
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
       }
     }
   </style>
 </head>
 
 <body>
-
   <main class="container">
 
-    <header class="header">
-      <div class="logo">🎓</div>
-
-      <h1>Data Siswa</h1>
-
-      <p>
-        Selamat datang di sistem absensi sekolah.
-        Lengkapi identitas untuk melanjutkan.
-      </p>
-
-      <div class="label-peran">● PENDAFTARAN SISWA</div>
+    <header class="brand">
+      <div class="brand-icon">A</div>
+      <h1>Absensi Sekolah</h1>
+      <p>Sistem Informasi Kehadiran Sekolah</p>
     </header>
 
-    <section class="foto-area">
-      <div class="foto-bulat">👤</div>
-
-      <div class="foto-info">
-        <h3>Foto Profil</h3>
-        <p>
-          Foto profil dapat ditambahkan
-          setelah formulir identitas.
-        </p>
+    <section class="card">
+      <div class="heading">
+        <h2>Pendaftaran Siswa</h2>
+        <p>Lengkapi identitas berikut untuk mengajukan pendaftaran akun siswa.</p>
       </div>
-    </section>
 
-    <h2 class="form-title">Informasi Identitas</h2>
+      <div class="info">
+        <strong>Informasi pendaftaran</strong><br>
+        Pendaftaran menggunakan akun Google. Akun baru dapat digunakan setelah mendapatkan persetujuan administrator sekolah.
+      </div>
 
-    <form id="formSiswa">
+      <form id="formSiswa">
 
-      <div class="form-group">
-        <label for="nama">Nama Lengkap</label>
-
-        <div class="input-wrap">
-          <span class="input-icon">👤</span>
+        <div class="form-group">
+          <label for="nama">Nama Lengkap</label>
           <input
             type="text"
             id="nama"
+            name="nama"
             placeholder="Masukkan nama lengkap"
+            maxlength="100"
             autocomplete="name"
             required
           >
         </div>
 
-        <p class="keterangan">
-          Gunakan nama asli sesuai data sekolah.
-        </p>
-      </div>
-
-      <div class="form-group">
-        <label for="absen">Nomor Absen</label>
-
-        <div class="input-wrap">
-          <span class="input-icon">🔢</span>
+        <div class="form-group">
+          <label for="absen">Nomor Absen</label>
           <input
             type="number"
             id="absen"
-            placeholder="Masukkan nomor absen"
+            name="absen"
+            placeholder="Contoh: 12"
             min="1"
             max="50"
+            step="1"
             required
           >
+          <p class="hint">Masukkan nomor absen sesuai data resmi kelas.</p>
         </div>
 
-        <p class="keterangan">
-          Masukkan nomor absen yang terdaftar di kelas.
-        </p>
-      </div>
+        <div class="class-info">
+          <strong>Penentuan kelas</strong><br>
+          Kelas akan ditentukan otomatis melalui tautan undangan kelas. Siswa tidak dapat memilih kelas sendiri.
+        </div>
 
-      <div class="info-box">
-        <span>ℹ️</span>
-        <p>
-          Pastikan nama dan nomor absen sudah benar.
-          Data akan diperiksa melalui sistem sekolah
-          pada tahap berikutnya.
-        </p>
-      </div>
+        <button type="submit" class="submit-btn">
+          Kirim Pendaftaran
+        </button>
 
-      <button type="submit" class="lanjut">
-        Lanjutkan →
-      </button>
+      </form>
 
-    </form>
-
-    <a href="pilih-peran.html" class="kembali">
-      ← Kembali ke Pilihan Peran
-    </a>
+      <a href="pilih-peran.html" class="back">
+        ← Kembali ke pilihan peran
+      </a>
+    </section>
 
     <footer class="footer">
-      Sistem Informasi Absensi Sekolah
+      © 2026 Sistem Absensi Sekolah
     </footer>
 
   </main>
 
-  <div class="toast" id="toast" role="status">
-    Tampilan formulir berhasil. Penyimpanan belum diaktifkan.
-  </div>
-
   <script>
     const form = document.getElementById("formSiswa");
-    const toast = document.getElementById("toast");
 
     form.addEventListener("submit", function(event) {
       event.preventDefault();
@@ -431,20 +324,23 @@
       const nama = document.getElementById("nama").value.trim();
       const absen = Number(document.getElementById("absen").value);
 
-      if (!nama || !Number.isInteger(absen) || absen < 1 || absen > 50) {
-        toast.textContent = "Periksa kembali nama dan nomor absen.";
-      } else {
-        toast.textContent =
-          "Tampilan berhasil! Data belum disimpan ke Firebase.";
+      if (nama.length < 3) {
+        alert("Nama lengkap minimal 3 karakter.");
+        return;
       }
 
-      toast.classList.add("tampil");
+      if (!Number.isInteger(absen) || absen < 1 || absen > 50) {
+        alert("Nomor absen harus berupa angka 1 sampai 50.");
+        return;
+      }
 
-      setTimeout(function() {
-        toast.classList.remove("tampil");
-      }, 3000);
+      alert(
+        "Formulir berhasil divalidasi.\n\n" +
+        "Nama: " + nama +
+        "\nNomor absen: " + absen +
+        "\n\nPenyimpanan dan pemeriksaan undangan akan dihubungkan pada tahap Firebase."
+      );
     });
   </script>
-
 </body>
 </html>
