@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#2563eb">
+  <meta name="theme-color" content="#f1f6ff">
   <title>Pilih Peran | Absensi Sekolah</title>
 
   <style>
@@ -15,30 +15,118 @@
 
     body {
       min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #f3f7ff;
+      color: #243b63;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-      color: #172554;
-      background: linear-gradient(135deg, #eaf2ff, #f8fafc);
+      padding: 24px;
     }
 
     .container {
       width: 100%;
-      max-width: 440px;
-      padding: 32px 25px;
-      background: white;
-      border-radius: 22px;
-      text-align: center;
-      box-shadow: 0 15px 45px rgba(37,99,235,.12);
-      animation: masuk .6s ease;
+      max-width: 850px;
+      animation: muncul .6s ease;
     }
 
-    @keyframes masuk {
+    .header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .logo {
+      width: 65px;
+      height: 65px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      background: #dceaff;
+      border-radius: 20px;
+      font-size: 30px;
+      box-shadow: 0 7px 20px #b9d2f555;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      color: #244a85;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: #71819b;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .pilihan {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .kartu {
+      position: relative;
+      display: block;
+      text-decoration: none;
+      background: white;
+      border: 1px solid #e2ebfa;
+      border-radius: 22px;
+      padding: 28px;
+      min-height: 225px;
+      box-shadow: 0 10px 30px #456a9910;
+      transition: .25s ease;
+    }
+
+    .kartu:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 35px #456a9920;
+      border-color: #a9c9fa;
+    }
+
+    .ikon {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 17px;
+      background: #eaf2ff;
+      font-size: 29px;
+      margin-bottom: 23px;
+    }
+
+    .kartu h2 {
+      font-size: 20px;
+      color: #294d82;
+      margin-bottom: 9px;
+    }
+
+    .kartu p {
+      font-size: 13px;
+      color: #7b8ba3;
+      line-height: 1.7;
+      max-width: 260px;
+    }
+
+    .panah {
+      position: absolute;
+      right: 25px;
+      bottom: 25px;
+      color: #5b91dc;
+      font-size: 23px;
+    }
+
+    .footer {
+      text-align: center;
+      color: #9aa9bd;
+      font-size: 12px;
+      margin-top: 35px;
+    }
+
+    @keyframes muncul {
       from {
         opacity: 0;
-        transform: translateY(18px);
+        transform: translateY(15px);
       }
       to {
         opacity: 1;
@@ -46,67 +134,27 @@
       }
     }
 
-    h1 {
-      color: #1e3a8a;
-      font-size: 25px;
-      margin-bottom: 10px;
+    @media(max-width: 600px) {
+      .pilihan {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .kartu {
+        min-height: 185px;
+        padding: 23px;
+      }
+
+      .ikon {
+        margin-bottom: 17px;
+      }
     }
 
-    .deskripsi {
-      color: #64748b;
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 28px;
-    }
-
-    .pilihan {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .tombol {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 18px;
-      border: 1px solid #dbeafe;
-      border-radius: 15px;
-      background: #f8fbff;
-      color: #1e3a8a;
-      text-align: left;
-      text-decoration: none;
-      transition: .25s ease;
-    }
-
-    .tombol:hover {
-      background: #eff6ff;
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(37,99,235,.10);
-    }
-
-    .ikon {
-      width: 48px;
-      height: 48px;
-      display: grid;
-      place-items: center;
-      border-radius: 13px;
-      background: #e0ecff;
-      font-size: 25px;
-    }
-
-    .judul {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .keterangan {
-      color: #64748b;
-      font-size: 12px;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
+    @media(prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation: none !important;
         transition: none !important;
@@ -117,34 +165,44 @@
 
 <body>
   <main class="container">
-    <h1>Pilih Peran</h1>
 
-    <p class="deskripsi">
-      Silakan pilih peran untuk melanjutkan
-      ke sistem absensi sekolah.
-    </p>
+    <header class="header">
+      <div class="logo">📚</div>
+      <h1>Pilih Peran Anda</h1>
+      <p>
+        Selamat datang di Sistem Absensi Sekolah.<br>
+        Silakan pilih peran untuk melanjutkan.
+      </p>
+    </header>
 
-    <div class="pilihan">
-      <a href="daftar-siswa.html" class="tombol">
+    <section class="pilihan">
+
+      <a href="daftar-siswa.html" class="kartu">
         <div class="ikon">🎓</div>
-        <div>
-          <div class="judul">Siswa</div>
-          <div class="keterangan">
-            Masuk sebagai siswa menggunakan nama dan nomor absen.
-          </div>
-        </div>
+        <h2>Siswa</h2>
+        <p>
+          Pilih untuk melanjutkan sebagai siswa
+          dan mengisi data identitas siswa.
+        </p>
+        <span class="panah">→</span>
       </a>
 
-      <a href="daftar-guru.html" class="tombol">
+      <a href="daftar-guru.html" class="kartu">
         <div class="ikon">👨‍🏫</div>
-        <div>
-          <div class="judul">Guru</div>
-          <div class="keterangan">
-            Masuk sebagai guru menggunakan nama dan kode admin.
-          </div>
-        </div>
+        <h2>Guru</h2>
+        <p>
+          Pilih untuk melanjutkan sebagai guru
+          dan memasukkan kode dari admin.
+        </p>
+        <span class="panah">→</span>
       </a>
-    </div>
+
+    </section>
+
+    <footer class="footer">
+      Sistem Informasi Absensi Sekolah
+    </footer>
+
   </main>
 </body>
-</html>
+  </html>
