@@ -4,11 +4,293 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pemeriksaan Akun</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #edf4ff, #f8fbff, #eaf2ff);
+      color: #24344d;
+      padding: 25px 16px;
+    }
+
+    .container {
+      max-width: 620px;
+      margin: 35px auto;
+      animation: appear .7s ease both;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .brand-icon {
+      width: 45px;
+      height: 45px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: #285ba8;
+      border-radius: 14px;
+      font-size: 20px;
+      box-shadow: 0 5px 15px #285ba833;
+    }
+
+    .brand h2 {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .5px;
+    }
+
+    .brand p {
+      font-size: 11px;
+      color: #8291a7;
+      margin-top: 4px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e6edf7;
+      border-radius: 22px;
+      padding: 30px;
+      box-shadow: 0 15px 45px #315b9010;
+      animation: slideUp .7s ease both;
+    }
+
+    .heading {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .heading-icon {
+      width: 75px;
+      height: 75px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 16px;
+      border-radius: 23px;
+      background: #eaf2ff;
+      color: #3267b5;
+      font-size: 32px;
+    }
+
+    .heading h1 {
+      font-size: 23px;
+      font-weight: 800;
+      color: #233b5c;
+    }
+
+    .heading p {
+      font-size: 13px;
+      color: #8b99ac;
+      margin-top: 8px;
+    }
+
+    .status {
+      padding: 13px 15px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #edf4ff;
+      color: #3564a4;
+    }
+
+    .status.success {
+      background: #eaf8f0;
+      color: #218451;
+    }
+
+    .status.error {
+      background: #fff0f0;
+      color: #c64b4b;
+    }
+
+    .status.loading i {
+      animation: spin 1s linear infinite;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #8292a9;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+    }
+
+    .profile-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 15px 0;
+      border-bottom: 1px solid #edf1f6;
+      animation: fadeIn .5s ease both;
+    }
+
+    .profile-row:last-child {
+      border-bottom: none;
+    }
+
+    .row-icon {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: #eff5ff;
+      color: #4776ba;
+      font-size: 16px;
+    }
+
+    .row-content {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .row-label {
+      font-size: 11px;
+      color: #91a0b4;
+      margin-bottom: 6px;
+    }
+
+    .row-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: #344761;
+      overflow-wrap: anywhere;
+      line-height: 1.5;
+    }
+
+    .uid {
+      font-size: 11px;
+      color: #647c9c;
+    }
+
+    .role-badge,
+    .active-badge {
+      display: inline-block;
+      padding: 6px 11px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #eaf2ff;
+      color: #3267b5;
+    }
+
+    .active-badge {
+      background: #e7f7ed;
+      color: #258452;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #9aa8b9;
+      margin-top: 23px;
+    }
+
+    .footer i {
+      color: #4776ba;
+      margin-right: 5px;
+    }
+
+    @keyframes appear {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(22px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateX(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 16px 12px; }
+      .container { margin: 15px auto; }
+      .card { padding: 22px 17px; }
+      .heading h1 { font-size: 21px; }
+      .row-value { font-size: 12px; }
+    }
+  </style>
 </head>
+
 <body>
-  <h2>Pemeriksaan Akun</h2>
-  <p id="status">Memeriksa akun...</p>
-  <p id="hasil"></p>
+  <main class="container">
+
+    <header class="brand">
+      <div class="brand-icon">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <div>
+        <h2>ABSENSI SEKOLAH</h2>
+        <p>Sistem pemeriksaan akun</p>
+      </div>
+    </header>
+
+    <section class="card">
+
+      <div class="heading">
+        <div class="heading-icon">
+          <i class="fa-solid fa-user-check"></i>
+        </div>
+        <h1>Pemeriksaan Akun</h1>
+        <p>Informasi profil pengguna</p>
+      </div>
+
+      <div id="status" class="status loading">
+        <i class="fa-solid fa-circle-notch"></i>
+        Memeriksa akun...
+      </div>
+
+      <div id="hasil"></div>
+
+    </section>
+
+    <footer class="footer">
+      <i class="fa-solid fa-shield-check"></i>
+      Account Verification · Modern Soft Blue
+    </footer>
+
+  </main>
 
   <script type="module">
     import { auth, db } from "./js/firebase.js";
@@ -24,70 +306,163 @@
     const status = document.getElementById("status");
     const hasil = document.getElementById("hasil");
 
+    function setStatus(message, type = "loading", icon = "fa-circle-notch") {
+      status.className = "status " + type;
+      status.replaceChildren();
+
+      const i = document.createElement("i");
+      i.className = "fa-solid " + icon;
+
+      const text = document.createElement("span");
+      text.textContent = message;
+
+      status.append(i, text);
+    }
+
+    function tambahBaris(label, value, icon, badgeClass = "") {
+      const row = document.createElement("div");
+      row.className = "profile-row";
+
+      const iconBox = document.createElement("div");
+      iconBox.className = "row-icon";
+
+      const iconElement = document.createElement("i");
+      iconElement.className = "fa-solid " + icon;
+      iconBox.appendChild(iconElement);
+
+      const content = document.createElement("div");
+      content.className = "row-content";
+
+      const title = document.createElement("div");
+      title.className = "row-label";
+      title.textContent = label;
+
+      const valueElement = document.createElement("div");
+      valueElement.className = "row-value " + badgeClass;
+      valueElement.textContent = value;
+
+      content.append(title, valueElement);
+      row.append(iconBox, content);
+
+      hasil.appendChild(row);
+    }
+
     onAuthStateChanged(auth, async (pengguna) => {
+      hasil.replaceChildren();
+
       if (!pengguna) {
-        status.textContent = "Belum login.";
+        setStatus(
+          "Belum login. Silakan login terlebih dahulu.",
+          "error",
+          "fa-circle-exclamation"
+        );
         return;
       }
 
-      status.textContent = "Memeriksa profil...";
+      setStatus("Memeriksa profil pengguna...", "loading");
 
       try {
         const referensi = doc(
-  db,
-  "sekolah",
-  "utama",
-  "pengguna",
-  pengguna.uid
-);
+          db,
+          "sekolah",
+          "utama",
+          "pengguna",
+          pengguna.uid
+        );
+
         const dokumen = await getDoc(referensi);
 
         if (!dokumen.exists()) {
-  status.textContent = "Dokumen profil tidak ditemukan.";
+          setStatus(
+            "Dokumen profil tidak ditemukan.",
+            "error",
+            "fa-circle-exclamation"
+          );
 
-  hasil.textContent =
-    "UID akun yang sedang login: " + pengguna.uid;
+          tambahBaris(
+            "UID Akun",
+            pengguna.uid,
+            "fa-fingerprint",
+            "uid"
+          );
 
-  return;
-}
+          return;
+        }
 
         const data = dokumen.data();
 
-console.log("Data profil:", data);
+        const nama = String(
+          data["Nama lengkap "] || "Belum diisi"
+        ).trim();
 
-const nama = data["Nama lengkap "] || "Kosong";
-const email = data.email || "Kosong";
-const peran = Array.isArray(data.peran)
-  ? data.peran.join(", ")
-  : data.peran || "Kosong";
-const akun = data["Status akun "] || "Kosong";
+        const email = String(
+          data.email || pengguna.email || "Belum diisi"
+        ).trim();
 
-console.log("Nama lengkap:", nama);
-console.log("Email:", email);
-console.log("Peran:", peran);
-console.log("Status akun:", akun);
+        const peran = Array.isArray(data.peran)
+          ? data.peran.join(", ")
+          : data.peran || "Belum ditentukan";
 
-status.textContent =
-  "Profil berhasil ditemukan.\n\n" +
-  "UID: " + pengguna.uid +
-  "\nNama: " + nama +
-  "\nEmail: " + email +
-  "\nPeran: " + peran +
-  "\nStatus akun: " + akun;
-        hasil.style.whiteSpace = "pre-wrap";
+        const akun = String(
+          data["Status akun "] || "Belum ditentukan"
+        ).trim();
 
-hasil.textContent =
-"UID: " + pengguna.uid +
-"\n\nDATA PROFIL FIRESTORE:\n" +
-JSON.stringify(data, null, 2);
+        setStatus(
+          "Profil berhasil ditemukan.",
+          "success",
+          "fa-circle-check"
+        );
+
+        const title = document.createElement("div");
+        title.className = "section-title";
+        title.textContent = "Informasi Pengguna";
+        hasil.appendChild(title);
+
+        tambahBaris(
+          "UID",
+          pengguna.uid,
+          "fa-fingerprint",
+          "uid"
+        );
+
+        tambahBaris(
+          "Nama Lengkap",
+          nama,
+          "fa-user"
+        );
+
+        tambahBaris(
+          "Email",
+          email,
+          "fa-envelope"
+        );
+
+        tambahBaris(
+          "Peran",
+          peran,
+          "fa-shield-halved",
+          "role-badge"
+        );
+
+        tambahBaris(
+          "Status Akun",
+          akun,
+          "fa-circle-check",
+          akun.toLowerCase() === "aktif"
+            ? "active-badge"
+            : "role-badge"
+        );
 
       } catch (error) {
-        status.textContent = "Gagal membaca profil.";
-        hasil.textContent = error.code || error.message;
-        console.error(error);
+        console.error("Kesalahan pemeriksaan:", error);
+
+        setStatus(
+          "Gagal membaca profil: " + error.message,
+          "error",
+          "fa-circle-exclamation"
+        );
       }
     });
   </script>
 </body>
-  </html>
-    
+</html>
