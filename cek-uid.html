@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pemeriksaan Firestore</title>
+</head>
+<body>
+  <h2>Pemeriksaan Akun</h2>
+  <p id="status">Memeriksa akun...</p>
+  <p id="hasil"></p>
+
+  <script type="module">
+    import { auth, db } from "./js/firebase.js";
+    import {
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+    import {
+      doc, getDoc
+    } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+
+    const status = document.getElementById("status");
+    const hasil = document.getElementById("hasil");
+
+    onAuthStateChanged(auth, async (pengguna) => {
+      if (!pengguna) {
+        status.textContent = "Belum login.";
+        return;
+      }
+
+      status.textContent = "Memeriksa profil Firestore...";
+
+      try {
+        const referensi = doc(db, "pengguna", pengguna.uid);
+        const dokumen = await getDoc(referensi);
+
+        if (dokumen.exists()) {
+          const data = dokumen.data();
+          status.textContent = "Berhasil membaca profil Firestore.";
+          hasil.textContent =
+            "Nama: " + data.namaLengkap +
+            " | Status: " + data.statusAkun;
+        } else {
+          status.textContent = "Dokumen profil tidak ditemukan.";
+        }
+      } catch (error) {
+        status.textContent = "Gagal membaca profil Firestore.";
+        hasil.textContent = error.code || error.message;
+      }
+    });
+  </script>
+</body>
+</html>
