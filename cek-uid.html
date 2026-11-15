@@ -33,7 +33,13 @@
       status.textContent = "Memeriksa profil...";
 
       try {
-        const referensi = doc(db, "pengguna", pengguna.uid);
+        const referensi = doc(
+  db,
+  "sekolah",
+  "utama",
+  "pengguna",
+  pengguna.uid
+);
         const dokumen = await getDoc(referensi);
 
         if (!dokumen.exists()) {
