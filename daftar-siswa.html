@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f1f6ff">
-  <title>Pendaftaran Siswa | Absensi Sekolah"><title> 
+  <title>Pendaftaran Siswa | Absensi Sekolah</title>
 
   <style>
     * {
@@ -15,29 +15,33 @@
 
     body {
       min-height: 100vh;
+      padding: 35px 18px;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 22px;
       font-family: Arial, sans-serif;
-      background: #f3f7ff;
-      color: #243b63;
+      color: #263e63;
+      background:
+        radial-gradient(circle at 10% 10%, #dceaff 0, transparent 35%),
+        radial-gradient(circle at 90% 90%, #e3edff 0, transparent 35%),
+        #f5f8ff;
     }
 
     .container {
       width: 100%;
-      max-width: 460px;
-      background: white;
-      padding: 32px 28px;
-      border-radius: 23px;
-      box-shadow: 0 12px 35px #456a9915;
-      animation: muncul .5s ease;
+      max-width: 490px;
+      padding: 32px;
+      background: rgba(255,255,255,.96);
+      border: 1px solid #e5edfa;
+      border-radius: 25px;
+      box-shadow: 0 18px 55px rgba(48,83,135,.10);
+      animation: masuk .65s ease both;
     }
 
-    @keyframes muncul {
+    @keyframes masuk {
       from {
         opacity: 0;
-        transform: translateY(15px);
+        transform: translateY(25px);
       }
       to {
         opacity: 1;
@@ -47,109 +51,264 @@
 
     .header {
       text-align: center;
-      margin-bottom: 28px;
+      margin-bottom: 27px;
     }
 
     .logo {
-      width: 65px;
-      height: 65px;
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 17px;
       display: grid;
       place-items: center;
-      margin: 0 auto 15px;
-      border-radius: 19px;
-      background: #e4efff;
-      font-size: 30px;
+      border-radius: 21px;
+      background: linear-gradient(145deg, #e5efff, #d5e6ff);
+      box-shadow: 0 8px 20px #8eb5ed30;
+      font-size: 31px;
+      animation: melayang 3s ease-in-out infinite;
     }
 
-    h1 {
+    @keyframes melayang {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .header h1 {
+      font-size: 25px;
       color: #244a85;
-      font-size: 24px;
-      margin-bottom: 9px;
+      margin-bottom: 10px;
     }
 
-    .deskripsi {
-      color: #8190a7;
+    .header p {
       font-size: 13px;
-      line-height: 1.6;
+      line-height: 1.7;
+      color: #8190a7;
     }
 
-    .foto {
-      text-align: center;
+    .label-peran {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 7px 13px;
+      border-radius: 30px;
+      background: #edf4ff;
+      color: #4b7fbd;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .foto-area {
+      display: flex;
+      align-items: center;
+      gap: 17px;
+      padding: 17px;
       margin-bottom: 25px;
+      background: #f7faff;
+      border: 1px solid #e8effb;
+      border-radius: 17px;
+      animation: naik .7s ease .1s both;
+    }
+
+    @keyframes naik {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .foto-bulat {
-      width: 85px;
-      height: 85px;
+      width: 68px;
+      height: 68px;
+      flex-shrink: 0;
       display: grid;
       place-items: center;
-      margin: auto;
       border-radius: 50%;
-      background: #edf3ff;
-      border: 2px dashed #a9c6f0;
-      font-size: 32px;
+      background: #e5efff;
+      border: 3px solid white;
+      box-shadow: 0 3px 12px #7899c52b;
+      font-size: 27px;
+      overflow: hidden;
     }
 
-    .foto p {
-      margin-top: 10px;
-      font-size: 12px;
-      color: #71819b;
+    .foto-bulat img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .foto-info h3 {
+      font-size: 14px;
+      color: #36577f;
+      margin-bottom: 6px;
+    }
+
+    .foto-info p {
+      font-size: 11px;
+      color: #8998ad;
+      line-height: 1.5;
+    }
+
+    .form-title {
+      font-size: 15px;
+      color: #36577f;
+      margin-bottom: 19px;
     }
 
     .form-group {
-      margin-bottom: 19px;
+      margin-bottom: 20px;
     }
 
     label {
       display: block;
       margin-bottom: 9px;
+      color: #435d7e;
       font-size: 13px;
       font-weight: bold;
-      color: #405779;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      pointer-events: none;
     }
 
     input {
       width: 100%;
-      padding: 14px;
+      height: 49px;
+      padding: 0 14px 0 43px;
       border: 1px solid #dce6f5;
-      border-radius: 11px;
+      border-radius: 12px;
       outline: none;
-      font-size: 14px;
       background: #fbfdff;
-      color: #243b63;
+      color: #263e63;
+      font-size: 13px;
+      transition: .25s;
+    }
+
+    input::placeholder {
+      color: #aab6c8;
     }
 
     input:focus {
-      border-color: #75a7ed;
-      box-shadow: 0 0 0 3px #dceaff;
+      border-color: #77a8e8;
+      background: white;
+      box-shadow: 0 0 0 4px #e6f0ff;
+    }
+
+    .keterangan {
+      margin-top: 8px;
+      color: #98a5b7;
+      font-size: 11px;
+    }
+
+    .info-box {
+      display: flex;
+      gap: 10px;
+      padding: 13px;
+      margin: 23px 0;
+      border-radius: 12px;
+      background: #f0f6ff;
+      color: #6482aa;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .info-box span {
+      font-size: 17px;
     }
 
     .lanjut {
       width: 100%;
-      padding: 15px;
+      height: 51px;
       border: none;
-      border-radius: 12px;
-      background: #4d85d6;
+      border-radius: 13px;
+      background: linear-gradient(110deg, #6095e0, #477ecb);
       color: white;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 8px;
-      transition: .2s;
+      box-shadow: 0 7px 17px #548bd33b;
+      transition: .25s;
     }
 
     .lanjut:hover {
-      background: #376fbd;
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 11px 22px #548bd34a;
+    }
+
+    .lanjut:active {
+      transform: scale(.98);
     }
 
     .kembali {
       display: block;
-      margin-top: 20px;
+      margin-top: 21px;
       text-align: center;
-      color: #6d8dbb;
-      font-size: 13px;
+      color: #7894b8;
+      font-size: 12px;
       text-decoration: none;
+      transition: .2s;
+    }
+
+    .kembali:hover {
+      color: #386eaf;
+    }
+
+    .footer {
+      margin-top: 27px;
+      padding-top: 19px;
+      border-top: 1px solid #edf1f7;
+      text-align: center;
+      color: #a3afbf;
+      font-size: 10px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 25px;
+      transform: translate(-50%, 20px);
+      padding: 13px 20px;
+      width: max-content;
+      max-width: calc(100% - 35px);
+      border-radius: 12px;
+      background: #315c91;
+      color: white;
+      font-size: 12px;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: .3s;
+      box-shadow: 0 8px 25px #203d632e;
+    }
+
+    .toast.tampil {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    @media(max-width: 480px) {
+      body {
+        padding: 20px 14px;
+      }
+
+      .container {
+        padding: 27px 21px;
+        border-radius: 21px;
+      }
+
+      .header h1 {
+        font-size: 23px;
+      }
     }
 
     @media(prefers-reduced-motion: reduce) {
@@ -162,61 +321,130 @@
 </head>
 
 <body>
+
   <main class="container">
 
     <header class="header">
       <div class="logo">🎓</div>
+
       <h1>Data Siswa</h1>
-      <p class="deskripsi">
-        Lengkapi identitas siswa untuk melanjutkan
-        ke sistem absensi sekolah.
+
+      <p>
+        Selamat datang di sistem absensi sekolah.
+        Lengkapi identitas untuk melanjutkan.
       </p>
+
+      <div class="label-peran">● PENDAFTARAN SISWA</div>
     </header>
 
-    <div class="foto">
+    <section class="foto-area">
       <div class="foto-bulat">👤</div>
-      <p>Foto profil dapat ditambahkan nanti</p>
-    </div>
+
+      <div class="foto-info">
+        <h3>Foto Profil</h3>
+        <p>
+          Foto profil dapat ditambahkan
+          setelah formulir identitas.
+        </p>
+      </div>
+    </section>
+
+    <h2 class="form-title">Informasi Identitas</h2>
 
     <form id="formSiswa">
+
       <div class="form-group">
         <label for="nama">Nama Lengkap</label>
-        <input
-          type="text"
-          id="nama"
-          placeholder="Masukkan nama lengkap"
-          required
-        >
+
+        <div class="input-wrap">
+          <span class="input-icon">👤</span>
+          <input
+            type="text"
+            id="nama"
+            placeholder="Masukkan nama lengkap"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <p class="keterangan">
+          Gunakan nama asli sesuai data sekolah.
+        </p>
       </div>
 
       <div class="form-group">
         <label for="absen">Nomor Absen</label>
-        <input
-          type="number"
-          id="absen"
-          placeholder="Masukkan nomor absen"
-          min="1"
-          max="50"
-          required
-        >
+
+        <div class="input-wrap">
+          <span class="input-icon">🔢</span>
+          <input
+            type="number"
+            id="absen"
+            placeholder="Masukkan nomor absen"
+            min="1"
+            max="50"
+            required
+          >
+        </div>
+
+        <p class="keterangan">
+          Masukkan nomor absen yang terdaftar di kelas.
+        </p>
+      </div>
+
+      <div class="info-box">
+        <span>ℹ️</span>
+        <p>
+          Pastikan nama dan nomor absen sudah benar.
+          Data akan diperiksa melalui sistem sekolah
+          pada tahap berikutnya.
+        </p>
       </div>
 
       <button type="submit" class="lanjut">
-        Lanjutkan
+        Lanjutkan →
       </button>
+
     </form>
 
     <a href="pilih-peran.html" class="kembali">
-      ← Kembali
+      ← Kembali ke Pilihan Peran
     </a>
+
+    <footer class="footer">
+      Sistem Informasi Absensi Sekolah
+    </footer>
 
   </main>
 
+  <div class="toast" id="toast" role="status">
+    Tampilan formulir berhasil. Penyimpanan belum diaktifkan.
+  </div>
+
   <script>
-    document.getElementById("formSiswa").addEventListener("submit", function(e) {
-      e.preventDefault();
-      alert("Tampilan formulir berhasil. Sistem penyimpanan akan dihubungkan nanti.");
+    const form = document.getElementById("formSiswa");
+    const toast = document.getElementById("toast");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const nama = document.getElementById("nama").value.trim();
+      const absen = Number(document.getElementById("absen").value);
+
+      if (!nama || !Number.isInteger(absen) || absen < 1 || absen > 50) {
+        toast.textContent = "Periksa kembali nama dan nomor absen.";
+      } else {
+        toast.textContent =
+          "Tampilan berhasil! Data belum disimpan ke Firebase.";
+      }
+
+      toast.classList.add("tampil");
+
+      setTimeout(function() {
+        toast.classList.remove("tampil");
+      }, 3000);
     });
   </script>
+
 </body>
 </html>
