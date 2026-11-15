@@ -52,10 +52,28 @@
 }
 
         const data = dokumen.data();
-console.log("Data profil:", data);
-console.log("Nama lengkap:", data["Nama Lengkap"]);        
-        status.textContent = "Profil berhasil ditemukan.";
 
+console.log("Data profil:", data);
+
+const nama = data["Nama lengkap "] || "Kosong";
+const email = data.email || "Kosong";
+const peran = Array.isArray(data.peran)
+  ? data.peran.join(", ")
+  : data.peran || "Kosong";
+const akun = data["Status akun "] || "Kosong";
+
+console.log("Nama lengkap:", nama);
+console.log("Email:", email);
+console.log("Peran:", peran);
+console.log("Status akun:", akun);
+
+status.textContent =
+  "Profil berhasil ditemukan.\n\n" +
+  "UID: " + pengguna.uid +
+  "\nNama: " + nama +
+  "\nEmail: " + email +
+  "\nPeran: " + peran +
+  "\nStatus akun: " + akun;
         hasil.style.whiteSpace = "pre-wrap";
 
 hasil.textContent =
