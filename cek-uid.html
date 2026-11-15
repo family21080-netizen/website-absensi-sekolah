@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -38,9 +37,13 @@
         const dokumen = await getDoc(referensi);
 
         if (!dokumen.exists()) {
-          status.textContent = "Dokumen profil tidak ditemukan.";
-          return;
-        }
+  status.textContent = "Dokumen profil tidak ditemukan.";
+
+  hasil.textContent =
+    "UID akun yang sedang login: " + pengguna.uid;
+
+  return;
+}
 
         const data = dokumen.data();
 
