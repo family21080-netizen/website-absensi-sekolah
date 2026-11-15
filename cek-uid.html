@@ -56,11 +56,12 @@ console.log("Data profil:", data);
 console.log("Nama lengkap:", data["Nama Lengkap"]);        
         status.textContent = "Profil berhasil ditemukan.";
 
-        hasil.textContent =
-          "UID: " + pengguna.uid +
-          " | Nama: " + (data["Nama Lengkap"] || "Kosong") +
-          " | Email: " + (data.email || "Kosong") +
-          " | Peran: " + (data.peran || "Kosong");
+        hasil.style.whiteSpace = "pre-wrap";
+
+hasil.textContent =
+"UID: " + pengguna.uid +
+"\n\nDATA PROFIL FIRESTORE:\n" +
+JSON.stringify(data, null, 2);
 
       } catch (error) {
         status.textContent = "Gagal membaca profil.";
