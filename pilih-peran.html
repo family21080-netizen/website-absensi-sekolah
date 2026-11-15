@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2563eb">
+  <title>Pilih Peran | Absensi Sekolah</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      color: #172554;
+      background: linear-gradient(135deg, #eaf2ff, #f8fafc);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 440px;
+      padding: 32px 25px;
+      background: white;
+      border-radius: 22px;
+      text-align: center;
+      box-shadow: 0 15px 45px rgba(37,99,235,.12);
+      animation: masuk .6s ease;
+    }
+
+    @keyframes masuk {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      color: #1e3a8a;
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+
+    .deskripsi {
+      color: #64748b;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .pilihan {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .tombol {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 18px;
+      border: 1px solid #dbeafe;
+      border-radius: 15px;
+      background: #f8fbff;
+      color: #1e3a8a;
+      text-align: left;
+      text-decoration: none;
+      transition: .25s ease;
+    }
+
+    .tombol:hover {
+      background: #eff6ff;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(37,99,235,.10);
+    }
+
+    .ikon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: #e0ecff;
+      font-size: 25px;
+    }
+
+    .judul {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .keterangan {
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <h1>Pilih Peran</h1>
+
+    <p class="deskripsi">
+      Silakan pilih peran untuk melanjutkan
+      ke sistem absensi sekolah.
+    </p>
+
+    <div class="pilihan">
+      <a href="daftar-siswa.html" class="tombol">
+        <div class="ikon">🎓</div>
+        <div>
+          <div class="judul">Siswa</div>
+          <div class="keterangan">
+            Masuk sebagai siswa menggunakan nama dan nomor absen.
+          </div>
+        </div>
+      </a>
+
+      <a href="daftar-guru.html" class="tombol">
+        <div class="ikon">👨‍🏫</div>
+        <div>
+          <div class="judul">Guru</div>
+          <div class="keterangan">
+            Masuk sebagai guru menggunakan nama dan kode admin.
+          </div>
+        </div>
+      </a>
+    </div>
+  </main>
+</body>
+</html>
