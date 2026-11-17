@@ -393,11 +393,13 @@
           );
 
         if (!bolehMengelola) {
-          status.textContent =
-            "Akses ditolak. Hanya pengelola utama yang dapat membuat undangan.";
+  status.textContent =
+    "Akses ditolak. Data terbaca: " +
+    "statusAkun = " + String(data.statusAkun) +
+    " | peran = " + JSON.stringify(data.peran);
 
-          return;
-        }
+  return;
+}
 
         penggunaAktif = user;
 
