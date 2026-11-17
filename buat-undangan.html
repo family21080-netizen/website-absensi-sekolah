@@ -386,11 +386,11 @@
           : [];
 
         const bolehMengelola =
-          data.statusAkun === "aktif" &&
-          (
-            peran.includes("developer_admin") ||
-            peran.includes("super_admin")
-          );
+  String(data.statusAkun || "").trim().toLowerCase() === "aktif" &&
+  (
+    peran.includes("developer_admin") ||
+    peran.includes("super_admin")
+  );
 
         if (!bolehMengelola) {
   status.textContent =
