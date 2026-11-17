@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#edf4ff">
+  <title>Buat Undangan Guru | Absensi Sekolah</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 25px 16px;
+      font-family: Arial, sans-serif;
+      background: #f1f6ff;
+      color: #263b59;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 650px;
+      margin: 30px auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .logo {
+      width: 65px;
+      height: 65px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 15px;
+      border-radius: 19px;
+      background: #dceaff;
+      font-size: 29px;
+    }
+
+    h1 {
+      color: #244a85;
+      font-size: 25px;
+      margin-bottom: 9px;
+    }
+
+    .subtitle {
+      color: #7b8ba3;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e2ebfa;
+      border-radius: 20px;
+      padding: 27px;
+      box-shadow: 0 10px 30px #456a9910;
+    }
+
+    .field {
+      margin-bottom: 19px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #405979;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #dce5f1;
+      border-radius: 10px;
+      outline: none;
+      background: #fbfdff;
+      color: #263b59;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: #6098e4;
+      box-shadow: 0 0 0 3px #6098e41c;
+    }
+
+    .hint {
+      display: block;
+      margin-top: 6px;
+      color: #8a9bb1;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 11px;
+      background: #397ed3;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    button:hover {
+      background: #2869bb;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .hasil {
+      display: none;
+      margin-top: 22px;
+      padding: 18px;
+      border: 1px solid #b8d8c4;
+      border-radius: 13px;
+      background: #f1faf4;
+    }
+
+    .hasil h2 {
+      margin-bottom: 9px;
+      color: #28764a;
+      font-size: 17px;
+    }
+
+    .kode {
+      padding: 14px;
+      margin: 13px 0;
+      border: 1px dashed #91bfa0;
+      border-radius: 9px;
+      background: white;
+      color: #245b3a;
+      font-size: 17px;
+      font-weight: bold;
+      text-align: center;
+      overflow-wrap: anywhere;
+      letter-spacing: 1px;
+    }
+
+    .copy-button {
+      background: #328454;
+    }
+
+    .copy-button:hover {
+      background: #256b42;
+    }
+
+    .peringatan {
+      margin-top: 12px;
+      color: #657b6b;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    #status {
+      margin-top: 17px;
+      color: #6480a2;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      color: #9aa9bd;
+      font-size: 12px;
+    }
+
+    @media(max-width: 480px) {
+      .card {
+        padding: 21px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="container">
+
+    <header class="header">
+      <div class="logo">✉️</div>
+      <h1>Buat Undangan Guru</h1>
+      <p class="subtitle">
+        Buat kode undangan khusus untuk guru
+        yang akan bergabung dengan sekolah.
+      </p>
+    </header>
+
+    <section class="card">
+
+      <form id="formUndangan">
+
+        <div class="field">
+          <label for="emailTujuan">Email Google Guru</label>
+          <input
+            type="email"
+            id="emailTujuan"
+            placeholder="guru@gmail.com"
+            autocomplete="off"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="idKelas">ID Kelas</label>
+          <input
+            type="text"
+            id="idKelas"
+            placeholder="Contoh: X-TJKT-1"
+            autocomplete="off"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="berlakuSampai">Berlaku Sampai</label>
+          <input
+            type="datetime-local"
+            id="berlakuSampai"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="batasPenggunaan">Batas Penggunaan</label>
+          <input
+            type="number"
+            id="batasPenggunaan"
+            min="1"
+            max="100"
+            value="1"
+            required
+          >
+          <span class="hint">
+            Tentukan berapa kali undangan dapat digunakan.
+          </span>
+        </div>
+
+        <button type="submit" id="buatButton" disabled>
+          Memeriksa akun...
+        </button>
+
+      </form>
+
+      <div id="hasil" class="hasil">
+        <h2>Undangan berhasil dibuat</h2>
+
+        <p class="subtitle">
+          Simpan kode berikut dan berikan kepada guru yang dituju.
+        </p>
+
+        <div id="kodeHasil" class="kode"></div>
+
+        <button type="button" id="salinButton" class="copy-button">
+          Salin Kode Undangan
+        </button>
+
+        <p class="peringatan">
+          Kode asli hanya ditampilkan sekarang.
+          Simpan dengan baik karena sistem hanya menyimpan hash kode
+          di Firestore.
+        </p>
+      </div>
+
+      <p id="status" aria-live="polite">
+        Memeriksa hak akses...
+      </p>
+
+    </section>
+
+    <footer class="footer">
+      Sistem Informasi Absensi Sekolah
+    </footer>
+
+  </main>
+
+  <script type="module">
+    import { auth, db } from "./js/firebase.js";
+
+    import {
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+
+    import {
+      doc,
+      getDoc,
+      setDoc,
+      Timestamp,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+
+    const form = document.getElementById("formUndangan");
+    const button = document.getElementById("buatButton");
+    const status = document.getElementById("status");
+    const hasil = document.getElementById("hasil");
+    const kodeHasil = document.getElementById("kodeHasil");
+    const salinButton = document.getElementById("salinButton");
+
+    let penggunaAktif = null;
+    let kodeTerakhir = "";
+
+    // Menghasilkan kode acak menggunakan Web Crypto.
+    function buatKodeAcak() {
+      const karakter =
+        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+      const angka = new Uint8Array(32);
+      crypto.getRandomValues(angka);
+
+      let kode = "";
+
+      for (const nilai of angka) {
+        kode += karakter[nilai % karakter.length];
+      }
+
+      return kode.match(/.{1,4}/g).join("-");
+    }
+
+    // Menghasilkan hash SHA-256.
+    async function hashKode(kode) {
+      const data = new TextEncoder().encode(kode);
+
+      const hasilHash = await crypto.subtle.digest(
+        "SHA-256",
+        data
+      );
+
+      return Array.from(new Uint8Array(hasilHash))
+        .map(byte => byte.toString(16).padStart(2, "0"))
+        .join("");
+    }
+
+    // Memeriksa akun dan peran pengguna.
+    onAuthStateChanged(auth, async (user) => {
+      penggunaAktif = null;
+      button.disabled = true;
+
+      if (!user) {
+        status.textContent =
+          "Silakan login menggunakan akun pengelola.";
+
+        return;
+      }
+
+      try {
+        const profilRef = doc(
+          db,
+          "sekolah",
+          "utama",
+          "pengguna",
+          user.uid
+        );
+
+        const profilSnap = await getDoc(profilRef);
+
+        if (!profilSnap.exists()) {
+          status.textContent =
+            "Profil pengguna tidak ditemukan.";
+
+          return;
+        }
+
+        const data = profilSnap.data();
+
+        const peran = Array.isArray(data.peran)
+          ? data.peran
+          : [];
+
+        const bolehMengelola =
+          data.statusAkun === "aktif" &&
+          (
+            peran.includes("developer_admin") ||
+            peran.includes("super_admin")
+          );
+
+        if (!bolehMengelola) {
+          status.textContent =
+            "Akses ditolak. Hanya pengelola utama yang dapat membuat undangan.";
+
+          return;
+        }
+
+        penggunaAktif = user;
+
+        status.textContent =
+          "Akun pengelola berhasil diverifikasi.";
+
+        button.disabled = false;
+        button.textContent = "Buat Undangan Guru";
+
+      } catch (error) {
+        console.error(error);
+
+        status.textContent =
+          "Gagal memeriksa akun: " + error.message;
+      }
+    });
+
+    // Membuat undangan.
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!penggunaAktif) {
+        status.textContent =
+          "Akun pengelola belum terverifikasi.";
+
+        return;
+      }
+
+      const email = document
+        .getElementById("emailTujuan")
+        .value.trim().toLowerCase();
+
+      const idKelas = document
+        .getElementById("idKelas")
+        .value.trim();
+
+      const tanggal = document
+        .getElementById("berlakuSampai")
+        .value;
+
+      const batas = Number(
+        document.getElementById("batasPenggunaan").value
+      );
+
+      if (!email || !idKelas || !tanggal) {
+        status.textContent =
+          "Semua kolom wajib diisi.";
+
+        return;
+      }
+
+      const tanggalBerlaku = new Date(tanggal);
+
+      if (
+        Number.isNaN(tanggalBerlaku.getTime()) ||
+        tanggalBerlaku <= new Date()
+      ) {
+        status.textContent =
+          "Tanggal kedaluwarsa harus berada di masa depan.";
+
+        return;
+      }
+
+      if (
+        !Number.isInteger(batas) ||
+        batas < 1 ||
+        batas > 100
+      ) {
+        status.textContent =
+          "Batas penggunaan harus berupa angka 1 sampai 100.";
+
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "Membuat undangan...";
+      hasil.style.display = "none";
+
+      try {
+        const kode = buatKodeAcak();
+        const hash = await hashKode(kode);
+
+        const undanganRef = doc(db, "undangan", hash);
+
+        await setDoc(undanganRef, {
+          batasPenggunaan: batas,
+          berlakuSampai: Timestamp.fromDate(tanggalBerlaku),
+          dibuatOleh: penggunaAktif.uid,
+          dibuatPada: serverTimestamp(),
+          emailTujuan: email,
+          idKelas: idKelas,
+          jenisUndangan: "guru",
+          jumlahPenggunaan: 0,
+          kodeUndanganAman: hash,
+          statusUndangan: "aktif"
+        });
+
+        kodeTerakhir = kode;
+        kodeHasil.textContent = kode;
+        hasil.style.display = "block";
+
+        status.textContent =
+          "Undangan berhasil disimpan ke Firestore.";
+
+        form.reset();
+
+        document.getElementById("batasPenggunaan").value = 1;
+
+      } catch (error) {
+        console.error("Gagal membuat undangan:", error);
+
+        status.textContent =
+          "Gagal membuat undangan: " + error.message;
+
+      } finally {
+        button.disabled = false;
+        button.textContent = "Buat Undangan Guru";
+      }
+    });
+
+    // Menyalin kode asli.
+    salinButton.addEventListener("click", async () => {
+      if (!kodeTerakhir) return;
+
+      try {
+        await navigator.clipboard.writeText(kodeTerakhir);
+
+        salinButton.textContent = "Kode Berhasil Disalin";
+
+      } catch (error) {
+        status.textContent =
+          "Gagal menyalin otomatis. Silakan salin kode secara manual.";
+      }
+    });
+  </script>
+
+</body>
+  </html>
+  
