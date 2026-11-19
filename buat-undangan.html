@@ -386,11 +386,24 @@
           : [];
 
         const bolehMengelola =
-  String(data.statusAkun || "").trim().toLowerCase() === "aktif" &&
-  (
-    peran.includes("developer_admin") ||
-    peran.includes("super_admin")
-  );
+  data.statusAkun === "aktif" &&
+  (peran.includes("developer_admin") ||
+   peran.includes("super_admin"));
+
+if (!bolehMengelola) {
+  status.textContent =
+    "Akses ditolak. Hasil pemeriksaan: " +
+    "statusAkun = " + JSON.stringify(data.statusAkun) +
+    " | peran = " + JSON.stringify(data.peran);
+
+  console.error("Pemeriksaan akun pengelola:", {
+    uid: user.uid,
+    statusAkun: data.statusAkun,
+    peran: data.peran
+  });
+
+  return;
+}
 
         if (!bolehMengelola) {
   status.textContent =
@@ -509,12 +522,17 @@
         document.getElementById("batasPenggunaan").value = 1;
 
       } catch (error) {
-        console.error("Gagal membuat undangan:", error);
+  console.error("Gagal membuat undangan:", {
+    code: error.code,
+    message: error.message,
+    name: error.name
+  });
 
-        status.textContent =
-          "Gagal membuat undangan: " + error.message;
-
-      } finally {
+  status.textContent =
+    "Gagal membuat undangan.\n" +
+    "Kode: " + (error.code || "tidak diketahui") +
+    "\nPesan: " + error.message;
+} finally {
         button.disabled = false;
         button.textContent = "Buat Undangan Guru";
       }
