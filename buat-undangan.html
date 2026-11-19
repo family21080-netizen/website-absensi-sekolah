@@ -171,6 +171,7 @@
       font-size: 13px;
       line-height: 1.6;
       overflow-wrap: anywhere;
+      white-space: pre-line;
     }
 
     .footer {
@@ -317,8 +318,9 @@
 
     let penggunaAktif = null;
     let kodeTerakhir = "";
+    let sedangMembuat = false;
 
-    // Menghasilkan kode acak menggunakan Web Crypto.
+    // Membuat kode acak.
     function buatKodeAcak() {
       const karakter =
         "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -335,7 +337,7 @@
       return kode.match(/.{1,4}/g).join("-");
     }
 
-    // Menghasilkan hash SHA-256.
+    // Mengubah kode menjadi hash SHA-256.
     async function hashKode(kode) {
       const data = new TextEncoder().encode(kode);
 
@@ -349,15 +351,17 @@
         .join("");
     }
 
-    // Memeriksa akun dan peran pengguna.
+    // Memeriksa hak akses pengelola.
     onAuthStateChanged(auth, async (user) => {
       penggunaAktif = null;
       button.disabled = true;
+      button.textContent = "Memeriksa akun...";
 
       if (!user) {
         status.textContent =
           "Silakan login menggunakan akun pengelola.";
 
+        button.textContent = "Login diperlukan";
         return;
       }
 
@@ -376,6 +380,7 @@
           status.textContent =
             "Profil pengguna tidak ditemukan.";
 
+          button.textContent = "Akses ditolak";
           return;
         }
 
@@ -386,33 +391,27 @@
           : [];
 
         const bolehMengelola =
-  data.statusAkun === "aktif" &&
-  (peran.includes("developer_admin") ||
-   peran.includes("super_admin"));
-
-if (!bolehMengelola) {
-  status.textContent =
-    "Akses ditolak. Hasil pemeriksaan: " +
-    "statusAkun = " + JSON.stringify(data.statusAkun) +
-    " | peran = " + JSON.stringify(data.peran);
-
-  console.error("Pemeriksaan akun pengelola:", {
-    uid: user.uid,
-    statusAkun: data.statusAkun,
-    peran: data.peran
-  });
-
-  return;
-}
+          data.statusAkun === "aktif" &&
+          (
+            peran.includes("developer_admin") ||
+            peran.includes("super_admin")
+          );
 
         if (!bolehMengelola) {
-  status.textContent =
-    "Akses ditolak. Data terbaca: " +
-    "statusAkun = " + String(data.statusAkun) +
-    " | peran = " + JSON.stringify(data.peran);
+          status.textContent =
+            "Akses ditolak.\n" +
+            "statusAkun = " + JSON.stringify(data.statusAkun) +
+            "\nperan = " + JSON.stringify(data.peran);
 
-  return;
-}
+          console.error("Pemeriksaan akun pengelola:", {
+            uid: user.uid,
+            statusAkun: data.statusAkun,
+            peran: data.peran
+          });
+
+          button.textContent = "Akses ditolak";
+          return;
+        }
 
         penggunaAktif = user;
 
@@ -423,18 +422,22 @@ if (!bolehMengelola) {
         button.textContent = "Buat Undangan Guru";
 
       } catch (error) {
-        console.error(error);
+        console.error("Gagal memeriksa akun:", error);
 
         status.textContent =
           "Gagal memeriksa akun: " + error.message;
+
+        button.textContent = "Pemeriksaan gagal";
       }
     });
 
-    // Membuat undangan.
+    // Membuat undangan guru.
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      if (!penggunaAktif) {
+      if (sedangMembuat) return;
+
+      if (!penggunaAktif || auth.currentUser?.uid !== penggunaAktif.uid) {
         status.textContent =
           "Akun pengelola belum terverifikasi.";
 
@@ -487,9 +490,11 @@ if (!bolehMengelola) {
         return;
       }
 
+      sedangMembuat = true;
       button.disabled = true;
       button.textContent = "Membuat undangan...";
       hasil.style.display = "none";
+      kodeTerakhir = "";
 
       try {
         const kode = buatKodeAcak();
@@ -521,39 +526,51 @@ if (!bolehMengelola) {
 
         document.getElementById("batasPenggunaan").value = 1;
 
-      } catch (error) {
-  console.error("Gagal membuat undangan:", {
-    code: error.code,
-    message: error.message,
-    name: error.name
-  });
+        salinButton.textContent = "Salin Kode Undangan";
 
-  status.textContent =
-    "Gagal membuat undangan.\n" +
-    "Kode: " + (error.code || "tidak diketahui") +
-    "\nPesan: " + error.message;
-} finally {
-        button.disabled = false;
-        button.textContent = "Buat Undangan Guru";
+      } catch (error) {
+        console.error("Gagal membuat undangan:", {
+          code: error.code,
+          message: error.message,
+          name: error.name
+        });
+
+        status.textContent =
+          "Gagal membuat undangan.\n" +
+          "Kode: " + (error.code || "tidak diketahui") +
+          "\nPesan: " + error.message;
+
+      } finally {
+        sedangMembuat = false;
+
+        const masihBerwenang =
+          penggunaAktif &&
+          auth.currentUser?.uid === penggunaAktif.uid;
+
+        button.disabled = !masihBerwenang;
+        button.textContent = masihBerwenang
+          ? "Buat Undangan Guru"
+          : "Akses tidak tersedia";
       }
     });
 
-    // Menyalin kode asli.
+    // Menyalin kode undangan.
     salinButton.addEventListener("click", async () => {
       if (!kodeTerakhir) return;
 
       try {
         await navigator.clipboard.writeText(kodeTerakhir);
 
-        salinButton.textContent = "Kode Berhasil Disalin";
+        salinButton.textContent =
+          "Kode Berhasil Disalin";
 
       } catch (error) {
         status.textContent =
           "Gagal menyalin otomatis. Silakan salin kode secara manual.";
       }
     });
+
   </script>
 
 </body>
-  </html>
-  
+</html>
