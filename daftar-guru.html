@@ -11,11 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       min-height: 100vh;
@@ -23,7 +19,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Inter', sans-serif;
+      font-family: Inter, sans-serif;
       color: #243451;
       background:
         radial-gradient(circle at top left, #e1edff 0, transparent 38%),
@@ -36,10 +32,7 @@
       animation: appear .55s ease;
     }
 
-    .brand {
-      text-align: center;
-      margin-bottom: 22px;
-    }
+    .brand { text-align: center; margin-bottom: 22px; }
 
     .brand-icon {
       width: 58px;
@@ -55,17 +48,8 @@
       font-weight: 800;
     }
 
-    .brand h1 {
-      font-size: 21px;
-      font-weight: 800;
-      color: #203b65;
-    }
-
-    .brand p {
-      margin-top: 6px;
-      color: #7a8ba5;
-      font-size: 13px;
-    }
+    .brand h1 { font-size: 21px; font-weight: 800; color: #203b65; }
+    .brand p { margin-top: 6px; color: #7a8ba5; font-size: 13px; }
 
     .card {
       padding: 30px;
@@ -75,21 +59,9 @@
       box-shadow: 0 15px 45px #294d7912;
     }
 
-    .heading {
-      margin-bottom: 24px;
-    }
-
-    .heading h2 {
-      font-size: 22px;
-      color: #233c63;
-      margin-bottom: 8px;
-    }
-
-    .heading p {
-      font-size: 13px;
-      line-height: 1.7;
-      color: #7b8ba2;
-    }
+    .heading { margin-bottom: 24px; }
+    .heading h2 { font-size: 22px; color: #233c63; margin-bottom: 8px; }
+    .heading p { font-size: 13px; line-height: 1.7; color: #7b8ba2; }
 
     .info {
       padding: 13px 14px;
@@ -102,13 +74,9 @@
       line-height: 1.7;
     }
 
-    .info strong {
-      color: #315d9e;
-    }
+    .info strong, .security-info strong { color: #315d9e; }
 
-    .form-group {
-      margin-bottom: 19px;
-    }
+    .form-group { margin-bottom: 19px; }
 
     label {
       display: block;
@@ -138,15 +106,9 @@
       background: white;
     }
 
-    input::placeholder {
-      color: #a8b4c5;
-    }
+    input::placeholder { color: #a8b4c5; }
 
-    .hint {
-      margin-top: 7px;
-      font-size: 11px;
-      color: #91a0b4;
-    }
+    .hint { margin-top: 7px; font-size: 11px; color: #91a0b4; }
 
     .security-info {
       padding: 13px 14px;
@@ -159,13 +121,10 @@
       line-height: 1.7;
     }
 
-    .security-info strong {
-      color: #315d9e;
-    }
-
     .submit-btn {
       width: 100%;
-      height: 49px;
+      min-height: 49px;
+      padding: 12px;
       border: none;
       border-radius: 11px;
       background: linear-gradient(110deg, #397bd7, #3265c0);
@@ -178,10 +137,8 @@
       transition: .2s;
     }
 
-    .submit-btn:hover {
-      filter: brightness(1.05);
-      transform: translateY(-1px);
-    }
+    .submit-btn:hover { filter: brightness(1.05); }
+    .submit-btn:disabled { opacity: .6; cursor: not-allowed; }
 
     .back {
       display: block;
@@ -193,9 +150,22 @@
       font-weight: 600;
     }
 
-    .back:hover {
-      color: #3265c0;
+    .back:hover { color: #3265c0; }
+
+    #status {
+      display: none;
+      margin-top: 17px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+      white-space: pre-line;
     }
+
+    #status.info-status { display: block; background: #f2f7ff; color: #45658f; }
+    #status.success { display: block; background: #effaf3; color: #28764a; }
+    #status.error { display: block; background: #fff3f2; color: #a33c37; }
 
     .footer {
       margin-top: 20px;
@@ -205,29 +175,14 @@
     }
 
     @keyframes appear {
-      from {
-        opacity: 0;
-        transform: translateY(12px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 480px) {
-      body {
-        padding: 20px 14px;
-      }
-
-      .card {
-        padding: 23px 19px;
-        border-radius: 18px;
-      }
-
-      .heading h2 {
-        font-size: 20px;
-      }
+      body { padding: 20px 14px; }
+      .card { padding: 23px 19px; border-radius: 18px; }
+      .heading h2 { font-size: 20px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -241,7 +196,6 @@
 
 <body>
   <main class="container">
-
     <header class="brand">
       <div class="brand-icon">A</div>
       <h1>Absensi Sekolah</h1>
@@ -260,44 +214,32 @@
       </div>
 
       <form id="formGuru">
-
         <div class="form-group">
           <label for="nama">Nama Lengkap</label>
-          <input
-            type="text"
-            id="nama"
-            name="nama"
+          <input type="text" id="nama" name="nama"
             placeholder="Masukkan nama lengkap"
-            maxlength="100"
-            autocomplete="name"
-            required
-          >
+            maxlength="100" autocomplete="name" required>
         </div>
 
         <div class="form-group">
           <label for="kode">Kode Undangan Guru</label>
-          <input
-            type="text"
-            id="kode"
-            name="kode"
+          <input type="text" id="kode" name="kode"
             placeholder="Masukkan kode undangan"
-            maxlength="100"
-            autocomplete="off"
-            required
-          >
+            maxlength="100" autocomplete="off" required>
           <p class="hint">Gunakan kode undangan yang diberikan administrator.</p>
         </div>
 
         <div class="security-info">
           <strong>Keamanan undangan</strong><br>
-          Setiap kode memiliki masa berlaku dan batas penggunaan. Kode akan diperiksa oleh sistem sebelum pendaftaran diproses.
+          Kode diperiksa langsung melalui Firestore. Pengajuan akan menunggu persetujuan administrator.
         </div>
 
-        <button type="submit" class="submit-btn">
-          Kirim Pendaftaran
+        <button type="submit" class="submit-btn" id="submitButton">
+          Memeriksa akun...
         </button>
-
       </form>
+
+      <div id="status" role="status" aria-live="polite"></div>
 
       <a href="pilih-peran.html" class="back">
         ← Kembali ke pilihan peran
@@ -307,33 +249,245 @@
     <footer class="footer">
       © 2026 Sistem Absensi Sekolah
     </footer>
-
   </main>
 
-  <script>
-    const form = document.getElementById("formGuru");
+  <script type="module">
+    import { auth, db } from "./js/firebase.js";
+    import { loginGoogle } from "./js/auth.js";
 
-    form.addEventListener("submit", function(event) {
+    import {
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+
+    import {
+      doc,
+      getDoc,
+      writeBatch,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+
+    const form = document.getElementById("formGuru");
+    const button = document.getElementById("submitButton");
+    const statusBox = document.getElementById("status");
+
+    let penggunaAktif = null;
+    let sedangMemproses = false;
+
+    function tampilkanStatus(pesan, jenis = "info-status") {
+      statusBox.textContent = pesan;
+      statusBox.className = jenis;
+    }
+
+    function hashKode(kode) {
+      return crypto.subtle.digest(
+        "SHA-256",
+        new TextEncoder().encode(kode)
+      ).then(hash =>
+        Array.from(new Uint8Array(hash))
+          .map(byte => byte.toString(16).padStart(2, "0"))
+          .join("")
+      );
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      penggunaAktif = user || null;
+
+      if (!user) {
+        button.disabled = false;
+        button.textContent = "Login Google dan Kirim Pendaftaran";
+        tampilkanStatus(
+          "Silakan login menggunakan akun Google guru yang sesuai dengan email undangan."
+        );
+        return;
+      }
+
+      if (!user.emailVerified) {
+        button.disabled = false;
+        button.textContent = "Periksa Akun Google";
+        tampilkanStatus(
+          "Email Google belum terverifikasi. Gunakan akun Google dengan email terverifikasi.",
+          "error"
+        );
+        return;
+      }
+
+      button.disabled = false;
+      button.textContent = "Kirim Pendaftaran";
+      tampilkanStatus(
+        "Login berhasil. Email Google: " + user.email
+      );
+    });
+
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
+      if (sedangMemproses) return;
+
       const nama = document.getElementById("nama").value.trim();
-      const kode = document.getElementById("kode").value.trim();
+      const kode = document.getElementById("kode").value
+        .trim()
+        .replace(/\s+/g, "")
+        .toUpperCase();
 
       if (nama.length < 3) {
-        alert("Nama lengkap minimal 3 karakter.");
+        tampilkanStatus("Nama lengkap minimal 3 karakter.", "error");
         return;
       }
 
       if (kode.length < 4) {
-        alert("Kode undangan belum valid.");
+        tampilkanStatus("Masukkan kode undangan yang benar.", "error");
         return;
       }
 
-      alert(
-        "Formulir berhasil divalidasi secara lokal.\n\n" +
-        "Nama: " + nama +
-        "\n\nPemeriksaan kode undangan dan penyimpanan Firebase belum diaktifkan."
-      );
+      sedangMemproses = true;
+      button.disabled = true;
+      button.textContent = "Memproses pendaftaran...";
+
+      try {
+        let user = auth.currentUser;
+
+        if (!user) {
+          tampilkanStatus("Membuka proses login Google...");
+
+          await loginGoogle();
+
+          user = auth.currentUser;
+
+          if (!user) {
+            tampilkanStatus(
+              "Login Google sedang diproses. Setelah kembali ke halaman ini, tekan Kirim Pendaftaran lagi."
+            );
+            return;
+          }
+        }
+
+        if (!user.email || !user.emailVerified) {
+          throw new Error(
+            "Gunakan akun Google dengan email yang sudah terverifikasi."
+          );
+        }
+
+        const hash = await hashKode(kode);
+        const undanganRef = doc(db, "undangan", hash);
+        const pengajuanRef = doc(db, "pengajuanGuru", user.uid);
+
+        tampilkanStatus("Memeriksa kode undangan di Firestore...");
+
+        const undanganSnap = await getDoc(undanganRef);
+
+        if (!undanganSnap.exists()) {
+          throw new Error("Kode undangan tidak ditemukan.");
+        }
+
+        const undangan = undanganSnap.data();
+
+        if (undangan.emailTujuan !== user.email.toLowerCase()) {
+          throw new Error(
+            "Email Google tidak cocok dengan email tujuan undangan."
+          );
+        }
+
+        if (undangan.jenisUndangan !== "guru") {
+          throw new Error("Kode ini bukan undangan guru.");
+        }
+
+        if (undangan.statusUndangan !== "aktif") {
+          throw new Error("Undangan sudah tidak aktif.");
+        }
+
+        if (
+          !undangan.berlakuSampai ||
+          undangan.berlakuSampai.toDate() <= new Date()
+        ) {
+          throw new Error("Masa berlaku undangan sudah habis.");
+        }
+
+        if (
+          !Number.isInteger(undangan.jumlahPenggunaan) ||
+          !Number.isInteger(undangan.batasPenggunaan) ||
+          undangan.jumlahPenggunaan >= undangan.batasPenggunaan
+        ) {
+          throw new Error("Batas penggunaan undangan sudah tercapai.");
+        }
+
+        if (!undangan.idKelas) {
+          throw new Error("Informasi kelas pada undangan tidak valid.");
+        }
+
+        const pengajuanLama = await getDoc(pengajuanRef);
+
+        if (pengajuanLama.exists()) {
+          throw new Error(
+            "Akun ini sudah memiliki pengajuan pendaftaran guru."
+          );
+        }
+
+        tampilkanStatus(
+          "Kode valid. Sedang menyimpan pengajuan ke Firebase..."
+        );
+
+        const batch = writeBatch(db);
+
+        batch.set(pengajuanRef, {
+          uid: user.uid,
+          namaLengkap: nama,
+          email: user.email.toLowerCase(),
+          idKelas: undangan.idKelas,
+          idUndangan: hash,
+          statusPengajuan: "menunggu",
+          dibuatPada: serverTimestamp()
+        });
+
+        batch.update(undanganRef, {
+          jumlahPenggunaan: undangan.jumlahPenggunaan + 1
+        });
+
+        await batch.commit();
+
+        tampilkanStatus(
+          "Pendaftaran berhasil dikirim dan tersimpan di Firebase.\n\n" +
+          "Nama: " + nama +
+          "\nEmail: " + user.email +
+          "\nKelas: " + undangan.idKelas +
+          "\nStatus: Menunggu persetujuan administrator.",
+          "success"
+        );
+
+        form.reset();
+        button.textContent = "Pendaftaran Terkirim";
+        button.disabled = true;
+
+      } catch (error) {
+        console.error("Pendaftaran guru gagal:", {
+          code: error.code,
+          message: error.message
+        });
+
+        let pesan = error.message || "Terjadi kesalahan.";
+
+        if (error.code === "permission-denied") {
+          pesan =
+            "Akses Firestore ditolak. Periksa Firestore Rules untuk pengajuanGuru dan undangan.";
+        } else if (error.code === "unavailable") {
+          pesan =
+            "Firebase tidak dapat dijangkau. Periksa koneksi internet lalu coba lagi.";
+        }
+
+        tampilkanStatus(
+          "Pendaftaran belum berhasil.\n" + pesan,
+          "error"
+        );
+
+      } finally {
+        sedangMemproses = false;
+
+        if (button.textContent !== "Pendaftaran Terkirim") {
+          button.disabled = false;
+          button.textContent = auth.currentUser
+            ? "Kirim Pendaftaran"
+            : "Login Google dan Kirim Pendaftaran";
+        }
+      }
     });
   </script>
 </body>
