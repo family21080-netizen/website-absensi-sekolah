@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f3f7ff">
+  <meta name="theme-color" content="#eef4ff">
   <title>Pendaftaran Guru | Absensi Sekolah</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,245 +11,587 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #3978df;
+      --primary-dark: #245bb8;
+      --navy: #172b4d;
+      --text: #26364f;
+      --muted: #718096;
+      --bg: #f3f7fd;
+      --white: #ffffff;
+      --border: #e3eaf4;
+      --success: #16865b;
+      --danger: #c43d4b;
+      --warning: #a66b12;
+      --shadow: 0 16px 45px rgba(37, 74, 128, .09);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       min-height: 100vh;
-      padding: 24px 16px;
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 10%, #e3edff 0, transparent 32%),
+        radial-gradient(circle at 90% 90%, #e7f2ff 0, transparent 30%),
+        var(--bg);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      width: 100%;
+      padding: 19px 6%;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-family: Inter, sans-serif;
-      color: #243451;
-      background:
-        radial-gradient(circle at top left, #e1edff 0, transparent 38%),
-        linear-gradient(135deg, #f4f8ff, #edf3fc);
+      justify-content: space-between;
+      gap: 16px;
     }
 
-    .container {
-      width: 100%;
-      max-width: 470px;
-      animation: appear .55s ease;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -.4px;
     }
 
-    .brand { text-align: center; margin-bottom: 22px; }
-
-    .brand-icon {
-      width: 58px;
-      height: 58px;
-      margin: 0 auto 12px;
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      background: linear-gradient(145deg, #4b8df0, #2864c4);
       display: grid;
       place-items: center;
-      border-radius: 18px;
       color: white;
-      background: linear-gradient(135deg, #3679dc, #2858b5);
-      box-shadow: 0 8px 20px #376fbd35;
-      font-size: 25px;
+      font-size: 19px;
+      font-weight: 800;
+      box-shadow: 0 7px 16px rgba(57, 120, 223, .22);
+    }
+
+    .top-link {
+      color: var(--primary-dark);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    main {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 25px 16px 55px;
+    }
+
+    .layout {
+      width: 100%;
+      max-width: 970px;
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      background: var(--white);
+      border: 1px solid rgba(220, 231, 246, .9);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .side-panel {
+      padding: 42px 35px;
+      color: white;
+      background: linear-gradient(150deg, #1d477f 0%, #2868bd 58%, #4389e9 100%);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 590px;
+    }
+
+    .side-panel::before,
+    .side-panel::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .side-panel::before {
+      width: 300px;
+      height: 300px;
+      right: -150px;
+      top: 80px;
+    }
+
+    .side-panel::after {
+      width: 220px;
+      height: 220px;
+      right: -100px;
+      top: 120px;
+    }
+
+    .side-content,
+    .side-bottom {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 30px;
+      background: rgba(255,255,255,.13);
+      border: 1px solid rgba(255,255,255,.18);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 25px;
+    }
+
+    .side-panel h1 {
+      font-size: 30px;
+      line-height: 1.25;
+      letter-spacing: -1px;
+      margin-bottom: 15px;
+    }
+
+    .side-panel p {
+      color: rgba(255,255,255,.82);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .feature-list {
+      margin-top: 34px;
+      display: grid;
+      gap: 17px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: rgba(255,255,255,.92);
+    }
+
+    .feature-number {
+      flex: 0 0 25px;
+      width: 25px;
+      height: 25px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: rgba(255,255,255,.16);
+      font-size: 11px;
       font-weight: 800;
     }
 
-    .brand h1 { font-size: 21px; font-weight: 800; color: #203b65; }
-    .brand p { margin-top: 6px; color: #7a8ba5; font-size: 13px; }
-
-    .card {
-      padding: 30px;
-      border: 1px solid #e6edf7;
-      border-radius: 22px;
-      background: rgba(255,255,255,.96);
-      box-shadow: 0 15px 45px #294d7912;
+    .side-bottom {
+      font-size: 11px;
+      color: rgba(255,255,255,.68);
+      margin-top: 45px;
     }
 
-    .heading { margin-bottom: 24px; }
-    .heading h2 { font-size: 22px; color: #233c63; margin-bottom: 8px; }
-    .heading p { font-size: 13px; line-height: 1.7; color: #7b8ba2; }
+    .form-panel {
+      padding: 43px 42px;
+    }
 
-    .info {
-      padding: 13px 14px;
-      margin-bottom: 22px;
-      border: 1px solid #dce9fc;
-      border-radius: 12px;
-      background: #f2f7ff;
-      color: #45658f;
+    .form-heading {
+      margin-bottom: 28px;
+    }
+
+    .form-heading .small-title {
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-size: 10px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .form-heading h2 {
+      color: var(--navy);
+      font-size: 25px;
+      letter-spacing: -.8px;
+      margin-bottom: 9px;
+    }
+
+    .form-heading p {
+      color: var(--muted);
       font-size: 12px;
       line-height: 1.7;
     }
 
-    .info strong, .security-info strong { color: #315d9e; }
+    .account-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: #f8faff;
+      margin-bottom: 24px;
+    }
 
-    .form-group { margin-bottom: 19px; }
+    .account-avatar {
+      width: 39px;
+      height: 39px;
+      border-radius: 12px;
+      background: #e4edff;
+      color: var(--primary-dark);
+      display: grid;
+      place-items: center;
+      font-size: 15px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .account-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .account-info strong {
+      display: block;
+      font-size: 11px;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+
+    .account-info span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      overflow-wrap: anywhere;
+    }
+
+    .account-state {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--warning);
+      background: #fff4df;
+      padding: 6px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .field {
+      margin-bottom: 19px;
+    }
 
     label {
       display: block;
-      margin-bottom: 9px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #405574;
+      color: #34445d;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .input-wrap {
+      position: relative;
     }
 
     input {
       width: 100%;
-      height: 48px;
+      height: 47px;
       padding: 0 14px;
-      outline: none;
       border: 1px solid #dce5f1;
       border-radius: 11px;
-      background: #fbfdff;
-      color: #263d5d;
+      outline: none;
+      color: var(--text);
+      background: #fbfcff;
       font-family: inherit;
-      font-size: 14px;
-      transition: .2s;
+      font-size: 12px;
+      transition: .2s ease;
     }
 
     input:focus {
-      border-color: #5b91e3;
-      box-shadow: 0 0 0 3px #5b91e31c;
+      border-color: #75a5ef;
       background: white;
+      box-shadow: 0 0 0 4px rgba(57,120,223,.09);
     }
 
-    input::placeholder { color: #a8b4c5; }
-
-    .hint { margin-top: 7px; font-size: 11px; color: #91a0b4; }
-
-    .security-info {
-      padding: 13px 14px;
-      margin-bottom: 19px;
-      border: 1px dashed #b9cce9;
-      border-radius: 11px;
-      background: #f8faff;
-      font-size: 12px;
-      color: #657c9e;
-      line-height: 1.7;
+    input:disabled {
+      background: #f2f5fa;
+      color: #8995a8;
+      cursor: not-allowed;
     }
 
-    .submit-btn {
+    .field-hint {
+      margin-top: 7px;
+      color: #8995a8;
+      font-size: 10px;
+      line-height: 1.6;
+    }
+
+    .button {
       width: 100%;
-      min-height: 49px;
-      padding: 12px;
-      border: none;
+      min-height: 47px;
+      border: 0;
       border-radius: 11px;
-      background: linear-gradient(110deg, #397bd7, #3265c0);
+      background: linear-gradient(100deg, #3978df, #2863c1);
       color: white;
       font-family: inherit;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 7px 17px #397bd72c;
-      transition: .2s;
-    }
-
-    .submit-btn:hover { filter: brightness(1.05); }
-    .submit-btn:disabled { opacity: .6; cursor: not-allowed; }
-
-    .back {
-      display: block;
-      margin-top: 21px;
-      text-align: center;
-      text-decoration: none;
-      color: #6682a9;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .back:hover { color: #3265c0; }
-
-    #status {
-      display: none;
-      margin-top: 17px;
-      padding: 12px 14px;
-      border-radius: 10px;
       font-size: 12px;
-      line-height: 1.7;
-      overflow-wrap: anywhere;
-      white-space: pre-line;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .2s ease;
+      box-shadow: 0 8px 17px rgba(57,120,223,.18);
     }
 
-    #status.info-status { display: block; background: #f2f7ff; color: #45658f; }
-    #status.success { display: block; background: #effaf3; color: #28764a; }
-    #status.error { display: block; background: #fff3f2; color: #a33c37; }
+    .button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 11px 22px rgba(57,120,223,.25);
+    }
 
-    .footer {
-      margin-top: 20px;
-      text-align: center;
-      color: #99a8ba;
+    .button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .button.secondary {
+      color: var(--primary-dark);
+      background: #edf4ff;
+      border: 1px solid #dce9ff;
+      box-shadow: none;
+      margin-bottom: 17px;
+    }
+
+    .notice {
+      display: none;
+      padding: 12px 13px;
+      border-radius: 10px;
       font-size: 11px;
+      line-height: 1.7;
+      margin-bottom: 18px;
+      overflow-wrap: anywhere;
     }
 
-    @keyframes appear {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
+    .notice.show {
+      display: block;
     }
 
-    @media (max-width: 480px) {
-      body { padding: 20px 14px; }
-      .card { padding: 23px 19px; border-radius: 18px; }
-      .heading h2 { font-size: 20px; }
+    .notice.info {
+      color: #285a9f;
+      background: #edf5ff;
+      border: 1px solid #d8e9ff;
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
-        transition-duration: .01ms !important;
+    .notice.success {
+      color: #146b4a;
+      background: #eaf8f1;
+      border: 1px solid #cceedd;
+    }
+
+    .notice.error {
+      color: #a52e3b;
+      background: #fff0f1;
+      border: 1px solid #f5d5d9;
+    }
+
+    .notice.warning {
+      color: #8b5c12;
+      background: #fff7e8;
+      border: 1px solid #f4e2bd;
+    }
+
+    .form-footer {
+      margin-top: 23px;
+      padding-top: 18px;
+      border-top: 1px solid #edf1f7;
+      text-align: center;
+      color: #8a96a8;
+      font-size: 10px;
+      line-height: 1.7;
+    }
+
+    .form-footer a {
+      color: var(--primary-dark);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .page-footer {
+      padding: 0 15px 20px;
+      text-align: center;
+      color: #94a0b1;
+      font-size: 10px;
+    }
+
+    @media (max-width: 760px) {
+      main {
+        padding: 15px 12px 35px;
+        align-items: flex-start;
+      }
+
+      .layout {
+        max-width: 510px;
+        grid-template-columns: 1fr;
+        border-radius: 19px;
+      }
+
+      .side-panel {
+        min-height: auto;
+        padding: 28px 25px;
+      }
+
+      .side-panel h1 {
+        font-size: 24px;
+      }
+
+      .feature-list {
+        margin-top: 22px;
+        gap: 12px;
+      }
+
+      .side-bottom {
+        margin-top: 25px;
+      }
+
+      .form-panel {
+        padding: 30px 24px;
+      }
+
+      .form-heading h2 {
+        font-size: 22px;
+      }
+
+      .topbar {
+        padding: 14px 18px;
       }
     }
   </style>
 </head>
 
 <body>
-  <main class="container">
-    <header class="brand">
-      <div class="brand-icon">A</div>
-      <h1>Absensi Sekolah</h1>
-      <p>Sistem Informasi Kehadiran Sekolah</p>
-    </header>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">A</div>
+      <span>ABSENSI SEKOLAH</span>
+    </div>
+    <a class="top-link" href="./index.html">Kembali ke Login</a>
+  </header>
 
-    <section class="card">
-      <div class="heading">
-        <h2>Pendaftaran Guru</h2>
-        <p>Lengkapi identitas dan masukkan kode undangan dari administrator sekolah.</p>
-      </div>
+  <main>
+    <section class="layout">
+      <aside class="side-panel">
+        <div class="side-content">
+          <span class="eyebrow">Portal Pendaftaran</span>
+          <h1>Daftarkan Akun Guru</h1>
+          <p>
+            Gunakan akun Google dan kode undangan resmi dari pengelola
+            sekolah untuk mengajukan pendaftaran sebagai Guru.
+          </p>
 
-      <div class="info">
-        <strong>Informasi pendaftaran</strong><br>
-        Pendaftaran guru memerlukan kode undangan yang diterbitkan oleh administrator sekolah. Akun harus mendapatkan persetujuan sebelum dapat digunakan.
-      </div>
-
-      <form id="formGuru">
-        <div class="form-group">
-          <label for="nama">Nama Lengkap</label>
-          <input type="text" id="nama" name="nama"
-            placeholder="Masukkan nama lengkap"
-            maxlength="100" autocomplete="name" required>
+          <div class="feature-list">
+            <div class="feature">
+              <span class="feature-number">01</span>
+              <span>Masuk menggunakan akun Google yang menerima undangan.</span>
+            </div>
+            <div class="feature">
+              <span class="feature-number">02</span>
+              <span>Masukkan nama lengkap dan kode undangan Guru.</span>
+            </div>
+            <div class="feature">
+              <span class="feature-number">03</span>
+              <span>Tunggu pemeriksaan dan persetujuan dari Admin.</span>
+            </div>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="kode">Kode Undangan Guru</label>
-          <input type="text" id="kode" name="kode"
-            placeholder="Masukkan kode undangan"
-            maxlength="100" autocomplete="off" required>
-          <p class="hint">Gunakan kode undangan yang diberikan administrator.</p>
+        <div class="side-bottom">
+          Sistem Absensi Sekolah · Pendaftaran Guru
+        </div>
+      </aside>
+
+      <section class="form-panel">
+        <div class="form-heading">
+          <div class="small-title">Pendaftaran Guru</div>
+          <h2>Lengkapi Data Anda</h2>
+          <p>
+            Pastikan data yang dimasukkan sesuai dengan undangan
+            yang diberikan oleh pengelola sekolah.
+          </p>
         </div>
 
-        <div class="security-info">
-          <strong>Keamanan undangan</strong><br>
-          Kode diperiksa langsung melalui Firestore. Pengajuan akan menunggu persetujuan administrator.
+        <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+        <div class="account-box">
+          <div class="account-avatar">G</div>
+          <div class="account-info">
+            <strong id="accountTitle">Status akun Google</strong>
+            <span id="accountEmail">Belum login</span>
+          </div>
+          <span id="accountState" class="account-state">Belum login</span>
         </div>
 
-        <button type="submit" class="submit-btn" id="submitButton">
-          Memeriksa akun...
+        <button type="button" id="loginButton" class="button secondary">
+          Masuk dengan Google
         </button>
-      </form>
 
-      <div id="status" role="status" aria-live="polite"></div>
+        <form id="registrationForm">
+          <div class="field">
+            <label for="nama">Nama lengkap</label>
+            <input
+              type="text"
+              id="nama"
+              name="nama"
+              placeholder="Masukkan nama lengkap"
+              maxlength="100"
+              autocomplete="name"
+              required
+              disabled
+            >
+          </div>
 
-      <a href="pilih-peran.html" class="back">
-        ← Kembali ke pilihan peran
-      </a>
+          <div class="field">
+            <label for="kode">Kode undangan Guru</label>
+            <input
+              type="text"
+              id="kode"
+              name="kode"
+              placeholder="XXXX-XXXX-XXXX-XXXX"
+              autocomplete="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              required
+              disabled
+            >
+            <p class="field-hint">
+              Masukkan kode undangan lengkap, termasuk tanda hubung.
+            </p>
+          </div>
+
+          <button type="submit" id="submitButton" class="button" disabled>
+            Kirim Pengajuan Pendaftaran
+          </button>
+        </form>
+
+        <div class="form-footer">
+          Sudah memiliki akun? <a href="./index.html">Kembali ke halaman login</a>
+          <br>
+          Pendaftaran hanya berlaku untuk akun yang belum memiliki profil.
+        </div>
+      </section>
     </section>
-
-    <footer class="footer">
-      © 2026 Sistem Absensi Sekolah
-    </footer>
   </main>
+
+  <footer class="page-footer">
+    © 2026 Sistem Absensi Sekolah
+  </footer>
 
   <script type="module">
     import { auth, db } from "./js/firebase.js";
@@ -261,231 +603,270 @@
 
     import {
       doc,
-      getDoc,
-      writeBatch,
+      runTransaction,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
 
-    const form = document.getElementById("formGuru");
-    const button = document.getElementById("submitButton");
-    const statusBox = document.getElementById("status");
+    const notice = document.getElementById("notice");
+    const loginButton = document.getElementById("loginButton");
+    const form = document.getElementById("registrationForm");
+    const namaInput = document.getElementById("nama");
+    const kodeInput = document.getElementById("kode");
+    const submitButton = document.getElementById("submitButton");
+
+    const accountTitle = document.getElementById("accountTitle");
+    const accountEmail = document.getElementById("accountEmail");
+    const accountState = document.getElementById("accountState");
 
     let penggunaAktif = null;
     let sedangMemproses = false;
 
-    function tampilkanStatus(pesan, jenis = "info-status") {
-      statusBox.textContent = pesan;
-      statusBox.className = jenis;
+    function tampilkanPesan(pesan, jenis = "info") {
+      notice.textContent = pesan;
+      notice.className = "notice show " + jenis;
     }
 
-    function hashKode(kode) {
-      return crypto.subtle.digest(
-        "SHA-256",
-        new TextEncoder().encode(kode)
-      ).then(hash =>
-        Array.from(new Uint8Array(hash))
-          .map(byte => byte.toString(16).padStart(2, "0"))
-          .join("")
-      );
+    function hapusPesan() {
+      notice.textContent = "";
+      notice.className = "notice";
     }
 
-    onAuthStateChanged(auth, (user) => {
-      penggunaAktif = user || null;
+    function aturForm(aktif) {
+      namaInput.disabled = !aktif;
+      kodeInput.disabled = !aktif;
+      submitButton.disabled = !aktif || sedangMemproses;
+    }
+
+    function tampilkanAkun(user) {
+      penggunaAktif = user;
 
       if (!user) {
-        button.disabled = false;
-        button.textContent = "Login Google dan Kirim Pendaftaran";
-        tampilkanStatus(
-          "Silakan login menggunakan akun Google guru yang sesuai dengan email undangan."
-        );
+        accountTitle.textContent = "Status akun Google";
+        accountEmail.textContent = "Belum login";
+        accountState.textContent = "Belum login";
+        accountState.style.color = "#a66b12";
+        accountState.style.background = "#fff4df";
+        loginButton.style.display = "block";
+        aturForm(false);
         return;
       }
 
-      if (!user.emailVerified) {
-        button.disabled = false;
-        button.textContent = "Periksa Akun Google";
-        tampilkanStatus(
-          "Email Google belum terverifikasi. Gunakan akun Google dengan email terverifikasi.",
-          "error"
-        );
-        return;
+      accountTitle.textContent = "Akun Google aktif";
+      accountEmail.textContent = user.email || "Email tidak tersedia";
+      accountState.textContent = "Terhubung";
+      accountState.style.color = "#16865b";
+      accountState.style.background = "#e8f7ef";
+      loginButton.style.display = "none";
+      aturForm(true);
+    }
+
+    async function hashKode(kode) {
+      const data = new TextEncoder().encode(kode);
+      const hasil = await crypto.subtle.digest("SHA-256", data);
+
+      return Array.from(new Uint8Array(hasil))
+        .map(byte => byte.toString(16).padStart(2, "0"))
+        .join("");
+    }
+
+    function emailNormal(email) {
+      return String(email || "").trim().toLowerCase();
+    }
+
+    function pesanError(error) {
+      console.error("Kesalahan pendaftaran Guru:", error);
+
+      if (error.code === "permission-denied") {
+        return "Akses ditolak oleh Firestore Rules. Periksa aturan pengajuanGuru dan undangan.";
       }
 
-      button.disabled = false;
-      button.textContent = "Kirim Pendaftaran";
-      tampilkanStatus(
-        "Login berhasil. Email Google: " + user.email
-      );
+      if (error.code === "unavailable") {
+        return "Koneksi ke Firebase sedang bermasalah. Periksa internet lalu coba lagi.";
+      }
+
+      return error.message || "Pendaftaran gagal diproses. Silakan coba kembali.";
+    }
+
+    loginButton.addEventListener("click", async () => {
+      hapusPesan();
+      loginButton.disabled = true;
+      loginButton.textContent = "Menghubungkan akun...";
+
+      try {
+        await loginGoogle();
+        // loginGoogle menggunakan signInWithRedirect.
+        // Setelah kembali dari Google, onAuthStateChanged akan memperbarui tampilan.
+      } catch (error) {
+        tampilkanPesan(pesanError(error), "error");
+        loginButton.disabled = false;
+        loginButton.textContent = "Masuk dengan Google";
+      }
     });
 
-    form.addEventListener("submit", async (event) => {
+    onAuthStateChanged(auth, user => {
+      tampilkanAkun(user);
+
+      if (user) {
+        if (user.emailVerified !== true) {
+          tampilkanPesan(
+            "Email Google belum terverifikasi. Gunakan akun Google dengan email terverifikasi.",
+            "warning"
+          );
+          aturForm(false);
+          return;
+        }
+
+        hapusPesan();
+      }
+    });
+
+    form.addEventListener("submit", async event => {
       event.preventDefault();
 
       if (sedangMemproses) return;
 
-      const nama = document.getElementById("nama").value.trim();
-      const kode = document.getElementById("kode").value
-        .trim()
-        .replace(/\s+/g, "")
-        .toUpperCase();
+      const user = auth.currentUser;
 
-      if (nama.length < 3) {
-        tampilkanStatus("Nama lengkap minimal 3 karakter.", "error");
+      if (!user) {
+        tampilkanPesan("Silakan masuk menggunakan akun Google terlebih dahulu.", "warning");
         return;
       }
 
-      if (kode.length < 4) {
-        tampilkanStatus("Masukkan kode undangan yang benar.", "error");
+      if (user.emailVerified !== true || !user.email) {
+        tampilkanPesan("Akun Google harus memiliki email terverifikasi.", "error");
+        return;
+      }
+
+      const namaLengkap = namaInput.value.trim();
+      const kodeUndangan = kodeInput.value.trim();
+      const emailLogin = emailNormal(user.email);
+
+      if (namaLengkap.length < 3) {
+        tampilkanPesan("Nama lengkap minimal 3 karakter.", "warning");
+        namaInput.focus();
+        return;
+      }
+
+      if (!kodeUndangan) {
+        tampilkanPesan("Kode undangan Guru wajib diisi.", "warning");
+        kodeInput.focus();
         return;
       }
 
       sedangMemproses = true;
-      button.disabled = true;
-      button.textContent = "Memproses pendaftaran...";
+      submitButton.disabled = true;
+      submitButton.textContent = "Memeriksa data...";
 
       try {
-        let user = auth.currentUser;
+        const hash = await hashKode(kodeUndangan);
 
-        if (!user) {
-          tampilkanStatus("Membuka proses login Google...");
-
-          await loginGoogle();
-
-          user = auth.currentUser;
-
-          if (!user) {
-            tampilkanStatus(
-              "Login Google sedang diproses. Setelah kembali ke halaman ini, tekan Kirim Pendaftaran lagi."
-            );
-            return;
-          }
-        }
-
-        if (!user.email || !user.emailVerified) {
-          throw new Error(
-            "Gunakan akun Google dengan email yang sudah terverifikasi."
-          );
-        }
-
-        const hash = await hashKode(kode);
+        const profilRef = doc(db, "sekolah", "utama", "pengguna", user.uid);
         const undanganRef = doc(db, "undangan", hash);
         const pengajuanRef = doc(db, "pengajuanGuru", user.uid);
 
-        tampilkanStatus("Memeriksa kode undangan di Firestore...");
+        await runTransaction(db, async transaction => {
+          // Semua pembacaan dilakukan sebelum penulisan.
+          const profilSnap = await transaction.get(profilRef);
+          const pengajuanSnap = await transaction.get(pengajuanRef);
+          const undanganSnap = await transaction.get(undanganRef);
 
-        const undanganSnap = await getDoc(undanganRef);
+          // PENCEGAHAN UTAMA:
+          // UID yang sudah memiliki profil tidak boleh mendaftar ulang.
+          if (profilSnap.exists()) {
+            throw new Error(
+              "Akun ini sudah terdaftar di sistem. Akun lama tidak dapat mendaftar ulang sebagai Guru."
+            );
+          }
 
-        if (!undanganSnap.exists()) {
-          throw new Error("Kode undangan tidak ditemukan.");
-        }
+          if (pengajuanSnap.exists()) {
+            throw new Error(
+              "Akun ini sudah pernah mengirim pengajuan Guru. Silakan tunggu pemeriksaan Admin."
+            );
+          }
 
-        const undangan = undanganSnap.data();
+          if (!undanganSnap.exists()) {
+            throw new Error("Kode undangan tidak ditemukan atau tidak valid.");
+          }
 
-        if (undangan.emailTujuan !== user.email.toLowerCase()) {
-          throw new Error(
-            "Email Google tidak cocok dengan email tujuan undangan."
-          );
-        }
+          const undangan = undanganSnap.data();
 
-        if (undangan.jenisUndangan !== "guru") {
-          throw new Error("Kode ini bukan undangan guru.");
-        }
+          if (emailNormal(undangan.emailTujuan) !== emailLogin) {
+            throw new Error(
+              "Email akun Google tidak cocok dengan email yang tercantum pada undangan."
+            );
+          }
 
-        if (undangan.statusUndangan !== "aktif") {
-          throw new Error("Undangan sudah tidak aktif.");
-        }
+          if (undangan.jenisUndangan !== "guru") {
+            throw new Error("Undangan ini bukan undangan pendaftaran Guru.");
+          }
 
-        if (
-          !undangan.berlakuSampai ||
-          undangan.berlakuSampai.toDate() <= new Date()
-        ) {
-          throw new Error("Masa berlaku undangan sudah habis.");
-        }
+          if (undangan.statusUndangan !== "aktif") {
+            throw new Error("Undangan sudah tidak aktif.");
+          }
 
-        if (
-          !Number.isInteger(undangan.jumlahPenggunaan) ||
-          !Number.isInteger(undangan.batasPenggunaan) ||
-          undangan.jumlahPenggunaan >= undangan.batasPenggunaan
-        ) {
-          throw new Error("Batas penggunaan undangan sudah tercapai.");
-        }
+          if (
+            !undangan.berlakuSampai ||
+            typeof undangan.berlakuSampai.toMillis !== "function" ||
+            undangan.berlakuSampai.toMillis() <= Date.now()
+          ) {
+            throw new Error("Masa berlaku undangan sudah berakhir.");
+          }
 
-        if (!undangan.idKelas) {
-          throw new Error("Informasi kelas pada undangan tidak valid.");
-        }
+          if (
+            !Number.isInteger(undangan.jumlahPenggunaan) ||
+            !Number.isInteger(undangan.batasPenggunaan) ||
+            undangan.jumlahPenggunaan >= undangan.batasPenggunaan
+          ) {
+            throw new Error("Batas penggunaan undangan sudah tercapai.");
+          }
 
-        const pengajuanLama = await getDoc(pengajuanRef);
+          if (
+            typeof undangan.idKelas !== "string" ||
+            undangan.idKelas.trim() === ""
+          ) {
+            throw new Error("Data kelas pada undangan tidak valid. Hubungi Admin.");
+          }
 
-        if (pengajuanLama.exists()) {
-          throw new Error(
-            "Akun ini sudah memiliki pengajuan pendaftaran guru."
-          );
-        }
+          // Simpan pengajuan dan tambah penggunaan undangan dalam satu transaksi.
+          transaction.set(pengajuanRef, {
+            uid: user.uid,
+            namaLengkap: namaLengkap,
+            email: emailLogin,
+            idKelas: undangan.idKelas,
+            jenisPengajuan: "guru",
+            statusPengajuan: "menunggu",
+            idUndangan: hash,
+            dibuatPada: serverTimestamp()
+          });
 
-        tampilkanStatus(
-          "Kode valid. Sedang menyimpan pengajuan ke Firebase..."
-        );
-
-        const batch = writeBatch(db);
-
-        batch.set(pengajuanRef, {
-          uid: user.uid,
-          namaLengkap: nama,
-          email: user.email.toLowerCase(),
-          idKelas: undangan.idKelas,
-          idUndangan: hash,
-          statusPengajuan: "menunggu",
-          dibuatPada: serverTimestamp()
+          transaction.update(undanganRef, {
+            jumlahPenggunaan: undangan.jumlahPenggunaan + 1
+          });
         });
 
-        batch.update(undanganRef, {
-          jumlahPenggunaan: undangan.jumlahPenggunaan + 1
-        });
-
-        await batch.commit();
-
-        tampilkanStatus(
-          "Pendaftaran berhasil dikirim dan tersimpan di Firebase.\n\n" +
-          "Nama: " + nama +
-          "\nEmail: " + user.email +
-          "\nKelas: " + undangan.idKelas +
-          "\nStatus: Menunggu persetujuan administrator.",
+        tampilkanPesan(
+          "Pengajuan pendaftaran Guru berhasil dikirim. Status akun saat ini MENUNGGU persetujuan Admin. Kamu belum mendapatkan akses Guru sampai disetujui.",
           "success"
         );
 
         form.reset();
-        button.textContent = "Pendaftaran Terkirim";
-        button.disabled = true;
+        aturForm(false);
+        namaInput.disabled = true;
+        kodeInput.disabled = true;
+        submitButton.textContent = "Pengajuan Terkirim";
+        accountState.textContent = "Menunggu";
+        accountState.style.color = "#a66b12";
+        accountState.style.background = "#fff4df";
 
       } catch (error) {
-        console.error("Pendaftaran guru gagal:", {
-          code: error.code,
-          message: error.message
-        });
-
-        let pesan = error.message || "Terjadi kesalahan.";
-
-        if (error.code === "permission-denied") {
-          pesan =
-            "Akses Firestore ditolak. Periksa Firestore Rules untuk pengajuanGuru dan undangan.";
-        } else if (error.code === "unavailable") {
-          pesan =
-            "Firebase tidak dapat dijangkau. Periksa koneksi internet lalu coba lagi.";
-        }
-
-        tampilkanStatus(
-          "Pendaftaran belum berhasil.\n" + pesan,
-          "error"
-        );
-
+        tampilkanPesan(pesanError(error), "error");
+        submitButton.disabled = false;
+        submitButton.textContent = "Kirim Pengajuan Pendaftaran";
       } finally {
         sedangMemproses = false;
 
-        if (button.textContent !== "Pendaftaran Terkirim") {
-          button.disabled = false;
-          button.textContent = auth.currentUser
-            ? "Kirim Pendaftaran"
-            : "Login Google dan Kirim Pendaftaran";
+        if (submitButton.textContent !== "Pengajuan Terkirim") {
+          submitButton.disabled = !auth.currentUser;
         }
       }
     });
