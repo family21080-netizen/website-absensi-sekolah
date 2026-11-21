@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Persetujuan Guru | Absensi Sekolah</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root {
+  --primary: #3978d8;
+  --primary-dark: #2459ad;
+  --navy: #172b4d;
+  --navy-light: #243d64;
+  --bg: #f4f7fc;
+  --white: #ffffff;
+  --text: #253650;
+  --muted: #8492a8;
+  --border: #e8edf5;
+  --blue-soft: #edf4ff;
+  --green: #209b72;
+  --green-soft: #e9f8f1;
+  --orange: #d99432;
+  --orange-soft: #fff5e5;
+  --red: #dc626c;
+  --red-soft: #fff0f1;
+  --shadow: 0 5px 24px rgba(31, 61, 105, .055);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+button, input, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 250px;
+  background: var(--navy);
+  color: white;
+  padding: 25px 17px;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: transform .3s ease;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 3px 10px 30px;
+}
+
+.brand-icon {
+  width: 43px;
+  height: 43px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #64a3ff, #3978d8);
+  display: grid;
+  place-items: center;
+  font-size: 19px;
+  box-shadow: 0 5px 15px rgba(57,120,216,.25);
+}
+
+.brand h2 {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.brand p {
+  font-size: 10px;
+  color: #aabbd3;
+  margin-top: 4px;
+}
+
+.menu-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #8196b3;
+  letter-spacing: 1.2px;
+  padding: 12px 12px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 12px 14px;
+  margin: 3px 0;
+  border-radius: 9px;
+  color: #c0cde0;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  transition: .25s;
+}
+
+.nav-link i {
+  width: 19px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.nav-link:hover {
+  color: white;
+  background: rgba(255,255,255,.08);
+  transform: translateX(3px);
+}
+
+.nav-link.active {
+  background: linear-gradient(100deg, #3978d8, #4d8ce9);
+  color: white;
+  box-shadow: 0 5px 14px rgba(57,120,216,.2);
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding-top: 17px;
+}
+
+.user-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: #dceaff;
+  color: var(--primary);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+}
+
+.user-mini strong {
+  font-size: 11px;
+  display: block;
+}
+
+.user-mini span {
+  color: #aabbd3;
+  font-size: 10px;
+  display: block;
+  margin-top: 4px;
+}
+
+/* MAIN */
+
+.main {
+  margin-left: 250px;
+  padding: 27px 34px 45px;
+  min-height: 100vh;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  animation: slideDown .55s ease both;
+}
+
+.page-title h1 {
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -.6px;
+}
+
+.page-title p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 7px;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.date-label {
+  font-size: 11px;
+  color: var(--muted);
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 13px;
+}
+
+.profile-top {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.profile-top .user-avatar {
+  width: 37px;
+  height: 37px;
+}
+
+.profile-top strong {
+  font-size: 11px;
+  display: block;
+}
+
+.profile-top span {
+  font-size: 10px;
+  color: var(--muted);
+  display: block;
+  margin-top: 3px;
+}
+
+.menu-toggle {
+  display: none;
+  border: 0;
+  background: white;
+  color: var(--navy);
+  width: 39px;
+  height: 39px;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+/* WELCOME */
+
+.welcome {
+  background: linear-gradient(110deg, #245cae, #4a8ce8);
+  border-radius: 17px;
+  padding: 25px 28px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 22px rgba(47,105,190,.13);
+  animation: fadeUp .6s .08s both;
+}
+
+.welcome::before,
+.welcome::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50%;
+}
+
+.welcome::before {
+  width: 230px;
+  height: 230px;
+  right: 80px;
+  top: -140px;
+}
+
+.welcome::after {
+  width: 170px;
+  height: 170px;
+  right: -30px;
+  bottom: -110px;
+}
+
+.welcome h2 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.welcome p {
+  font-size: 11px;
+  color: #e1edff;
+  line-height: 1.7;
+  max-width: 510px;
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.15);
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  margin-right: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+/* STATISTICS */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 19px;
+  box-shadow: var(--shadow);
+  transition: transform .25s, box-shadow .25s;
+  animation: fadeUp .6s both;
+}
+
+.stat-card:nth-child(2) { animation-delay: .08s; }
+.stat-card:nth-child(3) { animation-delay: .16s; }
+.stat-card:nth-child(4) { animation-delay: .24s; }
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 27px rgba(31,61,105,.1);
+}
+
+.stat-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 17px;
+}
+
+.stat-icon {
+  width: 39px;
+  height: 39px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+}
+
+.stat-icon.blue { background: var(--blue-soft); color: var(--primary); }
+.stat-icon.green { background: var(--green-soft); color: var(--green); }
+.stat-icon.orange { background: var(--orange-soft); color: var(--orange); }
+.stat-icon.red { background: var(--red-soft); color: var(--red); }
+
+.stat-card small {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.stat-card h3 {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+.stat-card p {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+/* CONTENT PANEL */
+
+.panel {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  animation: fadeUp .65s .25s both;
+}
+
+.panel-header {
+  padding: 21px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  gap: 15px;
+}
+
+.panel-header h2 {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.panel-header p {
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 5px;
+}
+
+.refresh-btn {
+  border: 1px solid var(--border);
+  color: var(--primary);
+  background: white;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 11px;
+  transition: .2s;
+}
+
+.refresh-btn:hover {
+  background: var(--blue-soft);
+}
+
+/* FILTER */
+
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 22px;
+  flex-wrap: wrap;
+}
+
+.filter-left {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  position: relative;
+  width: 235px;
+}
+
+.search-box i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a3afc0;
+  font-size: 12px;
+}
+
+.search-box input,
+.filters select {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  background: #fff;
+  color: var(--text);
+  font-size: 11px;
+  height: 37px;
+  transition: .2s;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 0 12px 0 34px;
+}
+
+.filters select {
+  padding: 0 12px;
+  min-width: 130px;
+}
+
+.search-box input:focus,
+.filters select:focus {
+  border-color: #8db5f1;
+  box-shadow: 0 0 0 3px rgba(57,120,216,.08);
+}
+
+/* TABLE */
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 760px;
+}
+
+thead {
+  background: #f8faff;
+}
+
+th {
+  text-align: left;
+  padding: 13px 19px;
+  color: #8997aa;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+td {
+  padding: 15px 19px;
+  border-top: 1px solid #f0f3f8;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+tbody tr {
+  transition: background .2s;
+}
+
+tbody tr:hover {
+  background: #f8faff;
+}
+
+.teacher-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.teacher-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #eaf2ff;
+  color: #3978d8;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.teacher-info strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.teacher-info span {
+  display: block;
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 20px;
+  padding: 6px 9px;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.status::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status.pending { color: #c58a2c; background: var(--orange-soft); }
+.status.approved { color: var(--green); background: var(--green-soft); }
+.status.rejected { color: var(--red); background: var(--red-soft); }
+
+.action-group {
+  display: flex;
+  gap: 6px;
+}
+
+.action-btn {
+  border: 1px solid var(--border);
+  background: white;
+  color: #708198;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  font-size: 11px;
+  transition: .2s;
+}
+
+.action-btn:hover {
+  background: var(--blue-soft);
+  color: var(--primary);
+  border-color: #c9dcfa;
+  transform: translateY(-2px);
+}
+
+.action-btn.approve:hover {
+  color: var(--green);
+  background: var(--green-soft);
+  border-color: #bce8d5;
+}
+
+.action-btn.reject:hover {
+  color: var(--red);
+  background: var(--red-soft);
+  border-color: #f5c9ce;
+}
+
+.empty-state {
+  display: none;
+  padding: 40px 15px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.empty-state i {
+  font-size: 25px;
+  margin-bottom: 12px;
+  display: block;
+  color: #b4c2d5;
+}
+
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 22px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 10px;
+}
+
+/* MODAL */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(16,31,54,.48);
+  backdrop-filter: blur(3px);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.modal-overlay.show {
+  display: flex;
+  animation: fadeIn .2s ease;
+}
+
+.modal {
+  width: 100%;
+  max-width: 440px;
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.16);
+  animation: modalIn .3s ease;
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-head h3 {
+  font-size: 15px;
+}
+
+.close-modal {
+  border: 0;
+  background: #f1f4f9;
+  width: 31px;
+  height: 31px;
+  border-radius: 8px;
+  color: #6d7c91;
+}
+
+.detail-row {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.detail-row small {
+  color: var(--muted);
+  font-size: 10px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.detail-row strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 9px;
+  margin-top: 22px;
+}
+
+.btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 15px;
+  font-size: 11px;
+  font-weight: 600;
+  transition: .2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover { background: var(--primary-dark); }
+
+.btn-danger {
+  background: var(--red-soft);
+  color: var(--red);
+}
+
+.btn-light {
+  background: #f1f4f9;
+  color: #60718a;
+}
+
+/* TOAST */
+
+.toast {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  background: #203754;
+  color: white;
+  padding: 13px 17px;
+  border-radius: 10px;
+  font-size: 11px;
+  box-shadow: 0 8px 25px rgba(0,0,0,.15);
+  opacity: 0;
+  transform: translateY(15px);
+  pointer-events: none;
+  transition: .3s;
+  z-index: 300;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ANIMATIONS */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(17px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(15px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 1100px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .main { padding: 24px; }
+}
+
+@media(max-width: 760px) {
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: 10px 0 30px rgba(0,0,0,.12);
+  }
+
+  .sidebar.open { transform: translateX(0); }
+
+  .main {
+    margin-left: 0;
+    padding: 19px 15px 35px;
+  }
+
+  .menu-toggle { display: grid; place-items: center; }
+
+  .topbar {
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .page-title h1 { font-size: 18px; }
+  .page-title p { font-size: 10px; }
+
+  .date-label { display: none; }
+  .profile-top > div:last-child { display: none; }
+
+  .welcome {
+    padding: 21px;
+  }
+
+  .welcome h2 { font-size: 15px; }
+  .welcome p { font-size: 10px; }
+  .welcome-icon { width: 52px; height: 52px; font-size: 20px; }
+
+  .stats { gap: 10px; }
+  .stat-card { padding: 14px; }
+  .stat-card h3 { font-size: 22px; }
+  .stat-card p { font-size: 9px; }
+
+  .panel-header { padding: 17px; }
+  .filters { padding: 14px 17px; }
+  .search-box { width: 100%; }
+  .filter-left { width: 100%; }
+  .filters select { flex: 1; min-width: 0; }
+  .table-footer { padding: 14px 17px; }
+}
+
+@media(max-width: 380px) {
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat-card h3 { font-size: 20px; }
+  .welcome-icon { display: none; }
+}
+
+@media(prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+    <div>
+      <h2>Absensi Sekolah</h2>
+      <p>School Management System</p>
+    </div>
+  </div>
+
+  <div class="menu-label">MENU UTAMA</div>
+
+  <a href="#" class="nav-link">
+    <i class="fa-solid fa-house"></i> Dashboard
+  </a>
+  <a href="#" class="nav-link">
+    <i class="fa-solid fa-users"></i> Data Pengguna
+  </a>
+  <a href="#" class="nav-link active">
+    <i class="fa-solid fa-user-check"></i> Persetujuan Guru
+  </a>
+  <a href="#" class="nav-link">
+    <i class="fa-solid fa-ticket"></i> Undangan Guru
+  </a>
+
+  <div class="menu-label">MANAJEMEN</div>
+
+  <a href="#" class="nav-link">
+    <i class="fa-solid fa-chalkboard"></i> Data Kelas
+  </a>
+  <a href="#" class="nav-link">
+    <i class="fa-solid fa-clock"></i> Riwayat Aktivitas
+  </a>
+  <a href="#" class="nav-link">
+    <i class="fa-solid fa-gear"></i> Pengaturan
+  </a>
+
+  <div class="sidebar-bottom">
+    <div class="user-mini">
+      <div class="user-avatar">P</div>
+      <div>
+        <strong>Pengelola</strong>
+        <span>Administrator</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Buka menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="page-title">
+        <h1>Persetujuan Guru</h1>
+        <p>Kelola dan tinjau pengajuan pendaftaran Guru.</p>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <div class="date-label">
+        <i class="fa-regular fa-calendar"></i>
+        <span id="today"></span>
+      </div>
+      <div class="profile-top">
+        <div class="user-avatar">P</div>
+        <div>
+          <strong>Pengelola</strong>
+          <span>Pengembang</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- WELCOME -->
+  <section class="welcome">
+    <div>
+      <h2>Pengelolaan Pendaftaran Guru</h2>
+      <p>
+        Periksa informasi calon Guru sebelum memberikan persetujuan.
+        Pastikan setiap pengajuan sudah sesuai dengan ketentuan sekolah.
+      </p>
+    </div>
+    <div class="welcome-icon">
+      <i class="fa-solid fa-clipboard-check"></i>
+    </div>
+  </section>
+
+  <!-- STATISTICS -->
+  <section class="stats">
+    <div class="stat-card">
+      <div class="stat-head">
+        <small>Total Pengajuan</small>
+        <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
+      </div>
+      <h3 id="totalCount">4</h3>
+      <p>Seluruh pengajuan Guru</p>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-head">
+        <small>Menunggu</small>
+        <div class="stat-icon orange"><i class="fa-regular fa-clock"></i></div>
+      </div>
+      <h3 id="pendingCount">2</h3>
+      <p>Memerlukan pemeriksaan</p>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-head">
+        <small>Disetujui</small>
+        <div class="stat-icon green"><i class="fa-solid fa-check"></i></div>
+      </div>
+      <h3 id="approvedCount">1</h3>
+      <p>Pengajuan diterima</p>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-head">
+        <small>Ditolak</small>
+        <div class="stat-icon red"><i class="fa-solid fa-xmark"></i></div>
+      </div>
+      <h3 id="rejectedCount">1</h3>
+      <p>Pengajuan tidak diterima</p>
+    </div>
+  </section>
+
+  <!-- TABLE PANEL -->
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h2>Daftar Pengajuan Guru</h2>
+        <p>Informasi pendaftaran Guru yang masuk ke sistem.</p>
+      </div>
+      <button class="refresh-btn" onclick="resetDemo()">
+        <i class="fa-solid fa-rotate-right"></i> Muat Ulang
+      </button>
+    </div>
+
+    <div class="filters">
+      <div class="filter-left">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="searchInput" placeholder="Cari nama atau email...">
+        </div>
+
+        <select id="statusFilter">
+          <option value="all">Semua Status</option>
+          <option value="menunggu">Menunggu</option>
+          <option value="disetujui">Disetujui</option>
+          <option value="ditolak">Ditolak</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Calon Guru</th>
+            <th>Kelas</th>
+            <th>Tanggal Pengajuan</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="applicationTable"></tbody>
+      </table>
+
+      <div class="empty-state" id="emptyState">
+        <i class="fa-regular fa-folder-open"></i>
+        Tidak ada pengajuan yang ditemukan.
+      </div>
+    </div>
+
+    <div class="table-footer">
+      <span id="resultCount">Menampilkan 4 pengajuan</span>
+      <span>Data contoh tampilan</span>
+    </div>
+  </section>
+
+</main>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Detail Pengajuan Guru</h3>
+      <button class="close-modal" onclick="closeModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div id="detailContent"></div>
+    <div class="modal-actions" id="detailActions"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const initialData = [
+  {
+    id: 1,
+    nama: "Andi Saputra",
+    email: "andi@example.com",
+    kelas: "X TJKT 1",
+    tanggal: "20 November 2026",
+    status: "menunggu"
+  },
+  {
+    id: 2,
+    nama: "Siti Rahma",
+    email: "siti@example.com",
+    kelas: "XI TJKT 2",
+    tanggal: "20 November 2026",
+    status: "menunggu"
+  },
+  {
+    id: 3,
+    nama: "Budi Santoso",
+    email: "budi@example.com",
+    kelas: "XII TJKT 1",
+    tanggal: "19 November 2026",
+    status: "disetujui"
+  },
+  {
+    id: 4,
+    nama: "Dewi Lestari",
+    email: "dewi@example.com",
+    kelas: "XI TJKT 1",
+    tanggal: "18 November 2026",
+    status: "ditolak"
+  }
+];
+
+let applications = JSON.parse(JSON.stringify(initialData));
+let selectedId = null;
+
+const table = document.getElementById("applicationTable");
+const searchInput = document.getElementById("searchInput");
+const statusFilter = document.getElementById("statusFilter");
+
+function initials(name) {
+  return name.split(" ").slice(0, 2).map(word => word[0]).join("").toUpperCase();
+}
+
+function statusHTML(status) {
+  const labels = {
+    menunggu: "Menunggu",
+    disetujui: "Disetujui",
+    ditolak: "Ditolak"
+  };
+
+  return `<span class="status ${status === "menunggu" ? "pending" : status === "disetujui" ? "approved" : "rejected"}">${labels[status]}</span>`;
+}
+
+function renderTable() {
+  const keyword = searchInput.value.toLowerCase();
+  const filter = statusFilter.value;
+
+  const filtered = applications.filter(item => {
+    const matchText =
+      item.nama.toLowerCase().includes(keyword) ||
+      item.email.toLowerCase().includes(keyword);
+
+    const matchStatus = filter === "all" || item.status === filter;
+
+    return matchText && matchStatus;
+  });
+
+  table.innerHTML = "";
+
+  filtered.forEach(item => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>
+        <div class="teacher-cell">
+          <div class="teacher-avatar">${initials(item.nama)}</div>
+          <div class="teacher-info">
+            <strong>${item.nama}</strong>
+            <span>${item.email}</span>
+          </div>
+        </div>
+      </td>
+      <td>${item.kelas}</td>
+      <td>${item.tanggal}</td>
+      <td>${statusHTML(item.status)}</td>
+      <td>
+        <div class="action-group">
+          <button class="action-btn" title="Detail" onclick="showDetail(${item.id})">
+            <i class="fa-regular fa-eye"></i>
+          </button>
+          ${item.status === "menunggu" ? `
+            <button class="action-btn approve" title="Setujui" onclick="changeStatus(${item.id}, 'disetujui')">
+              <i class="fa-solid fa-check"></i>
+            </button>
+            <button class="action-btn reject" title="Tolak" onclick="changeStatus(${item.id}, 'ditolak')">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          ` : ""}
+        </div>
+      </td>
+    `;
+
+    table.appendChild(row);
+  });
+
+  document.getElementById("emptyState").style.display =
+    filtered.length ? "none" : "block";
+
+  document.getElementById("resultCount").textContent =
+    `Menampilkan ${filtered.length} dari ${applications.length} pengajuan`;
+
+  updateStats();
+}
+
+function updateStats() {
+  document.getElementById("totalCount").textContent = applications.length;
+  document.getElementById("pendingCount").textContent =
+    applications.filter(x => x.status === "menunggu").length;
+  document.getElementById("approvedCount").textContent =
+    applications.filter(x => x.status === "disetujui").length;
+  document.getElementById("rejectedCount").textContent =
+    applications.filter(x => x.status === "ditolak").length;
+}
+
+function showDetail(id) {
+  const item = applications.find(x => x.id === id);
+  if (!item) return;
+
+  selectedId = id;
+
+  document.getElementById("detailContent").innerHTML = `
+    <div class="detail-row">
+      <small>Nama Lengkap</small>
+      <strong>${item.nama}</strong>
+    </div>
+    <div class="detail-row">
+      <small>Email Google</small>
+      <strong>${item.email}</strong>
+    </div>
+    <div class="detail-row">
+      <small>ID Kelas</small>
+      <strong>${item.kelas}</strong>
+    </div>
+    <div class="detail-row">
+      <small>Tanggal Pengajuan</small>
+      <strong>${item.tanggal}</strong>
+    </div>
+    <div class="detail-row">
+      <small>Status Pengajuan</small>
+      ${statusHTML(item.status)}
+    </div>
+  `;
+
+  const actions = document.getElementById("detailActions");
+
+  actions.innerHTML = item.status === "menunggu" ? `
+    <button class="btn btn-primary" onclick="changeStatus(${id}, 'disetujui')">
+      Setujui
+    </button>
+    <button class="btn btn-danger" onclick="changeStatus(${id}, 'ditolak')">
+      Tolak
+    </button>
+    <button class="btn btn-light" onclick="closeModal()">Tutup</button>
+  ` : `
+    <button class="btn btn-light" onclick="closeModal()">Tutup</button>
+  `;
+
+  document.getElementById("detailModal").classList.add("show");
+}
+
+function closeModal() {
+  document.getElementById("detailModal").classList.remove("show");
+}
+
+function changeStatus(id, status) {
+  const item = applications.find(x => x.id === id);
+  if (!item || item.status !== "menunggu") return;
+
+  item.status = status;
+  closeModal();
+  renderTable();
+
+  showToast(
+    status === "disetujui"
+      ? "Contoh pengajuan berhasil disetujui."
+      : "Contoh pengajuan berhasil ditolak."
+  );
+}
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2600);
+}
+
+function resetDemo() {
+  applications = JSON.parse(JSON.stringify(initialData));
+  searchInput.value = "";
+  statusFilter.value = "all";
+  renderTable();
+  showToast("Data contoh tampilan telah dimuat ulang.");
+}
+
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("open");
+}
+
+searchInput.addEventListener("input", renderTable);
+statusFilter.addEventListener("change", renderTable);
+
+document.getElementById("detailModal").addEventListener("click", function(e) {
+  if (e.target === this) closeModal();
+});
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") closeModal();
+});
+
+document.getElementById("today").textContent =
+  new Date().toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+
+renderTable();
+</script>
+
+</body>
+</html>
