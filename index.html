@@ -29,10 +29,10 @@
       max-width: 420px;
       padding: 38px 30px;
       text-align: center;
-      background: #ffffff;
+      background: #fff;
       border: 1px solid #e4edfa;
       border-radius: 22px;
-      box-shadow: 0 12px 35px rgba(57, 91, 140, 0.10);
+      box-shadow: 0 12px 35px rgba(57, 91, 140, .10);
     }
 
     .logo {
@@ -43,7 +43,7 @@
       justify-content: center;
       margin: 0 auto 22px;
       border-radius: 22px;
-      color: #ffffff;
+      color: #fff;
       background: linear-gradient(135deg, #4389e8, #2864bd);
       font-size: 34px;
       font-weight: bold;
@@ -62,7 +62,8 @@
       line-height: 1.6;
     }
 
-    .google-button {
+    .google-button,
+    .logout-button {
       width: 100%;
       display: flex;
       align-items: center;
@@ -71,24 +72,23 @@
       padding: 14px;
       border: 1px solid #dce5f1;
       border-radius: 12px;
-      background: #ffffff;
+      background: #fff;
       color: #344b68;
       font-size: 15px;
       font-weight: 600;
       cursor: pointer;
-      transition: 0.2s;
+      transition: .2s;
     }
 
-    .google-button:hover {
+    .google-button:hover,
+    .logout-button:hover {
       background: #f5f8fd;
       border-color: #9dbce5;
-      transform: translateY(-2px);
     }
 
-    .google-button:disabled {
-      opacity: 0.6;
+    button:disabled {
+      opacity: .6;
       cursor: not-allowed;
-      transform: none;
     }
 
     .google-icon {
@@ -101,8 +101,15 @@
       margin-top: 20px;
       color: #6480a2;
       font-size: 13px;
-      line-height: 1.5;
+      line-height: 1.6;
       overflow-wrap: anywhere;
+    }
+
+    .logout-button {
+      display: none;
+      margin-top: 12px;
+      color: #b54747;
+      border-color: #f0dada;
     }
 
     .footer {
@@ -139,7 +146,6 @@
     </p>
 
     <button class="google-button" id="googleLogin" type="button">
-
       <svg class="google-icon" viewBox="0 0 48 48"
            xmlns="http://www.w3.org/2000/svg">
         <path fill="#EA4335"
@@ -151,14 +157,16 @@
         <path fill="#34A853"
           d="M24 48c6.48 0 11.93-2.13 15.9-5.81l-7.72-5.99c-2.14 1.44-4.89 2.3-8.18 2.3-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
       </svg>
-
       Masuk dengan Google
-
     </button>
 
     <p id="status" aria-live="polite">
       Silakan masuk menggunakan akun Google.
     </p>
+
+    <button class="logout-button" id="logoutButton" type="button">
+      Keluar dari akun ini
+    </button>
 
     <div class="footer">
       Sistem Informasi Absensi Sekolah
@@ -169,35 +177,131 @@
   <script type="module">
     import {
       loginGoogle,
-      pantauLogin
+      pantauLogin,
+      logout
     } from "./js/auth.js";
+
+    import {
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+
+    import { db } from "./js/firebase.js";
 
     const button = document.getElementById("googleLogin");
     const status = document.getElementById("status");
+    const logoutButton = document.getElementById("logoutButton");
 
     let sedangMengalihkan = false;
+    let sedangMemeriksa = false;
 
-    function alihkanKePilihanPeran() {
-      if (sedangMengalihkan) return;
+    function tampilkanLogout() {
+      logoutButton.style.display = "flex";
+    }
 
-      sedangMengalihkan = true;
+    async function periksaProfil(user) {
+      if (sedangMengalihkan || sedangMemeriksa) return;
+
+      sedangMemeriksa = true;
       button.disabled = true;
+      logoutButton.style.display = "none";
 
-      status.textContent = "Login berhasil. Mengalihkan halaman...";
+      status.textContent = "Memeriksa akun dan hak akses...";
 
-      window.location.replace("./pilih-peran.html");
+      try {
+        const profileRef = doc(
+          db,
+          "sekolah",
+          "utama",
+          "pengguna",
+          user.uid
+        );
+
+        const profileSnap = await getDoc(profileRef);
+
+        // Akun belum mempunyai profil.
+        if (!profileSnap.exists()) {
+          status.textContent =
+            "Akun belum terdaftar. Mengarahkan ke pilihan pendaftaran...";
+
+          sedangMengalihkan = true;
+
+          window.location.replace("./pilih-peran.html");
+          return;
+        }
+
+        const profile = profileSnap.data();
+
+        const peran = Array.isArray(profile.peran)
+          ? profile.peran
+          : [profile.peran];
+
+        const statusAkun = profile.statusAkun;
+
+        if (statusAkun !== "aktif") {
+          status.textContent =
+            "Akun ditemukan, tetapi belum aktif. Hubungi pengelola sekolah.";
+
+          tampilkanLogout();
+          return;
+        }
+
+        // Pengembang dan Admin Utama.
+        if (
+          peran.includes("developer_admin") ||
+          peran.includes("super_admin")
+        ) {
+          status.textContent =
+            "Akses pengelola berhasil. Membuka halaman pengelolaan...";
+
+          sedangMengalihkan = true;
+
+          window.location.replace("./persetujuan-guru.html");
+          return;
+        }
+
+        // Akun lain sudah terdaftar, jangan diarahkan ke pendaftaran ulang.
+        if (
+          peran.includes("admin") ||
+          peran.includes("guru") ||
+          peran.includes("siswa")
+        ) {
+          status.textContent =
+            "Akun sudah terdaftar. Halaman dashboard untuk peran ini belum disambungkan.";
+
+          tampilkanLogout();
+          return;
+        }
+
+        status.textContent =
+          "Peran akun tidak dikenali. Silakan hubungi pengelola.";
+
+        tampilkanLogout();
+
+      } catch (error) {
+        console.error("Pemeriksaan profil gagal:", error);
+
+        status.textContent =
+          "Gagal memeriksa profil: " +
+          (error.message || "Periksa koneksi dan izin Firestore.");
+
+        tampilkanLogout();
+
+      } finally {
+        sedangMemeriksa = false;
+
+        if (!sedangMengalihkan) {
+          button.disabled = false;
+        }
+      }
     }
 
     button.addEventListener("click", async () => {
-      if (sedangMengalihkan) return;
-
       button.disabled = true;
       status.textContent = "Menghubungkan ke Google...";
 
       try {
         await loginGoogle();
-
-        // Pengalihan ditangani oleh pantauLogin.
       } catch (error) {
         console.error("Login gagal:", error);
 
@@ -208,11 +312,29 @@
       }
     });
 
+    logoutButton.addEventListener("click", async () => {
+      logoutButton.disabled = true;
+      status.textContent = "Keluar dari akun Google...";
+
+      try {
+        await logout();
+      } catch (error) {
+        console.error("Logout gagal:", error);
+        status.textContent = "Gagal keluar: " + error.message;
+        logoutButton.disabled = false;
+      }
+    });
+
     pantauLogin((user) => {
       if (user) {
-        alihkanKePilihanPeran();
+        periksaProfil(user);
       } else {
+        sedangMengalihkan = false;
+        sedangMemeriksa = false;
+
         button.disabled = false;
+        logoutButton.style.display = "none";
+
         status.textContent =
           "Silakan masuk menggunakan akun Google.";
       }
