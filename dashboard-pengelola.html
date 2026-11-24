@@ -1,773 +1,1100 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#edf4ff">
-<title>Dashboard Pengelola | Absensi Sekolah</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Pengelola | Absensi Sekolah</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<style>
-:root{
-  --navy:#172b4d;
-  --blue:#3978d4;
-  --bg:#f4f7fc;
-  --text:#25344a;
-  --muted:#8290a5;
-  --border:#e8edf5;
-  --green:#16865b;
-  --orange:#c98524;
-  --red:#d94b55;
-  --shadow:0 8px 28px rgba(30,55,90,.06);
-}
-*{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Inter,Arial,sans-serif
-}
-button{font:inherit;cursor:pointer}
-.sidebar{
-  width:250px;height:100vh;position:fixed;inset:0 auto 0 0;
-  z-index:1001;background:var(--navy);color:white;padding:25px 17px;
-  display:flex;flex-direction:column;transition:transform .28s
-}
-.brand{display:flex;align-items:center;gap:12px;padding:5px 10px 30px}
-.brand-icon{
-  width:42px;height:42px;display:grid;place-items:center;
-  border-radius:13px;background:#315c91;font-size:19px
-}
-.brand strong{display:block;font-size:14px}
-.brand small{color:#aebed3;font-size:11px}
-.nav-label{
-  color:#8298b7;font-size:10px;font-weight:700;
-  letter-spacing:1.2px;padding:10px 13px
-}
-.nav-link{
-  display:flex;align-items:center;gap:13px;padding:13px 14px;
-  margin:4px 0;color:#c5d2e3;text-decoration:none;
-  border-radius:10px;font-size:13px
-}
-.nav-link i{width:18px;text-align:center}
-.nav-link:hover,.nav-link.active{color:white;background:#2d4b73}
-.nav-link.disabled{opacity:.42;cursor:not-allowed}
-.sidebar-bottom{
-  margin-top:auto;border-top:1px solid #344b6b;padding-top:15px
-}
-.user-mini{
-  padding:10px 12px 15px;font-size:12px;
-  color:#dce6f3;overflow-wrap:anywhere
-}
-.user-mini small{
-  display:block;color:#9eb0c9;margin-top:5px
-}
-.logout-btn{
-  width:100%;border:0;background:transparent;color:#ffb7bd;
-  text-align:left;padding:12px;border-radius:9px;font-size:13px
-}
-.logout-btn:hover{background:#34435e}
-.logout-btn:disabled{opacity:.6;cursor:wait}
-.overlay{
-  display:none;position:fixed;inset:0;z-index:1000;
-  background:rgba(13,27,48,.48)
-}
-.overlay.show{display:block}
-.main{margin-left:250px;min-height:100vh;padding:30px 34px}
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:15px;margin-bottom:28px
-}
-.top-left{display:flex;align-items:center;gap:13px}
-.menu-btn{
-  display:none;border:0;background:white;color:var(--navy);
-  width:42px;height:42px;border-radius:11px;box-shadow:var(--shadow)
-}
-.page-title{font-size:23px;font-weight:800;margin:0}
-.page-subtitle{color:var(--muted);font-size:12px;margin-top:6px}
-.date-label{
-  color:var(--muted);font-size:12px;background:white;
-  padding:11px 15px;border:1px solid var(--border);border-radius:10px
-}
-.welcome{
-  background:linear-gradient(115deg,#244d7d,#3978bd);
-  color:white;padding:25px 27px;border-radius:17px;
-  margin-bottom:23px;box-shadow:0 10px 25px rgba(45,93,150,.13)
-}
-.welcome h2{margin:0 0 8px;font-size:19px}
-.welcome p{margin:0;color:#dceaff;font-size:12px;line-height:1.8}
-.stats{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:15px;margin-bottom:23px
-}
-.stat-card{
-  background:white;border:1px solid var(--border);
-  border-radius:14px;padding:19px;box-shadow:var(--shadow)
-}
-.stat-icon{
-  width:39px;height:39px;border-radius:11px;
-  display:grid;place-items:center;background:#eaf2ff;color:var(--blue)
-}
-.stat-card:nth-child(2) .stat-icon{background:#e5f7ef;color:var(--green)}
-.stat-card:nth-child(3) .stat-icon{background:#fff4df;color:var(--orange)}
-.stat-card:nth-child(4) .stat-icon{background:#ffebed;color:var(--red)}
-.stat-number{font-size:25px;font-weight:800;margin-top:15px}
-.stat-name{color:var(--muted);font-size:11px;margin-top:5px}
-.content-grid{
-  display:grid;grid-template-columns:1.5fr 1fr;gap:18px;
-  margin-bottom:23px
-}
-.panel{
-  background:white;border:1px solid var(--border);
-  border-radius:15px;box-shadow:var(--shadow);overflow:hidden
-}
-.panel-head{
-  padding:20px 22px;display:flex;justify-content:space-between;
-  align-items:center;gap:12px;border-bottom:1px solid var(--border)
-}
-.panel-head h3{margin:0;font-size:14px}
-.panel-head p{margin:5px 0 0;color:var(--muted);font-size:11px}
-.link-btn{
-  display:inline-flex;align-items:center;gap:7px;
-  color:var(--blue);background:#f1f6ff;border:1px solid #dce7f6;
-  padding:9px 12px;border-radius:8px;text-decoration:none;
-  font-size:10px;font-weight:700;white-space:nowrap
-}
-.link-btn:hover{background:#e5efff}
-.table-wrap{width:100%;overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:430px}
-th{
-  background:#f8fafd;color:#8492a6;font-size:10px;
-  text-align:left;padding:13px 17px;font-weight:700
-}
-td{
-  padding:14px 17px;border-top:1px solid #f0f3f8;
-  font-size:11px;vertical-align:middle
-}
-.person{display:flex;align-items:center;gap:9px}
-.avatar{
-  width:33px;height:33px;flex-shrink:0;border-radius:10px;
-  display:grid;place-items:center;background:#eaf2ff;
-  color:#315f9a;font-size:11px;font-weight:700
-}
-.person strong{display:block;font-size:11px}
-.person small{display:block;color:var(--muted);margin-top:4px;font-size:9px}
-.status{
-  display:inline-block;padding:6px 9px;border-radius:20px;
-  font-size:9px;font-weight:700;background:#fff4df;color:#a96b13
-}
-.empty{
-  text-align:center;padding:35px 15px;color:var(--muted);
-  font-size:11px
-}
-.empty i{font-size:25px;margin-bottom:10px;color:#b8c6d9}
-.quick-menu{padding:10px 18px}
-.quick-link{
-  display:flex;align-items:center;gap:13px;padding:14px 4px;
-  color:var(--text);text-decoration:none;border-bottom:1px solid #f0f3f8
-}
-.quick-link:last-child{border-bottom:0}
-.quick-icon{
-  width:38px;height:38px;flex-shrink:0;border-radius:11px;
-  display:grid;place-items:center;background:#eaf2ff;color:var(--blue)
-}
-.quick-link strong{display:block;font-size:11px}
-.quick-link small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
-.quick-link .arrow{margin-left:auto;color:#9aa7b8;font-size:11px}
-.quick-link:hover{background:#fafcff}
-.info-panel{
-  padding:18px 20px;background:#f0f6ff;border:1px solid #dce9fa;
-  border-radius:13px;color:#466486;font-size:11px;line-height:1.8
-}
-.info-panel strong{color:#244d7d}
-.error-panel{
-  display:none;background:#fff0f0;border:1px solid #f2cccc;
-  color:#9e3434;padding:15px;border-radius:12px;
-  margin-bottom:18px;font-size:12px;line-height:1.7;overflow-wrap:anywhere
-}
-.error-panel.show{display:block}
-.loading-screen{
-  position:fixed;inset:0;z-index:3000;background:var(--bg);
-  display:grid;place-items:center;color:var(--muted);font-size:13px
-}
-.spinner{
-  width:28px;height:28px;border:3px solid #dce7f5;
-  border-top-color:var(--blue);border-radius:50%;
-  animation:spin .8s linear infinite;margin:0 auto 12px
-}
-.toast{
-  position:fixed;z-index:2000;right:20px;bottom:20px;
-  max-width:calc(100% - 40px);background:#203653;color:white;
-  padding:13px 17px;border-radius:10px;font-size:12px;
-  box-shadow:var(--shadow);opacity:0;transform:translateY(12px);
-  pointer-events:none;transition:.25s
-}
-.toast.show{opacity:1;transform:translateY(0)}
-@keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:1100px){
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .content-grid{grid-template-columns:1fr}
-}
-@media(max-width:760px){
-  .sidebar{transform:translateX(-105%)}
-  .sidebar.open{transform:translateX(0)}
-  .main{margin-left:0;padding:20px 15px}
-  .menu-btn{display:block}
-  .topbar{align-items:flex-start}
-  .page-title{font-size:19px}
-  .date-label{display:none}
-  .welcome{padding:21px}
-}
-@media(max-width:420px){
-  .stats{gap:9px}
-  .stat-card{padding:13px}
-  .stat-number{font-size:22px}
-  .stat-name{font-size:10px}
-  .stat-icon{width:34px;height:34px}
-  .panel-head{padding:16px}
-}
-</style>
+  <style>
+    :root {
+      --primary: #3978c8;
+      --primary-dark: #245b9e;
+      --sidebar: #17365d;
+      --bg: #f3f6fb;
+      --white: #ffffff;
+      --text: #26364a;
+      --muted: #8290a3;
+      --border: #e5eaf1;
+      --green: #198754;
+      --orange: #d28a17;
+      --red: #dc3545;
+      --shadow: 0 5px 20px rgba(25,55,90,.07);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: 255px;
+      background: var(--sidebar);
+      color: white;
+      padding: 22px 15px;
+      z-index: 1000;
+      overflow-y: auto;
+      transition: transform .25s ease;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 5px 10px 25px;
+      border-bottom: 1px solid rgba(255,255,255,.13);
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.15);
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+    }
+
+    .brand h2 {
+      font-size: 16px;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 4px;
+      color: #bdcde0;
+      font-size: 11px;
+    }
+
+    .nav-title {
+      color: #a9bed6;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin: 25px 10px 10px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 13px 12px;
+      margin: 5px 0;
+      color: #d7e3f1;
+      text-decoration: none;
+      border-radius: 9px;
+      font-size: 13px;
+      transition: .2s;
+    }
+
+    .nav-link i {
+      width: 19px;
+      text-align: center;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: rgba(255,255,255,.15);
+      color: white;
+    }
+
+    .sidebar-bottom {
+      margin-top: 35px;
+      border-top: 1px solid rgba(255,255,255,.13);
+      padding-top: 15px;
+    }
+
+    .main {
+      margin-left: 255px;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      height: 70px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .top-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .topbar h3 {
+      font-size: 17px;
+    }
+
+    .topbar small {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .menu-btn {
+      display: none;
+      border: 0;
+      background: none;
+      color: var(--text);
+      font-size: 20px;
+    }
+
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #e5effd;
+      color: var(--primary);
+    }
+
+    .content {
+      padding: 28px 30px;
+      max-width: 1450px;
+      margin: auto;
+    }
+
+    .welcome {
+      background: linear-gradient(120deg, #3978c8, #5c94d8);
+      color: white;
+      padding: 25px;
+      border-radius: 14px;
+      margin-bottom: 23px;
+      box-shadow: var(--shadow);
+    }
+
+    .welcome h1 {
+      font-size: 22px;
+      margin-bottom: 9px;
+    }
+
+    .welcome p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #eaf2ff;
+      max-width: 650px;
+    }
+
+    .welcome-role {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 7px 11px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.17);
+      font-size: 11px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 25px 0 15px;
+    }
+
+    .section-heading h2 {
+      font-size: 16px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 19px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 0;
+    }
+
+    .stat-card small {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .stat-card h2 {
+      font-size: 25px;
+      margin-top: 9px;
+    }
+
+    .stat-icon {
+      width: 43px;
+      height: 43px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    .blue {
+      color: #3978c8;
+      background: #e8f1ff;
+    }
+
+    .green {
+      color: #198754;
+      background: #e4f5eb;
+    }
+
+    .orange {
+      color: #d28a17;
+      background: #fff3df;
+    }
+
+    .purple {
+      color: #7654b7;
+      background: #f0eaff;
+    }
+
+    .grid-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(250px, 1fr);
+      gap: 18px;
+      margin-top: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .panel-header h3 {
+      font-size: 14px;
+    }
+
+    .panel-header p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    .text-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .text-link:hover {
+      text-decoration: underline;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 430px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 13px 17px;
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      background: #fafbfd;
+    }
+
+    td strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    td small {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 9px;
+      border-radius: 20px;
+      background: #fff2d8;
+      color: #a56b0a;
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+    .empty {
+      padding: 35px 15px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .empty i {
+      display: block;
+      font-size: 25px;
+      margin-bottom: 10px;
+      color: #b7c5d7;
+    }
+
+    .quick-actions {
+      padding: 12px;
+    }
+
+    .quick-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 10px;
+      border-radius: 9px;
+      color: var(--text);
+      text-decoration: none;
+      transition: .2s;
+    }
+
+    .quick-link:hover {
+      background: #f3f7fd;
+    }
+
+    .quick-icon {
+      width: 37px;
+      height: 37px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      flex-shrink: 0;
+    }
+
+    .quick-link strong {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .quick-link small {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .info-panel {
+      margin-top: 18px;
+      padding: 17px;
+      border-radius: 11px;
+      background: #eaf2ff;
+      color: #315d91;
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .info-panel strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .refresh-btn {
+      border: 0;
+      border-radius: 8px;
+      padding: 9px 12px;
+      background: #edf2f8;
+      color: var(--text);
+      font-size: 11px;
+    }
+
+    .refresh-btn:hover {
+      background: #dfeafa;
+    }
+
+    .loading {
+      padding: 30px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .loading i {
+      margin-right: 7px;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10,25,45,.45);
+      z-index: 900;
+    }
+
+    .overlay.show {
+      display: block;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      z-index: 2000;
+      max-width: 350px;
+      background: #26364a;
+      color: white;
+      padding: 13px 17px;
+      border-radius: 9px;
+      font-size: 12px;
+      display: none;
+      box-shadow: var(--shadow);
+    }
+
+    .toast.show {
+      display: block;
+    }
+
+    @media(max-width: 1100px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .grid-main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width: 850px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .topbar {
+        padding: 0 18px;
+      }
+
+      .content {
+        padding: 22px 17px;
+      }
+    }
+
+    @media(max-width: 550px) {
+      .stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .stat-card {
+        padding: 14px;
+      }
+
+      .stat-card h2 {
+        font-size: 21px;
+      }
+
+      .stat-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+      }
+
+      .welcome {
+        padding: 20px;
+      }
+
+      .welcome h1 {
+        font-size: 19px;
+      }
+
+      .user-area span {
+        display: none;
+      }
+
+      .topbar h3 {
+        font-size: 14px;
+      }
+
+      .section-heading h2 {
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="loading-screen" id="loadingScreen">
-  <div>
-    <div class="spinner"></div>
-    <span id="loadingText">Memeriksa akses akun...</span>
-  </div>
-</div>
-
-<div class="overlay" id="drawerOverlay"></div>
-
-<aside class="sidebar" id="sidebar">
-  <div class="brand">
-    <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-    <div>
-      <strong>ABSENSI SEKOLAH</strong>
-      <small>Panel Pengelola</small>
-    </div>
-  </div>
-
-  <div class="nav-label">MENU UTAMA</div>
-
-  <a href="./dashboard-pengelola.html" class="nav-link active">
-    <i class="fa-solid fa-house"></i> Dashboard
-  </a>
-
-  <a href="./persetujuan-guru.html" class="nav-link">
-    <i class="fa-solid fa-user-check"></i> Persetujuan Guru
-  </a>
-
-  <div class="nav-label">MANAJEMEN</div>
-
-  <div class="nav-link disabled" title="Belum tersedia">
-    <i class="fa-solid fa-users"></i> Data Pengguna
-  </div>
-
-  <div class="nav-link disabled" title="Belum tersedia">
-    <i class="fa-solid fa-school"></i> Data Kelas
-  </div>
-
-  <div class="nav-link disabled" title="Belum tersedia">
-    <i class="fa-solid fa-clock-rotate-left"></i> Riwayat Aktivitas
-  </div>
-
-  <div class="sidebar-bottom">
-    <div class="user-mini">
-      <span id="managerName">Pengelola</span>
-      <small id="managerRole">Memeriksa akun...</small>
-    </div>
-    <button class="logout-btn" id="logoutButton">
-      <i class="fa-solid fa-right-from-bracket"></i>
-      &nbsp;Keluar
-    </button>
-  </div>
-</aside>
-
-<main class="main">
-  <header class="topbar">
-    <div class="top-left">
-      <button class="menu-btn" id="menuButton" aria-label="Buka menu">
-        <i class="fa-solid fa-bars"></i>
-      </button>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon">
+        <i class="fa-solid fa-school"></i>
+      </div>
       <div>
-        <h1 class="page-title">Dashboard Pengelola</h1>
-        <div class="page-subtitle">Pusat pengelolaan sistem absensi sekolah</div>
+        <h2>Absensi Sekolah</h2>
+        <small>Panel Pengelola</small>
       </div>
     </div>
-    <div class="date-label" id="todayLabel"></div>
-  </header>
 
-  <div class="error-panel" id="errorPanel"></div>
+    <div class="nav-title">MENU UTAMA</div>
 
-  <section class="welcome">
-    <h2 id="welcomeTitle">Selamat Datang</h2>
-    <p>
-      Pantau informasi pengguna dan pengajuan Guru melalui
-      dashboard pengelola sistem absensi sekolah.
-    </p>
-  </section>
+    <a href="./dashboard-pengelola.html" class="nav-link active">
+      <i class="fa-solid fa-gauge-high"></i>
+      Dashboard
+    </a>
 
-  <section class="stats">
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
-      <div class="stat-number" id="totalUsers">-</div>
-      <div class="stat-name">Total Akun Terdaftar</div>
+    <a href="./persetujuan-guru.html" class="nav-link">
+      <i class="fa-solid fa-user-check"></i>
+      Persetujuan Guru
+    </a>
+
+    <a href="./buat-undangan.html" class="nav-link">
+      <i class="fa-solid fa-ticket"></i>
+      Buat Kode Undangan
+    </a>
+
+    <div class="nav-title">LAINNYA</div>
+
+    <a href="./index.html" class="nav-link">
+      <i class="fa-solid fa-house"></i>
+      Halaman Utama
+    </a>
+
+    <div class="sidebar-bottom">
+      <a href="#" class="nav-link" id="logoutButton">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Keluar Akun
+      </a>
     </div>
+  </aside>
 
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
-      <div class="stat-number" id="totalTeachers">-</div>
-      <div class="stat-name">Guru Aktif</div>
-    </div>
+  <div class="overlay" id="sidebarOverlay"></div>
 
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fa-solid fa-user-graduate"></i></div>
-      <div class="stat-number" id="totalStudents">-</div>
-      <div class="stat-name">Siswa Aktif</div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
-      <div class="stat-number" id="pendingApplications">-</div>
-      <div class="stat-name">Pengajuan Menunggu</div>
-    </div>
-  </section>
-
-  <section class="content-grid">
-    <div class="panel">
-      <div class="panel-head">
+  <main class="main">
+    <header class="topbar">
+      <div class="top-left">
+        <button class="menu-btn" id="menuButton" aria-label="Buka menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
         <div>
-          <h3>Pengajuan Guru Terbaru</h3>
-          <p>Pengajuan yang masih menunggu persetujuan.</p>
+          <h3>Dashboard Pengelola</h3>
+          <small>Ringkasan sistem absensi sekolah</small>
         </div>
-        <a href="./persetujuan-guru.html" class="link-btn">
-          Lihat Semua <i class="fa-solid fa-arrow-right"></i>
-        </a>
       </div>
 
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>CALON GURU</th>
-              <th>KELAS</th>
-              <th>TANGGAL</th>
-              <th>STATUS</th>
-            </tr>
-          </thead>
-          <tbody id="recentApplications"></tbody>
-        </table>
+      <div class="user-area">
+        <div class="user-avatar">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <span id="managerName">Memeriksa akun...</span>
+      </div>
+    </header>
+
+    <section class="content">
+
+      <div class="welcome">
+        <h1 id="welcomeTitle">Selamat Datang</h1>
+        <p>
+          Kelola sistem absensi sekolah melalui halaman pengelola.
+          Pantau pengguna, periksa pengajuan Guru, dan buat kode undangan
+          melalui menu yang tersedia.
+        </p>
+        <span class="welcome-role" id="roleLabel">
+          Memeriksa peran akun...
+        </span>
       </div>
 
-      <div class="empty" id="emptyApplications" hidden>
-        <i class="fa-regular fa-folder-open"></i>
-        <div>Belum ada pengajuan yang menunggu.</div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-head">
+      <div class="section-heading">
         <div>
-          <h3>Akses Cepat</h3>
-          <p>Menu yang tersedia saat ini.</p>
+          <h2>Ringkasan Sistem</h2>
+          <p>Data pengguna dan pengajuan yang tercatat di Firestore.</p>
+        </div>
+
+        <button class="refresh-btn" id="refreshButton">
+          <i class="fa-solid fa-rotate"></i>
+          Muat Ulang
+        </button>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <div>
+            <small>Total Pengguna</small>
+            <h2 id="totalUsers">0</h2>
+          </div>
+          <div class="stat-icon blue">
+            <i class="fa-solid fa-users"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div>
+            <small>Guru Aktif</small>
+            <h2 id="totalTeachers">0</h2>
+          </div>
+          <div class="stat-icon green">
+            <i class="fa-solid fa-chalkboard-user"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div>
+            <small>Siswa Aktif</small>
+            <h2 id="totalStudents">0</h2>
+          </div>
+          <div class="stat-icon purple">
+            <i class="fa-solid fa-user-graduate"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div>
+            <small>Pengajuan Menunggu</small>
+            <h2 id="totalPending">0</h2>
+          </div>
+          <div class="stat-icon orange">
+            <i class="fa-solid fa-clock"></i>
+          </div>
         </div>
       </div>
 
-      <div class="quick-menu">
-        <a href="./persetujuan-guru.html" class="quick-link">
-          <div class="quick-icon"><i class="fa-solid fa-user-check"></i></div>
-          <div>
-            <strong>Persetujuan Guru</strong>
-            <small>Periksa dan proses pendaftaran Guru</small>
-          </div>
-          <i class="fa-solid fa-chevron-right arrow"></i>
-        </a>
+      <div class="grid-main">
 
-        <div class="quick-link">
-          <div class="quick-icon"><i class="fa-solid fa-users"></i></div>
-          <div>
-            <strong>Data Pengguna</strong>
-            <small>Dalam tahap pengembangan</small>
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Pengajuan Guru Terbaru</h3>
+              <p>Pengajuan yang masih menunggu persetujuan.</p>
+            </div>
+
+            <a href="./persetujuan-guru.html" class="text-link">
+              Lihat Semua <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nama Guru</th>
+                  <th>Email</th>
+                  <th>Tanggal</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              <tbody id="pendingTable">
+                <tr>
+                  <td colspan="4" class="loading">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    Memuat data...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <div class="quick-link">
-          <div class="quick-icon"><i class="fa-solid fa-school"></i></div>
-          <div>
-            <strong>Data Kelas</strong>
-            <small>Dalam tahap pengembangan</small>
+        <div>
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>Akses Cepat</h3>
+                <p>Pilih halaman pengelolaan.</p>
+              </div>
+            </div>
+
+            <div class="quick-actions">
+
+              <a href="./persetujuan-guru.html" class="quick-link">
+                <div class="quick-icon blue">
+                  <i class="fa-solid fa-user-check"></i>
+                </div>
+                <div>
+                  <strong>Persetujuan Guru</strong>
+                  <small>Periksa dan proses pengajuan Guru</small>
+                </div>
+              </a>
+
+              <a href="./buat-undangan.html" class="quick-link">
+                <div class="quick-icon orange">
+                  <i class="fa-solid fa-ticket"></i>
+                </div>
+                <div>
+                  <strong>Buat Kode Undangan</strong>
+                  <small>Buat undangan pendaftaran Guru</small>
+                </div>
+              </a>
+
+              <a href="./index.html" class="quick-link">
+                <div class="quick-icon green">
+                  <i class="fa-solid fa-house"></i>
+                </div>
+                <div>
+                  <strong>Halaman Utama</strong>
+                  <small>Kembali ke halaman awal website</small>
+                </div>
+              </a>
+
+            </div>
+          </div>
+
+          <div class="info-panel">
+            <strong>
+              <i class="fa-solid fa-circle-info"></i>
+              Informasi Dashboard
+            </strong>
+            Data pada halaman ini diambil dari Firestore.
+            Dashboard ini hanya menampilkan ringkasan dan tidak
+            mengubah data pengguna maupun pengajuan.
           </div>
         </div>
 
-        <div class="quick-link">
-          <div class="quick-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
-          <div>
-            <strong>Riwayat Aktivitas</strong>
-            <small>Dalam tahap pengembangan</small>
-          </div>
-        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <div class="info-panel">
-    <strong><i class="fa-solid fa-circle-info"></i> Informasi Dashboard</strong>
-    <br>
-    Statistik diperbarui dari data Firestore ketika halaman dimuat
-    atau tombol muat ulang digunakan. Fitur yang belum tersedia
-    akan dihubungkan pada tahap pengembangan berikutnya.
-    <br><br>
-    <button class="link-btn" id="refreshButton">
-      <i class="fa-solid fa-rotate"></i> Muat Ulang Data
-    </button>
-  </div>
-</main>
+  <div class="toast" id="toast"></div>
 
-<div class="toast" id="toast"></div>
+  <script type="module">
+    import { auth, db } from "./js/firebase.js";
+    import { logout } from "./js/auth.js";
 
-<script type="module">
-import { auth, db } from "./js/firebase.js";
-import { logout } from "./js/auth.js";
+    import {
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
 
-import {
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+    import {
+      collection,
+      doc,
+      getDoc,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
 
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebarOverlay");
 
-const $ = id => document.getElementById(id);
+    let currentUser = null;
+    let isAuthorized = false;
+    let loading = false;
+    let toastTimer = null;
 
-let currentUser = null;
-let authorized = false;
-let toastTimer = null;
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
 
-const profilePath = uid =>
-  doc(db, "sekolah", "utama", "pengguna", uid);
-
-function hideLoading(){
-  $("loadingScreen").style.display = "none";
-}
-
-function showError(error, context){
-  console.error(context, error);
-
-  const panel = $("errorPanel");
-  panel.replaceChildren();
-
-  const title = document.createElement("strong");
-  title.textContent = context;
-
-  const code = document.createElement("div");
-  code.textContent = "Kode: " + (error?.code || "unknown");
-
-  const message = document.createElement("div");
-  message.textContent = error?.message || String(error);
-
-  panel.append(title, code, message);
-  panel.classList.add("show");
-}
-
-function hideError(){
-  $("errorPanel").classList.remove("show");
-  $("errorPanel").replaceChildren();
-}
-
-function showToast(message){
-  const toast = $("toast");
-  toast.textContent = message;
-  toast.classList.add("show");
-
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 3500);
-}
-
-function formatDate(value){
-  if(!value) return "-";
-
-  try{
-    const date = value.toDate
-      ? value.toDate()
-      : new Date(value);
-
-    if(Number.isNaN(date.getTime())) return "-";
-
-    return date.toLocaleDateString("id-ID",{
-      day:"2-digit",
-      month:"short",
-      year:"numeric"
-    });
-  }catch{
-    return "-";
-  }
-}
-
-function initials(name){
-  return String(name || "?")
-    .trim()
-    .split(/\s+/)
-    .slice(0,2)
-    .map(word => word[0] || "")
-    .join("")
-    .toUpperCase();
-}
-
-function getRoles(profile){
-  if(Array.isArray(profile.peran)) return profile.peran;
-  if(typeof profile.peran === "string") return [profile.peran];
-  return [];
-}
-
-function updateNumber(id, value){
-  $(id).textContent = Number(value).toLocaleString("id-ID");
-}
-
-function renderRecentApplications(items){
-  const tbody = $("recentApplications");
-  tbody.replaceChildren();
-
-  $("emptyApplications").hidden = items.length !== 0;
-
-  items.slice(0,5).forEach(item => {
-    const tr = document.createElement("tr");
-
-    const personCell = document.createElement("td");
-    const person = document.createElement("div");
-    person.className = "person";
-
-    const avatar = document.createElement("div");
-    avatar.className = "avatar";
-    avatar.textContent = initials(item.namaLengkap);
-
-    const info = document.createElement("div");
-    const name = document.createElement("strong");
-    name.textContent = item.namaLengkap || "Tanpa nama";
-
-    const email = document.createElement("small");
-    email.textContent = item.email || "-";
-
-    info.append(name,email);
-    person.append(avatar,info);
-    personCell.append(person);
-
-    const classCell = document.createElement("td");
-    classCell.textContent = item.idKelas || "-";
-
-    const dateCell = document.createElement("td");
-    dateCell.textContent = formatDate(item.dibuatPada);
-
-    const statusCell = document.createElement("td");
-    const badge = document.createElement("span");
-    badge.className = "status";
-    badge.textContent = "Menunggu";
-    statusCell.append(badge);
-
-    tr.append(personCell,classCell,dateCell,statusCell);
-    tbody.append(tr);
-  });
-}
-
-async function loadDashboard(){
-  if(!authorized || !currentUser) return;
-
-  hideError();
-  $("refreshButton").disabled = true;
-
-  try{
-    const usersRef = collection(
-      db,"sekolah","utama","pengguna"
-    );
-
-    const applicationsRef = collection(
-      db,"pengajuanGuru"
-    );
-
-    const [usersSnapshot, applicationsSnapshot] =
-      await Promise.all([
-        getDocs(usersRef),
-        getDocs(applicationsRef)
-      ]);
-
-    let teacherCount = 0;
-    let studentCount = 0;
-
-    usersSnapshot.forEach(documentSnapshot => {
-      const profile = documentSnapshot.data();
-      const roles = getRoles(profile);
-
-      if(profile.statusAkun !== "aktif") return;
-
-      if(roles.includes("guru")) teacherCount++;
-      if(roles.includes("siswa")) studentCount++;
-    });
-
-    const pending = applicationsSnapshot.docs
-      .map(documentSnapshot => ({
-        uid: documentSnapshot.id,
-        ...documentSnapshot.data()
-      }))
-      .filter(item =>
-        item.statusPengajuan === "menunggu"
-      );
-
-    pending.sort((a,b) => {
-      const aDate = a.dibuatPada?.toMillis?.() || 0;
-      const bDate = b.dibuatPada?.toMillis?.() || 0;
-      return bDate - aDate;
-    });
-
-    updateNumber("totalUsers",usersSnapshot.size);
-    updateNumber("totalTeachers",teacherCount);
-    updateNumber("totalStudents",studentCount);
-    updateNumber("pendingApplications",pending.length);
-
-    renderRecentApplications(pending);
-
-  }catch(error){
-    showError(error,"Gagal mengambil data dashboard.");
-
-    $("totalUsers").textContent = "-";
-    $("totalTeachers").textContent = "-";
-    $("totalStudents").textContent = "-";
-    $("pendingApplications").textContent = "-";
-
-    $("recentApplications").replaceChildren();
-    $("emptyApplications").hidden = true;
-
-  }finally{
-    $("refreshButton").disabled = false;
-  }
-}
-
-async function checkManager(user){
-  currentUser = user;
-
-  try{
-    $("loadingText").textContent =
-      "Memeriksa profil pengelola...";
-
-    const profileSnapshot =
-      await getDoc(profilePath(user.uid));
-
-    if(!profileSnapshot.exists()){
-      throw new Error(
-        "Profil pengguna tidak ditemukan di Firestore."
-      );
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3500);
     }
 
-    const profile = profileSnapshot.data();
-    const roles = getRoles(profile);
-
-    if(profile.statusAkun !== "aktif"){
-      throw new Error("Status akun belum aktif.");
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[char]);
     }
 
-    const isDeveloper =
-      roles.includes("developer_admin");
-
-    const isSuperAdmin =
-      roles.includes("super_admin");
-
-    if(!isDeveloper && !isSuperAdmin){
-      throw new Error(
-        "Akun ini bukan Pengembang atau Admin Utama."
-      );
+    function openSidebar() {
+      sidebar.classList.add("open");
+      overlay.classList.add("show");
     }
 
-    authorized = true;
+    function closeSidebar() {
+      sidebar.classList.remove("open");
+      overlay.classList.remove("show");
+    }
 
-    const roleName = isDeveloper
-      ? "Pengembang"
-      : "Admin Utama";
+    document.getElementById("menuButton")
+      .addEventListener("click", openSidebar);
 
-    const name =
-      profile.namaLengkap ||
-      user.displayName ||
-      "Pengelola";
+    overlay.addEventListener("click", closeSidebar);
 
-    $("managerName").textContent = name;
-    $("managerRole").textContent = roleName;
-    $("welcomeTitle").textContent = "Selamat Datang, " + name;
+    document.querySelectorAll(".nav-link").forEach(link => {
+      if (link.id !== "logoutButton") {
+        link.addEventListener("click", closeSidebar);
+      }
+    });
 
-    hideLoading();
+    function formatDate(timestamp) {
+      if (!timestamp || typeof timestamp.toDate !== "function") {
+        return "-";
+      }
 
-    await loadDashboard();
+      return timestamp.toDate().toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      });
+    }
 
-  }catch(error){
-    authorized = false;
-    showError(error,"Pemeriksaan akses pengelola gagal.");
+    function showPendingRows(items) {
+      const tbody = document.getElementById("pendingTable");
 
-    $("managerRole").textContent =
-      "Akses belum terverifikasi";
+      if (!items.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="4">
+              <div class="empty">
+                <i class="fa-solid fa-folder-open"></i>
+                Belum ada pengajuan Guru yang menunggu.
+              </div>
+            </td>
+          </tr>`;
+        return;
+      }
 
-    $("loadingText").textContent =
-      "Akses tidak dapat diverifikasi.";
+      tbody.innerHTML = items.map(item => `
+        <tr>
+          <td>
+            <strong>${escapeHTML(item.namaLengkap || "-")}</strong>
+            <small>Pengajuan Guru</small>
+          </td>
+          <td>${escapeHTML(item.email || "-")}</td>
+          <td>${escapeHTML(formatDate(item.dibuatPada))}</td>
+          <td><span class="status">Menunggu</span></td>
+        </tr>
+      `).join("");
+    }
 
-    hideLoading();
-  }
-}
+    async function loadDashboard() {
+      if (!currentUser || !isAuthorized || loading) return;
 
-onAuthStateChanged(auth,async user => {
-  if(!user){
-    window.location.replace("./index.html");
-    return;
-  }
+      loading = true;
 
-  await checkManager(user);
-});
+      document.getElementById("pendingTable").innerHTML = `
+        <tr>
+          <td colspan="4" class="loading">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Memuat data...
+          </td>
+        </tr>`;
 
-$("refreshButton").addEventListener("click",loadDashboard);
+      try {
+        const usersRef = collection(db, "sekolah", "utama", "pengguna");
+        const applicationsRef = collection(db, "pengajuanGuru");
 
-$("logoutButton").addEventListener("click",async () => {
-  try{
-    $("logoutButton").disabled = true;
-    await logout();
-    window.location.replace("./index.html");
-  }catch(error){
-    showError(error,"Gagal keluar dari akun.");
-    $("logoutButton").disabled = false;
-  }
-});
+        const [usersSnapshot, applicationsSnapshot] = await Promise.all([
+          getDocs(usersRef),
+          getDocs(applicationsRef)
+        ]);
 
-// Tanggal dashboard.
-$("todayLabel").textContent =
-  new Date().toLocaleDateString("id-ID",{
-    weekday:"long",
-    day:"numeric",
-    month:"long",
-    year:"numeric"
-  });
+        const users = usersSnapshot.docs.map(item => item.data());
+        const applications = applicationsSnapshot.docs.map(item => item.data());
 
-// Sidebar mobile.
-const sidebar = $("sidebar");
-const overlay = $("drawerOverlay");
+        const teachers = users.filter(user =>
+          user.statusAkun === "aktif" &&
+          Array.isArray(user.peran) &&
+          user.peran.includes("guru")
+        );
 
-function openDrawer(){
-  sidebar.classList.add("open");
-  overlay.classList.add("show");
-}
+        const students = users.filter(user =>
+          user.statusAkun === "aktif" &&
+          Array.isArray(user.peran) &&
+          user.peran.includes("siswa")
+        );
 
-function closeDrawer(){
-  sidebar.classList.remove("open");
-  overlay.classList.remove("show");
-}
+        const pending = applications.filter(item =>
+          item.statusPengajuan === "menunggu"
+        );
 
-$("menuButton").addEventListener("click",openDrawer);
-overlay.addEventListener("click",closeDrawer);
+        document.getElementById("totalUsers").textContent =
+          usersSnapshot.size;
 
-document.addEventListener("keydown",event => {
-  if(event.key === "Escape") closeDrawer();
-});
-</script>
+        document.getElementById("totalTeachers").textContent =
+          teachers.length;
+
+        document.getElementById("totalStudents").textContent =
+          students.length;
+
+        document.getElementById("totalPending").textContent =
+          pending.length;
+
+        pending.sort((a, b) => {
+          const dateA = a.dibuatPada?.toMillis?.() || 0;
+          const dateB = b.dibuatPada?.toMillis?.() || 0;
+          return dateB - dateA;
+        });
+
+        showPendingRows(pending.slice(0, 5));
+
+      } catch (error) {
+        console.error("Gagal memuat dashboard:", error);
+
+        document.getElementById("pendingTable").innerHTML = `
+          <tr>
+            <td colspan="4">
+              <div class="empty">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Gagal memuat data dashboard.<br>
+                ${escapeHTML(error.code || error.message || "Terjadi kesalahan")}
+              </div>
+            </td>
+          </tr>`;
+
+        showToast("Gagal memuat data dashboard.");
+      } finally {
+        loading = false;
+      }
+    }
+
+    document.getElementById("refreshButton")
+      .addEventListener("click", loadDashboard);
+
+    document.getElementById("logoutButton")
+      .addEventListener("click", async event => {
+        event.preventDefault();
+
+        if (!confirm("Apakah Anda yakin ingin keluar dari akun?")) {
+          return;
+        }
+
+        try {
+          await logout();
+          window.location.replace("./index.html");
+        } catch (error) {
+          console.error("Logout gagal:", error);
+          showToast("Gagal keluar dari akun.");
+        }
+      });
+
+    onAuthStateChanged(auth, async user => {
+      if (!user) {
+        isAuthorized = false;
+        window.location.replace("./index.html");
+        return;
+      }
+
+      currentUser = user;
+      isAuthorized = false;
+
+      try {
+        const profileRef = doc(
+          db,
+          "sekolah",
+          "utama",
+          "pengguna",
+          user.uid
+        );
+
+        const profileSnapshot = await getDoc(profileRef);
+
+        if (!profileSnapshot.exists()) {
+          alert("Profil pengelola tidak ditemukan.");
+          window.location.replace("./index.html");
+          return;
+        }
+
+        const profile = profileSnapshot.data();
+        const roles = Array.isArray(profile.peran) ? profile.peran : [];
+
+        const active = profile.statusAkun === "aktif";
+
+        const developer = roles.includes("developer_admin");
+        const superAdmin = roles.includes("super_admin");
+
+        if (!active || (!developer && !superAdmin)) {
+          alert("Akses ditolak. Halaman ini hanya untuk Pengembang dan Admin Utama.");
+          window.location.replace("./index.html");
+          return;
+        }
+
+        const displayName =
+          profile.namaLengkap ||
+          (developer ? "Pengembang" : "Admin Utama");
+
+        document.getElementById("managerName").textContent = displayName;
+        document.getElementById("welcomeTitle").textContent =
+          "Selamat Datang, " + displayName;
+
+        document.getElementById("roleLabel").textContent =
+          developer ? "Pengembang" : "Admin Utama";
+
+        isAuthorized = true;
+        await loadDashboard();
+
+      } catch (error) {
+        console.error("Pemeriksaan akun gagal:", error);
+
+        document.getElementById("pendingTable").innerHTML = `
+          <tr>
+            <td colspan="4">
+              <div class="empty">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Gagal memeriksa akun pengelola.<br>
+                ${escapeHTML(error.code || error.message || "Terjadi kesalahan")}
+              </div>
+            </td>
+          </tr>`;
+      }
+    });
+  </script>
 
 </body>
 </html>
