@@ -7,7 +7,11 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
 
-// Login Google menggunakan popup
+// Meminta Google menampilkan pilihan akun saat proses login.
+googleProvider.setCustomParameters({
+  prompt: "select_account"
+});
+
 export async function loginGoogle() {
   try {
     const result = await signInWithPopup(auth, googleProvider);
@@ -18,15 +22,10 @@ export async function loginGoogle() {
   }
 }
 
-// Memantau status login
-/**
- * Memantau perubahan status autentikasi.
- * @param {(user: import("https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js").User | null) => void} callback
- */
 export function pantauLogin(callback) {
   return onAuthStateChanged(auth, callback);
 }
-// Logout
+
 export async function logout() {
   try {
     await signOut(auth);
