@@ -3,12 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f3f7ff">
+  <meta name="theme-color" content="#edf4ff">
+
   <title>Pendaftaran Siswa | Absensi Sekolah</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
   <style>
     * {
@@ -17,124 +21,224 @@
       padding: 0;
     }
 
+    :root {
+      --primary: #3979d5;
+      --primary-dark: #285eaf;
+      --text: #243b63;
+      --muted: #7b8ba5;
+      --border: #e3ebf7;
+    }
+
     body {
       min-height: 100vh;
-      padding: 24px 16px;
+      min-height: 100svh;
+      padding: 35px 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Inter', sans-serif;
-      color: #243451;
+      font-family: 'Inter', Arial, sans-serif;
+      color: var(--text);
       background:
-        radial-gradient(circle at top left, #e1edff 0, transparent 38%),
-        linear-gradient(135deg, #f4f8ff, #edf3fc);
+        radial-gradient(circle at 10% 10%, #d8e9ff 0, transparent 34%),
+        radial-gradient(circle at 95% 90%, #dceaff 0, transparent 32%),
+        linear-gradient(135deg, #f5f8ff, #eaf2ff);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Dekorasi latar */
+
+    .background-shape {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: mengambang 10s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    .shape-one {
+      width: 190px;
+      height: 190px;
+      top: 5%;
+      left: -85px;
+      background: #b9d7ff55;
+    }
+
+    .shape-two {
+      width: 230px;
+      height: 230px;
+      right: -100px;
+      bottom: 4%;
+      background: #c8ddff55;
+      animation-delay: -4s;
     }
 
     .container {
       width: 100%;
-      max-width: 470px;
-      animation: appear .55s ease;
+      max-width: 480px;
+      position: relative;
+      z-index: 1;
+      animation: masuk .65s ease both;
     }
+
+    /* Identitas website */
 
     .brand {
       text-align: center;
-      margin-bottom: 22px;
-    }
-
-    .brand-icon {
-      width: 58px;
-      height: 58px;
-      margin: 0 auto 12px;
-      display: grid;
-      place-items: center;
-      border-radius: 18px;
-      color: white;
-      background: linear-gradient(135deg, #3679dc, #2858b5);
-      box-shadow: 0 8px 20px #376fbd35;
-      font-size: 25px;
-      font-weight: 800;
-    }
-
-    .brand h1 {
-      font-size: 21px;
-      font-weight: 800;
-      color: #203b65;
-    }
-
-    .brand p {
-      margin-top: 6px;
-      color: #7a8ba5;
-      font-size: 13px;
-    }
-
-    .card {
-      padding: 30px;
-      border: 1px solid #e6edf7;
-      border-radius: 22px;
-      background: rgba(255,255,255,.96);
-      box-shadow: 0 15px 45px #294d7912;
-    }
-
-    .heading {
       margin-bottom: 24px;
     }
 
-    .heading h2 {
+    .brand-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 14px;
+      display: grid;
+      place-items: center;
+      border-radius: 20px;
+      color: white;
+      background: linear-gradient(145deg, #5797ed, #326bc3);
+      box-shadow: 0 10px 25px #397bd735;
+      font-size: 25px;
+    }
+
+    .brand h1 {
       font-size: 22px;
-      color: #233c63;
-      margin-bottom: 8px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+      color: #244a82;
+    }
+
+    .brand p {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* Kartu formulir */
+
+    .card {
+      padding: 32px;
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 25px;
+      background: rgba(255,255,255,.82);
+      box-shadow:
+        0 25px 65px rgba(56,91,145,.10),
+        0 5px 18px rgba(56,91,145,.04);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .heading {
+      margin-bottom: 23px;
+    }
+
+    .heading-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 11px;
+      margin-bottom: 15px;
+      border-radius: 9px;
+      color: #3975c8;
+      background: #edf4ff;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .heading h2 {
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+      color: #244575;
+      margin-bottom: 9px;
     }
 
     .heading p {
-      font-size: 13px;
-      line-height: 1.7;
-      color: #7b8ba2;
+      font-size: 12px;
+      line-height: 1.8;
+      color: var(--muted);
     }
 
+    /* Informasi pendaftaran */
+
     .info {
-      padding: 13px 14px;
-      margin-bottom: 22px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 15px;
+      margin-bottom: 24px;
       border: 1px solid #dce9fc;
-      border-radius: 12px;
-      background: #f2f7ff;
-      color: #45658f;
-      font-size: 12px;
-      line-height: 1.7;
+      border-radius: 14px;
+      background: #f1f7ff;
+      color: #607b9f;
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+    .info-icon {
+      flex-shrink: 0;
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      color: #3979d5;
+      background: #dfebff;
+      font-size: 13px;
     }
 
     .info strong {
+      display: block;
       color: #315d9e;
+      font-size: 12px;
+      margin-bottom: 2px;
     }
 
+    /* Input */
+
     .form-group {
-      margin-bottom: 19px;
+      margin-bottom: 20px;
     }
 
     label {
       display: block;
       margin-bottom: 9px;
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 700;
       color: #405574;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #8ba2c2;
+      font-size: 14px;
+      pointer-events: none;
     }
 
     input {
       width: 100%;
-      height: 48px;
-      padding: 0 14px;
+      height: 49px;
+      padding: 0 14px 0 43px;
       outline: none;
       border: 1px solid #dce5f1;
-      border-radius: 11px;
+      border-radius: 12px;
       background: #fbfdff;
       color: #263d5d;
       font-family: inherit;
-      font-size: 14px;
-      transition: .2s;
+      font-size: 13px;
+      transition: border-color .2s, box-shadow .2s, background .2s;
     }
 
     input:focus {
       border-color: #5b91e3;
-      box-shadow: 0 0 0 3px #5b91e31c;
+      box-shadow: 0 0 0 4px #5b91e31c;
       background: white;
     }
 
@@ -142,76 +246,123 @@
       color: #a8b4c5;
     }
 
-    .hint {
-      margin-top: 7px;
-      font-size: 11px;
-      color: #91a0b4;
+    input:focus + .input-focus {
+      opacity: 1;
     }
 
+    .hint {
+      margin-top: 8px;
+      font-size: 10px;
+      color: #91a0b4;
+      line-height: 1.6;
+    }
+
+    /* Informasi kelas */
+
     .class-info {
-      padding: 13px 14px;
-      margin-bottom: 19px;
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      padding: 14px;
+      margin-bottom: 22px;
       border: 1px dashed #b9cce9;
-      border-radius: 11px;
-      background: #f8faff;
-      font-size: 12px;
-      color: #657c9e;
-      line-height: 1.7;
+      border-radius: 13px;
+      background: #f7faff;
+      color: #7185a2;
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+    .class-info i {
+      color: #5487cf;
+      font-size: 15px;
+      margin-top: 2px;
     }
 
     .class-info strong {
+      display: block;
       color: #315d9e;
+      font-size: 12px;
+      margin-bottom: 2px;
     }
+
+    /* Tombol */
 
     .submit-btn {
       width: 100%;
-      height: 49px;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       border: none;
-      border-radius: 11px;
-      background: linear-gradient(110deg, #397bd7, #3265c0);
+      border-radius: 12px;
+      background: linear-gradient(110deg, #4386df, #3265c0);
       color: white;
       font-family: inherit;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 7px 17px #397bd72c;
-      transition: .2s;
+      box-shadow: 0 8px 20px #397bd72c;
+      transition: transform .25s, box-shadow .25s, filter .25s;
     }
 
     .submit-btn:hover {
-      filter: brightness(1.05);
-      transform: translateY(-1px);
+      filter: brightness(1.06);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px #397bd738;
     }
 
     .submit-btn:active {
       transform: scale(.99);
     }
 
+    .submit-btn:focus-visible,
+    .back:focus-visible {
+      outline: 3px solid #8bb8f5;
+      outline-offset: 4px;
+    }
+
+    /* Navigasi kembali */
+
     .back {
-      display: block;
-      margin-top: 21px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      width: fit-content;
+      margin: 23px auto 0;
+      padding: 9px 13px;
+      border-radius: 10px;
       text-align: center;
       text-decoration: none;
       color: #6682a9;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
+      transition: .2s;
     }
 
     .back:hover {
       color: #3265c0;
+      background: #edf4ff;
     }
+
+    /* Footer */
 
     .footer {
-      margin-top: 20px;
+      margin-top: 22px;
       text-align: center;
-      color: #99a8ba;
-      font-size: 11px;
+      color: #94a4ba;
+      font-size: 10px;
+      letter-spacing: .2px;
     }
 
-    @keyframes appear {
+    /* Animasi */
+
+    @keyframes masuk {
       from {
         opacity: 0;
-        transform: translateY(12px);
+        transform: translateY(18px);
       }
       to {
         opacity: 1;
@@ -219,94 +370,178 @@
       }
     }
 
+    @keyframes mengambang {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    /* Tablet dan HP */
+
     @media (max-width: 480px) {
       body {
-        padding: 20px 14px;
+        padding: 22px 14px;
       }
 
       .card {
-        padding: 23px 19px;
-        border-radius: 18px;
+        padding: 25px 20px;
+        border-radius: 21px;
       }
 
       .heading h2 {
-        font-size: 20px;
+        font-size: 21px;
+      }
+
+      .brand-icon {
+        width: 59px;
+        height: 59px;
+        border-radius: 18px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      body {
+        padding: 16px 11px;
+      }
+
+      .card {
+        padding: 22px 16px;
+      }
+
+      .heading h2 {
+        font-size: 19px;
+      }
+
+      input {
+        font-size: 12px;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
-        transition-duration: .01ms !important;
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
       }
     }
   </style>
 </head>
 
 <body>
+
+  <div class="background-shape shape-one"></div>
+  <div class="background-shape shape-two"></div>
+
   <main class="container">
 
     <header class="brand">
-      <div class="brand-icon">A</div>
+      <div class="brand-icon">
+        <i class="fa-solid fa-graduation-cap"></i>
+      </div>
+
       <h1>Absensi Sekolah</h1>
       <p>Sistem Informasi Kehadiran Sekolah</p>
     </header>
 
     <section class="card">
+
       <div class="heading">
+        <div class="heading-label">
+          <i class="fa-solid fa-user-plus"></i>
+          FORMULIR PENDAFTARAN
+        </div>
+
         <h2>Pendaftaran Siswa</h2>
-        <p>Lengkapi identitas berikut untuk mengajukan pendaftaran akun siswa.</p>
+
+        <p>
+          Lengkapi identitas berikut untuk mengajukan
+          pendaftaran akun siswa.
+        </p>
       </div>
 
       <div class="info">
-        <strong>Informasi pendaftaran</strong><br>
-        Pendaftaran menggunakan akun Google. Akun baru dapat digunakan setelah mendapatkan persetujuan administrator sekolah.
+        <div class="info-icon">
+          <i class="fa-solid fa-circle-info"></i>
+        </div>
+
+        <div>
+          <strong>Informasi pendaftaran</strong>
+          Pendaftaran menggunakan akun Google. Akun baru dapat
+          digunakan setelah mendapatkan persetujuan administrator sekolah.
+        </div>
       </div>
 
       <form id="formSiswa">
 
         <div class="form-group">
           <label for="nama">Nama Lengkap</label>
-          <input
-            type="text"
-            id="nama"
-            name="nama"
-            placeholder="Masukkan nama lengkap"
-            maxlength="100"
-            autocomplete="name"
-            required
-          >
+
+          <div class="input-wrap">
+            <i class="fa-regular fa-user input-icon"></i>
+
+            <input
+              type="text"
+              id="nama"
+              name="nama"
+              placeholder="Masukkan nama lengkap"
+              maxlength="100"
+              autocomplete="name"
+              required
+            >
+          </div>
         </div>
 
         <div class="form-group">
           <label for="absen">Nomor Absen</label>
-          <input
-            type="number"
-            id="absen"
-            name="absen"
-            placeholder="Contoh: 12"
-            min="1"
-            max="50"
-            step="1"
-            required
-          >
-          <p class="hint">Masukkan nomor absen sesuai data resmi kelas.</p>
+
+          <div class="input-wrap">
+            <i class="fa-solid fa-list-ol input-icon"></i>
+
+            <input
+              type="number"
+              id="absen"
+              name="absen"
+              placeholder="Contoh: 12"
+              min="1"
+              max="50"
+              step="1"
+              required
+            >
+          </div>
+
+          <p class="hint">
+            <i class="fa-solid fa-circle-question"></i>
+            Masukkan nomor absen sesuai data resmi kelas.
+          </p>
         </div>
 
         <div class="class-info">
-          <strong>Penentuan kelas</strong><br>
-          Kelas akan ditentukan otomatis melalui tautan undangan kelas. Siswa tidak dapat memilih kelas sendiri.
+          <i class="fa-solid fa-school"></i>
+
+          <div>
+            <strong>Penentuan kelas</strong>
+            Kelas akan ditentukan otomatis melalui tautan undangan kelas.
+            Siswa tidak dapat memilih kelas sendiri.
+          </div>
         </div>
 
         <button type="submit" class="submit-btn">
+          <i class="fa-solid fa-paper-plane"></i>
           Kirim Pendaftaran
         </button>
 
       </form>
 
       <a href="pilih-peran.html" class="back">
-        ← Kembali ke pilihan peran
+        <i class="fa-solid fa-arrow-left"></i>
+        Kembali ke pilihan peran
       </a>
+
     </section>
 
     <footer class="footer">
@@ -342,5 +577,6 @@
       );
     });
   </script>
+
 </body>
 </html>
