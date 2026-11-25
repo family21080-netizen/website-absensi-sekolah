@@ -3,8 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f1f6ff">
+  <meta name="theme-color" content="#edf4ff">
+
   <title>Pilih Peran | Absensi Sekolah</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
   <style>
     * {
@@ -13,117 +21,282 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --primary: #3979d5;
+      --primary-dark: #245da9;
+      --text: #243b63;
+      --muted: #7b8ba5;
+      --border: #e4ecf8;
+      --surface: #ffffff;
+    }
+
     body {
       min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background: #f3f7ff;
-      color: #243b63;
+      min-height: 100svh;
+      font-family: 'Inter', Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 15%, #d8e9ff 0, transparent 32%),
+        radial-gradient(circle at 90% 85%, #dceaff 0, transparent 30%),
+        linear-gradient(135deg, #f5f8ff, #eaf2ff);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 35px 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Dekorasi latar belakang */
+
+    .background-shape {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(2px);
+      animation: mengambang 9s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    .shape-one {
+      width: 190px;
+      height: 190px;
+      background: #b9d7ff55;
+      top: 7%;
+      left: -75px;
+    }
+
+    .shape-two {
+      width: 240px;
+      height: 240px;
+      background: #c8ddff55;
+      right: -100px;
+      bottom: 5%;
+      animation-delay: -4s;
     }
 
     .container {
+      position: relative;
+      z-index: 1;
       width: 100%;
-      max-width: 850px;
-      animation: muncul .6s ease;
+      max-width: 880px;
+      animation: masuk .7s ease both;
     }
+
+    /* Panel utama */
+
+    .panel {
+      background: rgba(255, 255, 255, .78);
+      border: 1px solid rgba(255, 255, 255, .9);
+      border-radius: 30px;
+      padding: 43px;
+      box-shadow:
+        0 25px 70px rgba(56, 91, 145, .10),
+        0 5px 18px rgba(56, 91, 145, .04);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    /* Header */
 
     .header {
       text-align: center;
-      margin-bottom: 35px;
+      margin-bottom: 38px;
     }
 
     .logo {
-      width: 65px;
-      height: 65px;
-      margin: 0 auto 18px;
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 20px;
       display: grid;
       place-items: center;
-      background: #dceaff;
-      border-radius: 20px;
-      font-size: 30px;
-      box-shadow: 0 7px 20px #b9d2f555;
+      border-radius: 21px;
+      color: white;
+      font-size: 27px;
+      background: linear-gradient(145deg, #5595ed, #3471ca);
+      box-shadow: 0 10px 24px rgba(55, 119, 210, .25);
     }
 
     .header h1 {
-      font-size: 28px;
-      color: #244a85;
-      margin-bottom: 10px;
+      font-size: clamp(24px, 4vw, 31px);
+      font-weight: 800;
+      letter-spacing: -.8px;
+      color: #244a82;
+      margin-bottom: 12px;
     }
 
     .header p {
-      color: #71819b;
+      color: var(--muted);
       font-size: 14px;
-      line-height: 1.7;
+      line-height: 1.8;
     }
+
+    .header .highlight {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* Kartu pilihan */
 
     .pilihan {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 22px;
     }
 
     .kartu {
       position: relative;
-      display: block;
-      text-decoration: none;
-      background: white;
-      border: 1px solid #e2ebfa;
-      border-radius: 22px;
+      display: flex;
+      flex-direction: column;
+      min-height: 250px;
       padding: 28px;
-      min-height: 225px;
-      box-shadow: 0 10px 30px #456a9910;
-      transition: .25s ease;
+      text-decoration: none;
+      color: inherit;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 23px;
+      overflow: hidden;
+      transition:
+        transform .3s ease,
+        box-shadow .3s ease,
+        border-color .3s ease;
+      animation: naik .7s ease both;
+    }
+
+    .kartu:nth-child(2) {
+      animation-delay: .12s;
+    }
+
+    .kartu::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #6aa4f0, #3979d5);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s ease;
     }
 
     .kartu:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 16px 35px #456a9920;
-      border-color: #a9c9fa;
+      transform: translateY(-7px);
+      border-color: #b5d1f7;
+      box-shadow: 0 18px 38px rgba(49, 101, 174, .12);
+    }
+
+    .kartu:hover::before {
+      transform: scaleX(1);
     }
 
     .ikon {
-      width: 58px;
-      height: 58px;
+      width: 62px;
+      height: 62px;
       display: grid;
       place-items: center;
-      border-radius: 17px;
+      border-radius: 19px;
       background: #eaf2ff;
-      font-size: 29px;
-      margin-bottom: 23px;
+      color: #3979d5;
+      font-size: 27px;
+      margin-bottom: 25px;
+      transition: .3s ease;
+    }
+
+    .kartu:hover .ikon {
+      background: #3979d5;
+      color: white;
+      transform: scale(1.06);
     }
 
     .kartu h2 {
       font-size: 20px;
+      font-weight: 750;
       color: #294d82;
-      margin-bottom: 9px;
+      margin-bottom: 10px;
     }
 
     .kartu p {
-      font-size: 13px;
       color: #7b8ba3;
-      line-height: 1.7;
-      max-width: 260px;
+      font-size: 13px;
+      line-height: 1.8;
+      max-width: 280px;
+    }
+
+    .kartu-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      padding-top: 24px;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
     }
 
     .panah {
-      position: absolute;
-      right: 25px;
-      bottom: 25px;
-      color: #5b91dc;
-      font-size: 23px;
+      width: 33px;
+      height: 33px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: #edf4ff;
+      transition: .3s ease;
     }
+
+    .kartu:hover .panah {
+      background: var(--primary);
+      color: white;
+      transform: translateX(4px);
+    }
+
+    /* Tombol kembali */
+
+    .back-link {
+      width: fit-content;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin: 30px auto 0;
+      padding: 11px 17px;
+      color: #6480a5;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 12px;
+      transition: .25s ease;
+    }
+
+    .back-link:hover {
+      color: var(--primary-dark);
+      background: #edf4ff;
+    }
+
+    /* Footer */
 
     .footer {
       text-align: center;
-      color: #9aa9bd;
-      font-size: 12px;
-      margin-top: 35px;
+      margin-top: 28px;
+      color: #94a4ba;
+      font-size: 11px;
+      letter-spacing: .2px;
     }
 
-    @keyframes muncul {
+    /* Animasi */
+
+    @keyframes masuk {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes naik {
       from {
         opacity: 0;
         transform: translateY(15px);
@@ -134,67 +307,178 @@
       }
     }
 
-    @media(max-width: 600px) {
+    @keyframes mengambang {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-22px);
+      }
+    }
+
+    /* Tablet dan HP */
+
+    @media (max-width: 650px) {
+      body {
+        padding: 22px 15px;
+      }
+
+      .panel {
+        padding: 30px 22px;
+        border-radius: 25px;
+      }
+
+      .header {
+        margin-bottom: 29px;
+      }
+
       .pilihan {
         grid-template-columns: 1fr;
         gap: 15px;
       }
 
-      .header h1 {
-        font-size: 24px;
-      }
-
       .kartu {
-        min-height: 185px;
+        min-height: 215px;
         padding: 23px;
       }
 
       .ikon {
-        margin-bottom: 17px;
+        width: 55px;
+        height: 55px;
+        font-size: 24px;
+        margin-bottom: 19px;
+      }
+
+      .kartu h2 {
+        font-size: 19px;
+      }
+
+      .footer {
+        margin-top: 22px;
       }
     }
 
-    @media(prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
+    @media (max-width: 380px) {
+      body {
+        padding: 16px 11px;
+      }
+
+      .panel {
+        padding: 25px 16px;
+      }
+
+      .logo {
+        width: 59px;
+        height: 59px;
+        font-size: 24px;
+      }
+
+      .header p {
+        font-size: 12px;
+      }
+
+      .kartu {
+        padding: 20px;
+      }
+
+      .kartu p {
+        font-size: 12px;
+      }
+    }
+
+    /* Mengurangi animasi jika diminta perangkat */
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
         animation: none !important;
         transition: none !important;
+        scroll-behavior: auto !important;
       }
     }
   </style>
 </head>
 
 <body>
+
+  <div class="background-shape shape-one"></div>
+  <div class="background-shape shape-two"></div>
+
   <main class="container">
 
-    <header class="header">
-      <div class="logo">📚</div>
-      <h1>Pilih Peran Anda</h1>
-      <p>
-        Selamat datang di Sistem Absensi Sekolah.<br>
-        Silakan pilih peran untuk melanjutkan.
-      </p>
-    </header>
+    <section class="panel">
 
-    <section class="pilihan">
+      <header class="header">
 
-      <a href="daftar-siswa.html" class="kartu">
-        <div class="ikon">🎓</div>
-        <h2>Siswa</h2>
+        <div class="logo">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+
+        <h1>Pilih Peran Anda</h1>
+
         <p>
-          Pilih untuk melanjutkan sebagai siswa
-          dan mengisi data identitas siswa.
+          Selamat datang di <span class="highlight">Sistem Absensi Sekolah</span>.<br>
+          Silakan pilih peran untuk melanjutkan proses pendaftaran.
         </p>
-        <span class="panah">→</span>
-      </a>
 
-      <a href="daftar-guru.html" class="kartu">
-        <div class="ikon">👨‍🏫</div>
-        <h2>Guru</h2>
-        <p>
-          Pilih untuk melanjutkan sebagai guru
-          dan memasukkan kode dari admin.
-        </p>
-        <span class="panah">→</span>
+      </header>
+
+      <section class="pilihan">
+
+        <!-- Pilihan Siswa -->
+
+        <a href="daftar-siswa.html" class="kartu">
+
+          <div class="ikon">
+            <i class="fa-solid fa-user-graduate"></i>
+          </div>
+
+          <h2>Siswa</h2>
+
+          <p>
+            Pilih untuk mendaftar sebagai siswa dan
+            melengkapi data identitas diri Anda.
+          </p>
+
+          <div class="kartu-footer">
+            <span>Lanjut sebagai Siswa</span>
+            <span class="panah">
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+          </div>
+
+        </a>
+
+        <!-- Pilihan Guru -->
+
+        <a href="daftar-guru.html" class="kartu">
+
+          <div class="ikon">
+            <i class="fa-solid fa-chalkboard-user"></i>
+          </div>
+
+          <h2>Guru</h2>
+
+          <p>
+            Pilih untuk mengajukan pendaftaran sebagai guru
+            menggunakan kode undangan dari admin.
+          </p>
+
+          <div class="kartu-footer">
+            <span>Lanjut sebagai Guru</span>
+            <span class="panah">
+              <i class="fa-solid fa-arrow-right"></i>
+            </span>
+          </div>
+
+        </a>
+
+      </section>
+
+      <a href="index.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i>
+        Kembali ke halaman login
       </a>
 
     </section>
@@ -204,5 +488,6 @@
     </footer>
 
   </main>
+
 </body>
-  </html>
+</html>
