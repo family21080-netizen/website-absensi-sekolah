@@ -4,9 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#edf4ff">
+  <meta name="description" content="Sistem Informasi Absensi Sekolah">
   <title>Login - Absensi Sekolah</title>
 
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
   <style>
+    :root {
+      --primary: #3478d4;
+      --primary-dark: #245da9;
+      --text: #263d5b;
+      --muted: #8192aa;
+      --white: #ffffff;
+      --border: #e5edf8;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -16,117 +30,485 @@
     body {
       min-height: 100vh;
       display: flex;
-      justify-content: center;
       align-items: center;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-      color: #263b59;
-      background: linear-gradient(135deg, #edf4ff, #dceaff);
+      justify-content: center;
+      padding: 25px;
+      overflow-x: hidden;
+      position: relative;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 15%, #d7e9ff 0, transparent 32%),
+        radial-gradient(circle at 90% 85%, #dce9ff 0, transparent 35%),
+        linear-gradient(135deg, #f3f7ff, #e8f1ff);
     }
 
-    .container {
+    /* Background decoration */
+    .background-shape {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(1px);
+      opacity: .55;
+      animation: float 9s ease-in-out infinite;
+    }
+
+    .shape-one {
+      width: 260px;
+      height: 260px;
+      background: linear-gradient(135deg, #b8d7ff, #dceaff);
+      top: -90px;
+      left: -70px;
+    }
+
+    .shape-two {
+      width: 190px;
+      height: 190px;
+      background: linear-gradient(135deg, #c9dcff, #e6efff);
+      right: -45px;
+      bottom: -50px;
+      animation-delay: -4s;
+    }
+
+    .shape-three {
+      width: 85px;
+      height: 85px;
+      background: #c4dcff;
+      right: 17%;
+      top: 15%;
+      animation-delay: -2s;
+    }
+
+    .background-grid {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .17;
+      background-image:
+        linear-gradient(#9bbbe5 1px, transparent 1px),
+        linear-gradient(90deg, #9bbbe5 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black, transparent 85%);
+    }
+
+    /* Main layout */
+    .page {
       width: 100%;
-      max-width: 420px;
-      padding: 38px 30px;
-      text-align: center;
-      background: #fff;
-      border: 1px solid #e4edfa;
-      border-radius: 22px;
-      box-shadow: 0 12px 35px rgba(57, 91, 140, .10);
+      max-width: 1030px;
+      min-height: 590px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+      background: rgba(255, 255, 255, .75);
+      border: 1px solid rgba(255, 255, 255, .9);
+      border-radius: 28px;
+      box-shadow: 0 25px 70px rgba(61, 100, 155, .13);
+      backdrop-filter: blur(18px);
+      animation: pageEnter .9s cubic-bezier(.2,.8,.2,1) both;
     }
 
-    .logo {
-      width: 76px;
-      height: 76px;
+    /* Left panel */
+    .welcome-panel {
+      position: relative;
       display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px 42px;
+      overflow: hidden;
+      color: white;
+      background: linear-gradient(145deg, #4389e8, #2865b8 75%);
+    }
+
+    .welcome-panel::before,
+    .welcome-panel::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .welcome-panel::before {
+      width: 360px;
+      height: 360px;
+      right: -160px;
+      top: -110px;
+    }
+
+    .welcome-panel::after {
+      width: 260px;
+      height: 260px;
+      right: -105px;
+      top: -60px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp .8s .15s both;
+    }
+
+    .brand-icon {
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.25);
+      font-size: 21px;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: .3px;
+    }
+
+    .welcome-content {
+      position: relative;
+      z-index: 1;
+      margin: 35px 0;
+      animation: fadeUp .8s .3s both;
+    }
+
+    .welcome-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      margin-bottom: 22px;
+      border-radius: 30px;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.18);
+      font-size: 11px;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .welcome-content h1 {
+      max-width: 390px;
+      margin-bottom: 18px;
+      font-size: clamp(30px, 4vw, 43px);
+      line-height: 1.18;
+      font-weight: 750;
+    }
+
+    .welcome-content p {
+      max-width: 360px;
+      color: rgba(255,255,255,.82);
+      font-size: 14px;
+      line-height: 1.85;
+    }
+
+    .welcome-features {
+      display: flex;
+      flex-direction: column;
+      gap: 17px;
+      margin-top: 35px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      color: rgba(255,255,255,.94);
+      font-size: 13px;
+    }
+
+    .feature i {
+      width: 33px;
+      height: 33px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(255,255,255,.15);
+    }
+
+    .panel-footer {
+      position: relative;
+      z-index: 1;
+      color: rgba(255,255,255,.65);
+      font-size: 11px;
+    }
+
+    /* Right panel */
+    .login-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 55px 48px;
+      background: rgba(255,255,255,.88);
+    }
+
+    .login-content {
+      width: 100%;
+      max-width: 360px;
+      margin: auto;
+      animation: fadeUp .8s .25s both;
+    }
+
+    .mobile-logo {
+      display: none;
+      width: 65px;
+      height: 65px;
       align-items: center;
       justify-content: center;
       margin: 0 auto 22px;
-      border-radius: 22px;
-      color: #fff;
+      border-radius: 20px;
+      color: white;
       background: linear-gradient(135deg, #4389e8, #2864bd);
-      font-size: 34px;
-      font-weight: bold;
+      font-size: 27px;
+      box-shadow: 0 9px 22px rgba(52,120,212,.22);
     }
 
-    h1 {
+    .login-heading {
+      margin-bottom: 32px;
+    }
+
+    .login-heading .small-title {
       margin-bottom: 10px;
-      font-size: 25px;
-      color: #24466f;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
     }
 
-    .description {
-      margin-bottom: 28px;
-      color: #7b8da6;
-      font-size: 14px;
-      line-height: 1.6;
+    .login-heading h2 {
+      margin-bottom: 11px;
+      color: #25466f;
+      font-size: 29px;
+      font-weight: 750;
     }
 
-    .google-button,
-    .logout-button {
+    .login-heading p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* Login button */
+    .google-button {
       width: 100%;
+      min-height: 55px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      padding: 14px;
-      border: 1px solid #dce5f1;
-      border-radius: 12px;
-      background: #fff;
+      gap: 13px;
+      padding: 14px 18px;
+      border: 1px solid #dce6f3;
+      border-radius: 13px;
+      background: white;
       color: #344b68;
-      font-size: 15px;
+      font-size: 14px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: transform .25s, box-shadow .25s,
+                  border-color .25s, background .25s;
+    }
+
+    .google-button:hover {
+      transform: translateY(-3px);
+      border-color: #a9c8ee;
+      background: #fafdff;
+      box-shadow: 0 10px 24px rgba(52,120,212,.12);
+    }
+
+    .google-button:active {
+      transform: scale(.98);
+    }
+
+    .google-button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .google-icon {
+      width: 21px;
+      height: 21px;
+      flex-shrink: 0;
+    }
+
+    .login-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 13px;
+      border: 1px solid #e8eff9;
+      border-radius: 12px;
+      background: #f7faff;
+      color: #8293aa;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .login-note i {
+      margin-top: 2px;
+      color: #5b91d5;
+    }
+
+    /* Status */
+    #status {
+      min-height: 24px;
+      margin-top: 22px;
+      color: #66809f;
+      font-size: 12px;
+      line-height: 1.7;
+      text-align: center;
+      overflow-wrap: anywhere;
+    }
+
+    .logout-button {
+      width: 100%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin-top: 12px;
+      padding: 13px;
+      border: 1px solid #f0dada;
+      border-radius: 12px;
+      background: #fffafa;
+      color: #b54747;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       transition: .2s;
     }
 
-    .google-button:hover,
     .logout-button:hover {
-      background: #f5f8fd;
-      border-color: #9dbce5;
+      background: #fff0f0;
+      border-color: #e8bebe;
     }
 
-    button:disabled {
+    .logout-button:disabled {
       opacity: .6;
       cursor: not-allowed;
     }
 
-    .google-icon {
-      width: 20px;
-      height: 20px;
+    .secure-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 28px;
+      color: #9aabc0;
+      font-size: 11px;
     }
 
-    #status {
-      min-height: 22px;
-      margin-top: 20px;
-      color: #6480a2;
-      font-size: 13px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-
-    .logout-button {
-      display: none;
-      margin-top: 12px;
-      color: #b54747;
-      border-color: #f0dada;
+    .secure-label i {
+      color: #69a58a;
     }
 
     .footer {
-      margin-top: 30px;
+      margin-top: 35px;
       padding-top: 18px;
       border-top: 1px solid #edf1f7;
-      color: #98a7ba;
-      font-size: 12px;
+      color: #a0aec0;
+      font-size: 11px;
+      text-align: center;
     }
 
-    @media (max-width: 480px) {
-      .container {
-        padding: 32px 22px;
+    /* Animations */
+    @keyframes pageEnter {
+      from {
+        opacity: 0;
+        transform: translateY(25px) scale(.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0); }
+      50% { transform: translateY(-22px) rotate(8deg); }
+    }
+
+    /* Responsive */
+    @media (max-width: 760px) {
+      body {
+        padding: 18px;
       }
 
-      h1 {
-        font-size: 23px;
+      .page {
+        max-width: 440px;
+        min-height: auto;
+        display: block;
+        border-radius: 24px;
+      }
+
+      .welcome-panel {
+        display: none;
+      }
+
+      .login-panel {
+        padding: 42px 28px 30px;
+      }
+
+      .mobile-logo {
+        display: flex;
+      }
+
+      .login-heading {
+        text-align: center;
+        margin-bottom: 26px;
+      }
+
+      .login-heading h2 {
+        font-size: 26px;
+      }
+
+      .footer {
+        margin-top: 28px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      body {
+        padding: 12px;
+      }
+
+      .login-panel {
+        padding: 35px 20px 25px;
+      }
+
+      .login-heading h2 {
+        font-size: 24px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
       }
     }
   </style>
@@ -134,43 +516,126 @@
 
 <body>
 
-  <main class="container">
+  <div class="background-grid"></div>
+  <div class="background-shape shape-one"></div>
+  <div class="background-shape shape-two"></div>
+  <div class="background-shape shape-three"></div>
 
-    <div class="logo">A</div>
+  <main class="page">
 
-    <h1>Absensi Sekolah</h1>
+    <!-- Panel kiri -->
+    <section class="welcome-panel">
 
-    <p class="description">
-      Selamat datang di sistem informasi absensi sekolah.
-      Silakan masuk menggunakan akun Google.
-    </p>
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="brand-name">SISTEM INFORMASI SEKOLAH</div>
+      </div>
 
-    <button class="google-button" id="googleLogin" type="button">
-      <svg class="google-icon" viewBox="0 0 48 48"
-           xmlns="http://www.w3.org/2000/svg">
-        <path fill="#EA4335"
-          d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-        <path fill="#4285F4"
-          d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.93c-.58 2.96-2.25 5.48-4.72 7.18l7.72 5.99c4.51-4.18 7.05-10.32 7.05-17.64z"/>
-        <path fill="#FBBC05"
-          d="M10.54 28.59A14.5 14.5 0 0 1 9.77 24c0-1.59.27-3.13.77-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.88.93 7.56 2.56 10.78l7.98-6.19z"/>
-        <path fill="#34A853"
-          d="M24 48c6.48 0 11.93-2.13 15.9-5.81l-7.72-5.99c-2.14 1.44-4.89 2.3-8.18 2.3-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-      </svg>
-      Masuk dengan Google
-    </button>
+      <div class="welcome-content">
 
-    <p id="status" aria-live="polite">
-      Silakan masuk menggunakan akun Google.
-    </p>
+        <div class="welcome-tag">
+          <i class="fa-solid fa-circle-check"></i>
+          PLATFORM DIGITAL SEKOLAH
+        </div>
 
-    <button class="logout-button" id="logoutButton" type="button">
-      Keluar dari akun ini
-    </button>
+        <h1>Kelola Kehadiran dengan Lebih Mudah.</h1>
 
-    <div class="footer">
-      Sistem Informasi Absensi Sekolah
-    </div>
+        <p>
+          Selamat datang di sistem informasi absensi sekolah.
+          Satu platform untuk mendukung pengelolaan kegiatan
+          akademik secara lebih teratur dan efisien.
+        </p>
+
+        <div class="welcome-features">
+
+          <div class="feature">
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>Pencatatan kehadiran terstruktur</span>
+          </div>
+
+          <div class="feature">
+            <i class="fa-solid fa-users"></i>
+            <span>Akses sesuai peran pengguna</span>
+          </div>
+
+          <div class="feature">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Sistem autentikasi yang aman</span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="panel-footer">
+        Sistem Informasi Absensi Sekolah
+      </div>
+
+    </section>
+
+    <!-- Panel login -->
+    <section class="login-panel">
+
+      <div class="login-content">
+
+        <div class="mobile-logo">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+
+        <div class="login-heading">
+          <div class="small-title">Selamat Datang</div>
+          <h2>Masuk ke Akun</h2>
+          <p>
+            Gunakan akun Google yang telah terdaftar
+            untuk mengakses sistem absensi sekolah.
+          </p>
+        </div>
+
+        <button class="google-button" id="googleLogin" type="button">
+          <svg class="google-icon" viewBox="0 0 48 48"
+               xmlns="http://www.w3.org/2000/svg">
+            <path fill="#EA4335"
+              d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4"
+              d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.93c-.58 2.96-2.25 5.48-4.72 7.18l7.72 5.99c4.51-4.18 7.05-10.32 7.05-17.64z"/>
+            <path fill="#FBBC05"
+              d="M10.54 28.59A14.5 14.5 0 0 1 9.77 24c0-1.59.27-3.13.77-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.88.93 7.56 2.56 10.78l7.98-6.19z"/>
+            <path fill="#34A853"
+              d="M24 48c6.48 0 11.93-2.13 15.9-5.81l-7.72-5.99c-2.14 1.44-4.89 2.3-8.18 2.3-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+
+          <span>Masuk dengan Google</span>
+        </button>
+
+        <div class="login-note">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>
+            Pastikan menggunakan akun Google yang sesuai
+            dengan akun sekolah yang telah didaftarkan.
+          </span>
+        </div>
+
+        <p id="status" aria-live="polite">
+          Silakan masuk menggunakan akun Google.
+        </p>
+
+        <button class="logout-button" id="logoutButton" type="button">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          Keluar dari akun ini
+        </button>
+
+        <div class="secure-label">
+          <i class="fa-solid fa-shield-halved"></i>
+          Login dilindungi autentikasi Google
+        </div>
+
+        <div class="footer">
+          © Sistem Informasi Absensi Sekolah
+        </div>
+
+      </div>
+    </section>
 
   </main>
 
@@ -225,7 +690,6 @@
             "Akun belum terdaftar. Mengarahkan ke pilihan pendaftaran...";
 
           sedangMengalihkan = true;
-
           window.location.replace("./pilih-peran.html");
           return;
         }
@@ -255,12 +719,11 @@
             "Akses pengelola berhasil. Membuka halaman pengelolaan...";
 
           sedangMengalihkan = true;
-
           window.location.replace("./persetujuan-guru.html");
           return;
         }
 
-        // Akun lain sudah terdaftar, jangan diarahkan ke pendaftaran ulang.
+        // Akun lain sudah terdaftar.
         if (
           peran.includes("admin") ||
           peran.includes("guru") ||
