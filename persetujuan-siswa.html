@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -14,7 +15,7 @@
     }
     * {box-sizing:border-box;margin:0;padding:0}
     body {font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
-    button,input,select {font:inherit}
+    button,input,select,textarea {font:inherit}
     button {cursor:pointer}
     .sidebar {
       position:fixed;inset:0 auto 0 0;width:245px;background:var(--dark);
@@ -208,8 +209,8 @@
 
     <div class="notice">
       <i class="fa-solid fa-circle-info"></i>
-      Persetujuan akan membuat profil siswa aktif dan memasukkannya ke data anggota kelas.
-      Penolakan akan mengurangi kembali jumlah siswa yang sudah dipesan pada kelas tersebut.
+      Persetujuan membuat profil siswa aktif dan memasukkannya ke data anggota kelas.
+      Penolakan mengurangi jumlah siswa terisi dan melepaskan nomor absen yang dipesan.
     </div>
   </main>
 </div>
@@ -230,12 +231,12 @@
 
 <script type="module">
   import { auth, db } from "./js/firebase.js";
-  import { logout } from "./js/auth.js";
   import {
     onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
   import {
-    collection, doc, getDoc, getDocs, runTransaction, serverTimestamp
+    collection, doc, getDoc, getDocs,
+    runTransaction, serverTimestamp
   } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
 
   const tableBody = document.getElementById("tableBody");
@@ -248,7 +249,8 @@
 
   function escapeHTML(value) {
     return String(value ?? "").replace(/[&<>"']/g, c => ({
-      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
+      "&":"&amp;", "<":"&lt;", ">":"&gt;",
+      '"':"&quot;", "'":"&#039;"
     })[c]);
   }
 
@@ -267,8 +269,10 @@
   }
 
   function statusHTML(status) {
-    if (status === "disetujui") return '<span class="status approved">Disetujui</span>';
-    if (status === "ditolak") return '<span class="status rejected">Ditolak</span>';
+    if (status === "disetujui")
+      return '<span class="status approved">Disetujui</span>';
+    if (status === "ditolak")
+      return '<span class="status rejected">Ditolak</span>';
     return '<span class="status pending">Menunggu</span>';
   }
 
@@ -281,14 +285,17 @@
   }
 
   function renderTable() {
-    const keyword = document.getElementById("searchInput").value.trim().toLowerCase();
+    const keyword = document.getElementById("searchInput")
+      .value.trim().toLowerCase();
     const status = document.getElementById("filterStatus").value;
 
     const filtered = applications.filter(item => {
       const matchText =
         String(item.namaLengkap || "").toLowerCase().includes(keyword) ||
         String(item.email || "").toLowerCase().includes(keyword);
-      return matchText && (status === "semua" || item.statusPengajuan === status);
+
+      return matchText &&
+        (status === "semua" || item.statusPengajuan === status);
     });
 
     if (!filtered.length) {
@@ -304,6 +311,7 @@
 
     tableBody.innerHTML = filtered.map(item => {
       const pending = item.statusPengajuan === "menunggu";
+
       return `
         <tr>
           <td>
@@ -334,65 +342,132 @@
 
   async function loadApplications() {
     if (busy) return;
-    tableBody.innerHTML = '<tr><td colspan="7" class="loading">Memuat data pengajuan...</td></tr>';
+
+    tableBody.innerHTML =
+      '<tr><td colspan="7" class="loading">Memuat data pengajuan...</td></tr>';
 
     try {
       const snap = await getDocs(collection(db, "pengajuanSiswa"));
-      applications = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+
+      applications = snap.docs.map(d => ({
+        id: d.id,
+        ...d.data()
+      }));
+
       applications.sort((a,b) =>
         (b.dibuatPada?.toMillis?.() || 0) -
         (a.dibuatPada?.toMillis?.() || 0)
       );
+
       updateStats();
       renderTable();
+
     } catch (error) {
       console.error(error);
       tableBody.innerHTML = `
         <tr><td colspan="7">
           <div class="empty">
             <i class="fa-solid fa-triangle-exclamation"></i>
-            Gagal membaca pengajuan: ${escapeHTML(error.code || error.message)}
+            Gagal membaca pengajuan:
+            ${escapeHTML(error.code || error.message)}
           </div>
         </td></tr>`;
     }
   }
 
+  // ==========================================
+  // PERSETUJUAN SISWA
+  // ==========================================
+
   async function approveApplication(id) {
     if (!currentUser || busy) return;
+
     const item = applications.find(x => x.id === id);
     if (!item) return;
 
-    if (!confirm("Setujui pendaftaran ini? Akun akan diaktifkan sebagai Siswa.")) return;
+    if (!confirm(
+      "Setujui pendaftaran ini? Akun akan diaktifkan sebagai Siswa."
+    )) return;
 
     busy = true;
+
     try {
       const applicationRef = doc(db, "pengajuanSiswa", id);
-      const profileRef = doc(db, "sekolah", "utama", "pengguna", id);
-      const classRef = doc(db, "sekolah", "utama", "kelas", item.idKelas);
+
+      const profileRef = doc(
+        db, "sekolah", "utama", "pengguna", id
+      );
+
+      const classRef = doc(
+        db, "sekolah", "utama", "kelas", item.idKelas
+      );
+
+      // Mengikuti struktur anggotaKelas yang digunakan kode sebelumnya
       const memberRef = doc(db, "anggotaKelas", id);
 
+      const number = Number(item.nomorAbsen);
+
+      if (!Number.isInteger(number) || number < 1) {
+        throw new Error("Nomor absen pengajuan tidak valid.");
+      }
+
+      const lockRef = doc(
+        db,
+        "nomorAbsenKelas",
+        item.idKelas,
+        "nomor",
+        String(number)
+      );
+
       await runTransaction(db, async transaction => {
+        // Semua pembacaan dilakukan sebelum penulisan
         const appSnap = await transaction.get(applicationRef);
         const profileSnap = await transaction.get(profileRef);
         const classSnap = await transaction.get(classRef);
         const memberSnap = await transaction.get(memberRef);
+        const lockSnap = await transaction.get(lockRef);
 
-        if (!appSnap.exists()) throw new Error("Pengajuan tidak ditemukan.");
-        if (profileSnap.exists()) throw new Error("Akun ini sudah memiliki profil.");
-        if (memberSnap.exists()) throw new Error("Data anggota kelas sudah ada.");
+        if (!appSnap.exists())
+          throw new Error("Pengajuan tidak ditemukan.");
+
+        if (profileSnap.exists())
+          throw new Error("Akun ini sudah memiliki profil.");
+
+        if (memberSnap.exists())
+          throw new Error("Data anggota kelas sudah ada.");
 
         const data = appSnap.data();
-        if (data.statusPengajuan !== "menunggu") {
+
+        if (data.statusPengajuan !== "menunggu")
           throw new Error("Pengajuan sudah diproses sebelumnya.");
-        }
-        if (data.uid !== id || data.jenisPengajuan !== "siswa") {
+
+        if (data.uid !== id || data.jenisPengajuan !== "siswa")
           throw new Error("Data pengajuan tidak valid.");
-        }
-        if (!classSnap.exists()) throw new Error("Data kelas tidak ditemukan.");
+
+        if (!classSnap.exists())
+          throw new Error("Data kelas tidak ditemukan.");
 
         const classData = classSnap.data();
-        if (classData.statusKelas !== "aktif") {
+
+        if (classData.statusKelas !== "aktif")
           throw new Error("Kelas sudah tidak aktif.");
+
+        if (Number(data.nomorAbsen) !== number)
+          throw new Error("Nomor absen pengajuan berubah.");
+
+        // Jika kunci tersedia, pastikan benar-benar milik siswa ini.
+        // Pengajuan lama tanpa kunci tetap dapat diproses.
+        if (lockSnap.exists()) {
+          const lock = lockSnap.data();
+
+          if (
+            lock.uid !== id ||
+            lock.idKelas !== item.idKelas ||
+            Number(lock.nomorAbsen) !== number ||
+            lock.statusKunci !== "terkunci"
+          ) {
+            throw new Error("Kunci nomor absen tidak cocok.");
+          }
         }
 
         transaction.update(applicationRef, {
@@ -409,7 +484,7 @@
           fotoProfil: "",
           idKelas: data.idKelas,
           namaKelas: data.namaKelas || classData.namaKelas || "",
-          nomorAbsen: data.nomorAbsen,
+          nomorAbsen: number,
           dibuatPada: serverTimestamp()
         });
 
@@ -420,7 +495,7 @@
           email: data.email,
           idKelas: data.idKelas,
           namaKelas: data.namaKelas || classData.namaKelas || "",
-          nomorAbsen: data.nomorAbsen,
+          nomorAbsen: number,
           statusKeanggotaan: "aktif",
           bergabungPada: serverTimestamp(),
           ditambahkanOleh: currentUser.uid
@@ -429,54 +504,109 @@
 
       toast("Pendaftaran siswa berhasil disetujui.");
       await loadApplications();
+
     } catch (error) {
       console.error("Persetujuan siswa gagal:", error);
       toast("Gagal menyetujui: " + (error.message || error.code));
+
     } finally {
       busy = false;
     }
   }
 
+  // ==========================================
+  // MODAL PENOLAKAN
+  // ==========================================
+
   function openReject(id) {
     rejectTarget = applications.find(x => x.id === id);
     if (!rejectTarget) return;
+
     document.getElementById("rejectReason").value = "";
     document.getElementById("rejectOverlay").classList.add("show");
   }
 
+  // ==========================================
+  // PENOLAKAN SISWA DAN PELEPASAN NOMOR
+  // ==========================================
+
   async function rejectApplication() {
     if (!currentUser || !rejectTarget || busy) return;
 
-    const reason = document.getElementById("rejectReason").value.trim();
+    const reason = document.getElementById("rejectReason")
+      .value.trim();
+
     if (reason.length < 3) {
       toast("Alasan penolakan minimal 3 karakter.");
       return;
     }
 
     const item = rejectTarget;
+    const number = Number(item.nomorAbsen);
+
+    if (!item.idKelas || !Number.isInteger(number) || number < 1) {
+      toast("Data kelas atau nomor absen tidak valid.");
+      return;
+    }
+
     busy = true;
 
     try {
-      const applicationRef = doc(db, "pengajuanSiswa", item.id);
-      const classRef = doc(db, "sekolah", "utama", "kelas", item.idKelas);
+      const applicationRef = doc(
+        db, "pengajuanSiswa", item.id
+      );
+
+      const classRef = doc(
+        db, "sekolah", "utama", "kelas", item.idKelas
+      );
+
+      const lockRef = doc(
+        db,
+        "nomorAbsenKelas",
+        item.idKelas,
+        "nomor",
+        String(number)
+      );
 
       await runTransaction(db, async transaction => {
+        // Baca seluruh dokumen sebelum menulis
         const appSnap = await transaction.get(applicationRef);
         const classSnap = await transaction.get(classRef);
+        const lockSnap = await transaction.get(lockRef);
 
-        if (!appSnap.exists()) throw new Error("Pengajuan tidak ditemukan.");
+        if (!appSnap.exists())
+          throw new Error("Pengajuan tidak ditemukan.");
 
         const data = appSnap.data();
-        if (data.statusPengajuan !== "menunggu") {
+
+        if (data.statusPengajuan !== "menunggu")
           throw new Error("Pengajuan sudah diproses sebelumnya.");
-        }
-        if (data.uid !== item.id || data.jenisPengajuan !== "siswa") {
+
+        if (data.uid !== item.id || data.jenisPengajuan !== "siswa")
           throw new Error("Data pengajuan tidak valid.");
-        }
-        if (!classSnap.exists()) throw new Error("Data kelas tidak ditemukan.");
+
+        if (!classSnap.exists())
+          throw new Error("Data kelas tidak ditemukan.");
 
         const classData = classSnap.data();
         const terisi = Number(classData.jumlahTerisi || 0);
+
+        // Pastikan kunci yang akan dilepas memang milik siswa ini
+        if (lockSnap.exists()) {
+          const lock = lockSnap.data();
+
+          if (
+            lock.uid !== item.id ||
+            lock.idKelas !== item.idKelas ||
+            Number(lock.nomorAbsen) !== number
+          ) {
+            throw new Error(
+              "Kunci nomor absen bukan milik pengajuan ini."
+            );
+          }
+
+          transaction.delete(lockRef);
+        }
 
         transaction.update(applicationRef, {
           statusPengajuan: "ditolak",
@@ -486,38 +616,68 @@
         });
 
         transaction.update(classRef, {
-          jumlahTerisi: Math.max(0, terisi - 1)
+          jumlahTerisi: Math.max(0, terisi - 1),
+          ultimaOperasiSiswa: {
+            uid: item.id,
+            jenis: "penolakan",
+            oleh: currentUser.uid
+          }
         });
       });
 
       document.getElementById("rejectOverlay").classList.remove("show");
       rejectTarget = null;
-      toast("Pengajuan siswa berhasil ditolak.");
+
+      toast("Pengajuan ditolak. Nomor absen telah dilepaskan.");
       await loadApplications();
+
     } catch (error) {
       console.error("Penolakan siswa gagal:", error);
       toast("Gagal menolak: " + (error.message || error.code));
+
     } finally {
       busy = false;
     }
   }
 
+  // ==========================================
+  // EVENT HALAMAN
+  // ==========================================
+
   tableBody.addEventListener("click", event => {
     const button = event.target.closest("[data-action]");
     if (!button) return;
+
     const id = button.dataset.id;
-    if (button.dataset.action === "approve") approveApplication(id);
-    if (button.dataset.action === "reject") openReject(id);
+
+    if (button.dataset.action === "approve")
+      approveApplication(id);
+
+    if (button.dataset.action === "reject")
+      openReject(id);
   });
 
-  document.getElementById("searchInput").addEventListener("input", renderTable);
-  document.getElementById("filterStatus").addEventListener("change", renderTable);
-  document.getElementById("refreshButton").addEventListener("click", loadApplications);
-  document.getElementById("cancelReject").addEventListener("click", () => {
-    document.getElementById("rejectOverlay").classList.remove("show");
-    rejectTarget = null;
-  });
-  document.getElementById("confirmReject").addEventListener("click", rejectApplication);
+  document.getElementById("searchInput")
+    .addEventListener("input", renderTable);
+
+  document.getElementById("filterStatus")
+    .addEventListener("change", renderTable);
+
+  document.getElementById("refreshButton")
+    .addEventListener("click", loadApplications);
+
+  document.getElementById("cancelReject")
+    .addEventListener("click", () => {
+      document.getElementById("rejectOverlay").classList.remove("show");
+      rejectTarget = null;
+    });
+
+  document.getElementById("confirmReject")
+    .addEventListener("click", rejectApplication);
+
+  // ==========================================
+  // PEMERIKSAAN LOGIN DAN HAK AKSES
+  // ==========================================
 
   onAuthStateChanged(auth, async user => {
     if (!user) {
@@ -526,8 +686,12 @@
     }
 
     currentUser = user;
+
     try {
-      const profileRef = doc(db, "sekolah", "utama", "pengguna", user.uid);
+      const profileRef = doc(
+        db, "sekolah", "utama", "pengguna", user.uid
+      );
+
       const profileSnap = await getDoc(profileRef);
 
       if (!profileSnap.exists()) {
@@ -537,17 +701,22 @@
       }
 
       const profile = profileSnap.data();
-      const roles = Array.isArray(profile.peran) ? profile.peran : [];
-      const active = String(profile.statusAkun || "").trim() === "aktif";
+      const roles = Array.isArray(profile.peran)
+        ? profile.peran
+        : [];
+
+      const active =
+        String(profile.statusAkun || "").trim() === "aktif";
+
       const allowed = active && (
-  roles.includes("admin") ||
-  roles.includes("guru") ||
-  roles.includes("developer_admin") ||
-  roles.includes("super_admin")
-);
+        roles.includes("admin") ||
+        roles.includes("guru") ||
+        roles.includes("developer_admin") ||
+        roles.includes("super_admin")
+      );
 
       if (!allowed) {
-        alert("Akses ditolak. Halaman ini hanya untuk Admin dan Pengelola Utama.");
+        alert("Akses ditolak. Akun tidak memiliki izin.");
         window.location.replace("./index.html");
         return;
       }
@@ -557,6 +726,7 @@
         (roles.includes("admin") ? "Admin" : "Pengelola");
 
       await loadApplications();
+
     } catch (error) {
       console.error(error);
       toast("Gagal memeriksa akun: " + (error.code || error.message));
