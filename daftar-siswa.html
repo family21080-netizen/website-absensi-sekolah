@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -6,56 +7,25 @@
 <title>Pendaftaran Siswa</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;min-height:100vh;padding:25px 14px;
- display:grid;place-items:center;
- background:linear-gradient(135deg,#edf4ff,#f8faff);
- font-family:Inter,Arial;color:#29466e
-}
+body{margin:0;min-height:100vh;padding:25px 14px;display:grid;place-items:center;background:linear-gradient(135deg,#edf4ff,#f8faff);font-family:Inter,Arial;color:#29466e}
 .container{width:100%;max-width:470px}
 .brand{text-align:center;margin-bottom:20px}
-.brand-icon{
- width:58px;height:58px;border-radius:18px;
- background:#3979d5;color:white;display:grid;
- place-items:center;margin:auto auto 12px;font-size:23px
-}
+.brand-icon{width:58px;height:58px;border-radius:18px;background:#3979d5;color:white;display:grid;place-items:center;margin:auto auto 12px;font-size:23px}
 .brand h1{font-size:22px;margin:0}
 .brand p{font-size:12px;color:#8495ad}
-.card{
- background:white;border:1px solid #e4ebf5;
- border-radius:22px;padding:25px;
- box-shadow:0 15px 45px #365d9015
-}
+.card{background:white;border:1px solid #e4ebf5;border-radius:22px;padding:25px;box-shadow:0 15px 45px #365d9015}
 h2{font-size:21px;margin:0 0 8px}
 .desc{font-size:12px;color:#8090a8;line-height:1.7;margin-bottom:20px}
 label{display:block;font-size:12px;font-weight:700;margin:17px 0 8px}
-input,select{
- width:100%;height:47px;border:1px solid #dce5f1;
- border-radius:11px;padding:0 13px;background:#fbfdff;
- font:13px Inter;color:#29466e;outline:none
-}
-input:focus,select:focus{
- border-color:#5791e3;box-shadow:0 0 0 3px #5791e322
-}
-button{
- width:100%;height:48px;border:0;border-radius:11px;
- background:#3979d5;color:white;font-weight:700;
- font-size:13px;margin-top:18px;cursor:pointer
-}
+input,select{width:100%;height:47px;border:1px solid #dce5f1;border-radius:11px;padding:0 13px;background:#fbfdff;font:13px Inter;color:#29466e;outline:none}
+input:focus,select:focus{border-color:#5791e3;box-shadow:0 0 0 3px #5791e322}
+button{width:100%;height:48px;border:0;border-radius:11px;background:#3979d5;color:white;font-weight:700;font-size:13px;margin-top:18px;cursor:pointer}
 button:disabled{opacity:.55;cursor:not-allowed}
 .secondary{background:#edf4ff;color:#3979d5}
-.info{
- padding:13px;background:#f0f6ff;border:1px solid #dce9fc;
- border-radius:12px;font-size:11px;line-height:1.7;
- color:#617b9d;margin:15px 0
-}
-.status{
- font-size:12px;line-height:1.7;margin-top:14px;
- padding:12px;border-radius:10px;display:none
-}
+.info{padding:13px;background:#f0f6ff;border:1px solid #dce9fc;border-radius:12px;font-size:11px;line-height:1.7;color:#617b9d;margin:15px 0}
+.status{font-size:12px;line-height:1.7;margin-top:14px;padding:12px;border-radius:10px;display:none}
 .status.show{display:block}
 .error{background:#fff0f0;color:#a33}
 .success{background:#effaf3;color:#267044}
@@ -64,89 +34,52 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .footer{text-align:center;color:#9aa8bb;font-size:10px;margin-top:18px}
 </style>
 </head>
-
 <body>
 <main class="container">
-
 <header class="brand">
- <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
- <h1>Absensi Sekolah</h1>
- <p>Sistem Informasi Kehadiran Sekolah</p>
+<div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+<h1>Absensi Sekolah</h1>
+<p>Sistem Informasi Kehadiran Sekolah</p>
 </header>
 
 <section class="card">
- <h2>Pendaftaran Siswa</h2>
- <p class="desc">
-  Isi identitas dan pilih kelas untuk mengajukan pendaftaran sebagai siswa.
- </p>
+<h2>Pendaftaran Siswa</h2>
+<p class="desc">Isi identitas dan pilih kelas untuk mengajukan pendaftaran sebagai siswa.</p>
 
- <div id="loginArea">
-  <div class="info">
-   Login menggunakan akun Google yang akan digunakan untuk akun siswa.
-  </div>
-  <button id="loginBtn" type="button">
-   <i class="fa-brands fa-google"></i> Login dengan Google
-  </button>
- </div>
+<div id="loginArea">
+<div class="info">Login menggunakan akun Google yang akan digunakan untuk akun siswa.</div>
+<button id="loginBtn" type="button"><i class="fa-brands fa-google"></i> Login dengan Google</button>
+</div>
 
- <form id="formSiswa" class="hidden">
+<form id="formSiswa" class="hidden">
+<div class="info" id="akunInfo"></div>
 
-  <div class="info" id="akunInfo"></div>
+<label for="nama">Nama lengkap</label>
+<input id="nama" maxlength="100" autocomplete="name" required>
 
-  <label for="nama">Nama lengkap</label>
-  <input id="nama" maxlength="100" autocomplete="name" required>
+<label for="kelas">Pilih kelas</label>
+<select id="kelas" required>
+<option value="">Memuat kelas...</option>
+</select>
 
-  <label for="absen">Nomor absen</label>
-  <input id="absen" type="number" min="1" step="1" required>
+<div id="kapasitas" class="muted"></div>
+<div class="info">Nomor absen akan diberikan otomatis oleh sistem setelah kelas dipilih dan pengajuan dikirim. Nomor tidak dapat dipilih sendiri.</div>
 
-  <label for="kelas">Pilih kelas</label>
-  <select id="kelas" required>
-   <option value="">Memuat kelas...</option>
-  </select>
-
-  <div id="kapasitas" class="muted"></div>
-
-  <button id="submitBtn" type="submit">
-   Kirim pengajuan
-  </button>
-
-  <button id="logoutBtn" type="button" class="secondary">
-   Keluar / Ganti akun
-  </button>
- </form>
-
- <div id="pesan" class="status"></div>
+<button id="submitBtn" type="submit">Kirim pengajuan</button>
+<button id="logoutBtn" type="button" class="secondary">Keluar / Ganti akun</button>
+</form>
+<div id="pesan" class="status"></div>
 </section>
-
-<footer class="footer">
- © 2026 Sistem Absensi Sekolah
-</footer>
-
+<footer class="footer">© 2026 Sistem Absensi Sekolah</footer>
 </main>
 
 <script type="module">
-
 import {auth,db} from "./js/firebase.js";
+import {loginGoogle,logout,pantauLogin} from "./js/auth.js";
 import {
- loginGoogle,
- logout,
- pantauLogin
-} from "./js/auth.js";
-
-import {
- collection,
- doc,
- getDoc,
- getDocs,
- query,
- where,
- runTransaction,
- serverTimestamp
+ collection,doc,getDoc,getDocs,query,where,
+ runTransaction,serverTimestamp
 } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
-
-// ==========================================
-// 1. ELEMEN HALAMAN
-// ==========================================
 
 const form=document.getElementById("formSiswa");
 const loginArea=document.getElementById("loginArea");
@@ -161,300 +94,151 @@ let pengguna=null;
 let daftarKelas=[];
 let sedangMengirim=false;
 
-// ==========================================
-// 2. FUNGSI PESAN
-// ==========================================
-
 function tampilPesan(teks,jenis="error"){
  pesan.textContent=teks;
  pesan.className="status show "+jenis;
 }
-
 function bersihkanPesan(){
  pesan.textContent="";
  pesan.className="status";
 }
-
-// ==========================================
-// 3. REFERENSI DOKUMEN
-// ==========================================
-
 function jalurProfil(uid){
  return doc(db,"sekolah","utama","pengguna",uid);
 }
-
 function jalurPengajuan(uid){
- // PENTING:
- // Pengajuan siswa berada di root Firestore.
  return doc(db,"pengajuanSiswa",uid);
 }
-
 function jalurKelas(idKelas){
  return doc(db,"sekolah","utama","kelas",idKelas);
 }
-
-// ==========================================
-// 4. MEMUAT KELAS AKTIF
-// ==========================================
+function jalurKunciAbsen(idKelas,nomor){
+ return doc(db,"nomorAbsenKelas",idKelas,"nomor",String(nomor));
+}
 
 async function muatKelas(){
-
- kelasSelect.innerHTML=
-  '<option value="">Memuat kelas...</option>';
-
+ kelasSelect.innerHTML='<option value="">Memuat kelas...</option>';
  daftarKelas=[];
 
  const q=query(
   collection(db,"sekolah","utama","kelas"),
   where("statusKelas","==","aktif")
  );
-
  const hasil=await getDocs(q);
 
- kelasSelect.innerHTML=
-  '<option value="">Pilih kelas</option>';
+ kelasSelect.innerHTML='<option value="">Pilih kelas</option>';
 
  hasil.forEach(d=>{
-
   const data=d.data();
+  const batas=Number(data.kapasitasSiswa);
+  const terisi=Number(data.jumlahTerisi);
 
-  const kapasitasSiswa=Number(data.kapasitasSiswa);
-  const jumlahTerisi=Number(data.jumlahTerisi);
+  if(!Number.isInteger(batas)||!Number.isInteger(terisi)||batas<1||terisi<0)return;
 
-  // Data kapasitas harus sudah tersedia di Firestore.
-  if(
-   !Number.isInteger(kapasitasSiswa) ||
-   !Number.isInteger(jumlahTerisi) ||
-   kapasitasSiswa<1 ||
-   jumlahTerisi<0
-  ){
-   return;
-  }
-
-  const tersedia=kapasitasSiswa-jumlahTerisi;
-
+  const tersedia=batas-terisi;
   daftarKelas.push({
-   id:d.id,
-   nama:data.namaKelas || d.id,
-   kapasitas:kapasitasSiswa,
-   terisi:jumlahTerisi,
-   tersedia
+   id:d.id,nama:data.namaKelas||d.id,
+   kapasitas:batas,terisi,tersedia
   });
 
   const option=document.createElement("option");
-
   option.value=d.id;
-
-  option.textContent=
-   `${data.namaKelas || d.id} (${Math.max(0,tersedia)} slot tersedia)`;
-
+  option.textContent=`${data.namaKelas||d.id} (${Math.max(0,tersedia)} slot tersedia)`;
   option.disabled=tersedia<=0;
-
   kelasSelect.appendChild(option);
-
  });
 
  if(!daftarKelas.length){
-  kelasSelect.innerHTML=
-   '<option value="">Belum ada kelas aktif atau data kelas belum lengkap</option>';
+  kelasSelect.innerHTML='<option value="">Belum ada kelas aktif atau data kelas belum lengkap</option>';
  }
-
 }
-
-// ==========================================
-// 5. INFORMASI KAPASITAS KELAS
-// ==========================================
 
 kelasSelect.addEventListener("change",()=>{
-
- const k=daftarKelas.find(
-  x=>x.id===kelasSelect.value
- );
-
+ const k=daftarKelas.find(x=>x.id===kelasSelect.value);
  kapasitas.textContent=k
-  ? `Kapasitas: ${k.kapasitas} | Terisi: ${k.terisi} | Tersedia: ${Math.max(0,k.tersedia)}`
+  ?`Kapasitas: ${k.kapasitas} | Terisi: ${k.terisi} | Tersedia: ${Math.max(0,k.tersedia)}`
   :"";
-
 });
 
-// ==========================================
-// 6. PEMERIKSAAN AKUN
-// ==========================================
-
 async function periksaAkun(user){
-
- if(!user.email || !user.emailVerified){
-  throw new Error(
-   "Gunakan akun Google dengan email yang sudah terverifikasi."
-  );
+ if(!user.email||!user.emailVerified){
+  throw new Error("Gunakan akun Google dengan email yang sudah terverifikasi.");
  }
-
- const profilSnap=await getDoc(
-  jalurProfil(user.uid)
- );
-
+ const profilSnap=await getDoc(jalurProfil(user.uid));
  if(profilSnap.exists()){
-  throw new Error(
-   "Akun ini sudah memiliki profil. Pendaftaran siswa baru tidak dapat dilakukan."
-  );
+  throw new Error("Akun ini sudah memiliki profil. Pendaftaran siswa baru tidak dapat dilakukan.");
  }
-
- const pengajuanSnap=await getDoc(
-  jalurPengajuan(user.uid)
- );
-
+ const pengajuanSnap=await getDoc(jalurPengajuan(user.uid));
  if(pengajuanSnap.exists()){
   const status=pengajuanSnap.data().statusPengajuan;
-
-  if(status==="menunggu"){
-   throw new Error(
-    "Pengajuan kamu masih menunggu persetujuan."
-   );
-  }
-
-  if(status==="disetujui"){
-   throw new Error(
-    "Pengajuan sudah disetujui. Silakan masuk melalui halaman login."
-   );
-  }
-
-  throw new Error(
-   "Akun ini sudah pernah mengajukan pendaftaran. Hubungi petugas sekolah."
-  );
+  if(status==="menunggu")throw new Error("Pengajuan kamu masih menunggu persetujuan.");
+  if(status==="disetujui")throw new Error("Pengajuan sudah disetujui. Silakan masuk melalui halaman login.");
+  throw new Error("Akun ini sudah pernah mengajukan pendaftaran. Hubungi petugas sekolah.");
  }
-
 }
 
-// ==========================================
-// 7. PEMANTAUAN LOGIN
-// ==========================================
-
 pantauLogin(async user=>{
-
  pengguna=user;
  bersihkanPesan();
 
  if(!user){
-
   loginArea.classList.remove("hidden");
   form.classList.add("hidden");
-
   return;
  }
 
  try{
-
   await periksaAkun(user);
   await muatKelas();
-
-  document.getElementById("akunInfo").textContent=
-   "Login sebagai: "+user.email;
-
-  document.getElementById("nama").value=
-   user.displayName || "";
-
+  document.getElementById("akunInfo").textContent="Login sebagai: "+user.email;
+  document.getElementById("nama").value=user.displayName||"";
   loginArea.classList.add("hidden");
   form.classList.remove("hidden");
-
  }catch(e){
-
   loginArea.classList.remove("hidden");
   form.classList.add("hidden");
-
   tampilPesan(e.message);
-
  }
-
 });
-
-// ==========================================
-// 8. LOGIN GOOGLE
-// ==========================================
 
 loginBtn.addEventListener("click",async()=>{
-
  loginBtn.disabled=true;
  bersihkanPesan();
-
- try{
-
-  await loginGoogle();
-
- }catch(e){
-
-  tampilPesan("Login gagal: "+e.message);
-
- }finally{
-
-  loginBtn.disabled=false;
-
- }
-
+ try{await loginGoogle();}
+ catch(e){tampilPesan("Login gagal: "+e.message);}
+ finally{loginBtn.disabled=false;}
 });
 
-// ==========================================
-// 9. LOGOUT / GANTI AKUN
-// ==========================================
-
 logoutBtn.addEventListener("click",async()=>{
-
  try{
-
   await logout();
-
   pengguna=null;
   form.reset();
   kapasitas.textContent="";
   bersihkanPesan();
-
- }catch(e){
-
-  tampilPesan("Gagal keluar: "+e.message);
-
- }
-
+ }catch(e){tampilPesan("Gagal keluar: "+e.message);}
 });
 
-// ==========================================
-// 10. PENGIRIMAN PENDAFTARAN SISWA
-// ==========================================
-
 form.addEventListener("submit",async event=>{
-
  event.preventDefault();
-
- if(sedangMengirim) return;
-
+ if(sedangMengirim)return;
  bersihkanPesan();
 
  if(!pengguna){
   tampilPesan("Silakan login terlebih dahulu.");
   return;
  }
-
  if(!pengguna.emailVerified){
   tampilPesan("Email Google belum terverifikasi.");
   return;
  }
 
  const nama=document.getElementById("nama").value.trim();
-
- const nomorAbsen=Number(
-  document.getElementById("absen").value
- );
-
  const idKelas=kelasSelect.value;
 
  if(nama.length<3){
   tampilPesan("Nama lengkap minimal 3 karakter.");
   return;
  }
-
- if(!Number.isInteger(nomorAbsen)||nomorAbsen<1){
-  tampilPesan("Nomor absen harus bilangan bulat positif.");
-  return;
- }
-
  if(!idKelas){
   tampilPesan("Pilih kelas terlebih dahulu.");
   return;
@@ -462,115 +246,109 @@ form.addEventListener("submit",async event=>{
 
  sedangMengirim=true;
  submitBtn.disabled=true;
- submitBtn.textContent="Mengirim pengajuan...";
+ submitBtn.textContent="Mencari nomor absen...";
 
  try{
-
   const uid=pengguna.uid;
   const email=pengguna.email.trim().toLowerCase();
-
   const profilRef=jalurProfil(uid);
   const pengajuanRef=jalurPengajuan(uid);
   const kelasRef=jalurKelas(idKelas);
 
-  await runTransaction(db,async tx=>{
+  let nomorTerpilih=null;
 
-   // Semua pembacaan dilakukan sebelum penulisan.
+  await runTransaction(db,async tx=>{
    const profilSnap=await tx.get(profilRef);
    const pengajuanSnap=await tx.get(pengajuanRef);
    const kelasSnap=await tx.get(kelasRef);
 
-   if(profilSnap.exists()){
-    throw new Error("Akun sudah memiliki profil.");
-   }
-
-   if(pengajuanSnap.exists()){
-    throw new Error("Pengajuan akun ini sudah pernah dibuat.");
-   }
-
-   if(!kelasSnap.exists()){
-    throw new Error("Kelas tidak ditemukan.");
-   }
+   if(profilSnap.exists())throw new Error("Akun sudah memiliki profil.");
+   if(pengajuanSnap.exists())throw new Error("Pengajuan akun ini sudah pernah dibuat.");
+   if(!kelasSnap.exists())throw new Error("Kelas tidak ditemukan.");
 
    const data=kelasSnap.data();
-
    const batas=Number(data.kapasitasSiswa);
    const terisi=Number(data.jumlahTerisi);
 
-   if(data.statusKelas!=="aktif"){
-    throw new Error("Kelas tidak aktif.");
+   if(data.statusKelas!=="aktif")throw new Error("Kelas tidak aktif.");
+   if(!Number.isInteger(batas)||!Number.isInteger(terisi)||batas<1||terisi<0||terisi>=batas){
+    throw new Error("Kelas sudah penuh atau kapasitas kelas belum valid.");
    }
 
-   if(
-    !Number.isInteger(batas) ||
-    !Number.isInteger(terisi) ||
-    batas<1 ||
-    terisi<0 ||
-    terisi>=batas
-   ){
-    throw new Error(
-     "Kelas sudah penuh atau kapasitas kelas belum valid."
-    );
+   // Baca semua kandidat sebelum melakukan penulisan.
+   const kandidat=[];
+   for(let n=1;n<=batas;n++){
+    kandidat.push({
+     nomor:n,
+     ref:jalurKunciAbsen(idKelas,n)
+    });
    }
 
-   // Memperbarui kapasitas dan metadata operasi.
-   // Field ini diwajibkan oleh Firestore Rules.
+   const snapshots=[];
+   for(const kandidatNomor of kandidat){
+    snapshots.push(await tx.get(kandidatNomor.ref));
+   }
+
+   let pilihan=-1;
+   for(let i=0;i<snapshots.length;i++){
+    if(!snapshots[i].exists()){
+     pilihan=i;
+     break;
+    }
+   }
+
+   if(pilihan<0)throw new Error("Tidak ada nomor absen tersedia di kelas ini.");
+
+   const nomor=kandidat[pilihan].nomor;
+   const kunciRef=kandidat[pilihan].ref;
+
+   nomorTerpilih=nomor;
+
+   tx.set(kunciRef,{
+    uid:uid,
+    idKelas:idKelas,
+    nomorAbsen:nomor,
+    statusKunci:"terkunci",
+    dibuatPada:serverTimestamp()
+   });
+
    tx.update(kelasRef,{
-
     jumlahTerisi:terisi+1,
-
     ultimaOperasiSiswa:{
      uid:uid,
      jenis:"pendaftaran",
      oleh:uid
     }
-
    });
 
-   // Membuat pengajuan siswa di ROOT.
    tx.set(pengajuanRef,{
-
     uid:uid,
     namaLengkap:nama,
     email:email,
     idKelas:idKelas,
-    namaKelas:data.namaKelas || "",
-    nomorAbsen:nomorAbsen,
-
+    namaKelas:data.namaKelas||"",
+    nomorAbsen:nomor,
     jenisPengajuan:"siswa",
     statusPengajuan:"menunggu",
-
     dibuatPada:serverTimestamp()
-
    });
-
   });
 
   form.classList.add("hidden");
-
   tampilPesan(
-   "Pengajuan berhasil dikirim. Silakan tunggu persetujuan petugas sekolah.",
+   `Pengajuan berhasil dikirim. Nomor absen sementara kamu adalah ${nomor}. Tunggu persetujuan petugas sekolah.`,
    "success"
   );
 
  }catch(e){
-
   console.error("Pendaftaran siswa:",e);
-
-  tampilPesan(
-   e.message || "Pendaftaran gagal. Silakan coba lagi."
-  );
-
+  tampilPesan(e.message||"Pendaftaran gagal. Silakan coba lagi.");
  }finally{
-
   sedangMengirim=false;
   submitBtn.disabled=false;
   submitBtn.textContent="Kirim pengajuan";
-
  }
-
 });
-
 </script>
 </body>
 </html>
