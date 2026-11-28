@@ -540,10 +540,11 @@
       const roles = Array.isArray(profile.peran) ? profile.peran : [];
       const active = String(profile.statusAkun || "").trim() === "aktif";
       const allowed = active && (
-        roles.includes("admin") ||
-        roles.includes("developer_admin") ||
-        roles.includes("super_admin")
-      );
+  roles.includes("admin") ||
+  roles.includes("guru") ||
+  roles.includes("developer_admin") ||
+  roles.includes("super_admin")
+);
 
       if (!allowed) {
         alert("Akses ditolak. Halaman ini hanya untuk Admin dan Pengelola Utama.");
