@@ -1,0 +1,615 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f3f7fd">
+<title>Manajemen Kelas | Absensi Sekolah</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root {
+  --navy:#172b4d;
+  --blue:#3978d6;
+  --bg:#f3f7fd;
+  --white:#fff;
+  --text:#26364b;
+  --muted:#7b899b;
+  --border:#e5ebf3;
+  --green:#16865b;
+  --red:#d34c4c;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+.sidebar {
+  position:fixed;
+  inset:0 auto 0 0;
+  width:230px;
+  background:var(--navy);
+  color:white;
+  padding:25px 17px;
+}
+.brand {
+  font-size:18px;
+  font-weight:bold;
+  margin:0 0 35px 8px;
+}
+.sidebar a {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:13px;
+  margin-bottom:7px;
+  color:#dce5f3;
+  text-decoration:none;
+  border-radius:9px;
+  font-size:14px;
+}
+.sidebar a.active,.sidebar a:hover {
+  background:#29446d;
+  color:white;
+}
+.main {
+  margin-left:230px;
+  padding:28px;
+  max-width:1400px;
+}
+.top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:25px;
+}
+h1 {font-size:24px;margin:0 0 7px}
+.subtitle {color:var(--muted);font-size:14px}
+.account {
+  background:white;
+  padding:11px 15px;
+  border-radius:10px;
+  font-size:13px;
+  border:1px solid var(--border);
+}
+.stats {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:15px;
+  margin-bottom:22px;
+}
+.card {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:19px;
+}
+.stat-label {font-size:13px;color:var(--muted)}
+.stat-number {font-size:27px;font-weight:bold;margin-top:9px}
+.panel {margin-bottom:20px}
+.panel h2 {font-size:17px;margin:0 0 18px}
+.form-grid {
+  display:grid;
+  grid-template-columns:2fr 1fr auto;
+  gap:12px;
+  align-items:end;
+}
+label {
+  display:block;
+  font-size:13px;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+input,select {
+  width:100%;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  outline:none;
+  background:white;
+  color:var(--text);
+}
+input:focus,select:focus {border-color:var(--blue)}
+button {
+  border:0;
+  border-radius:8px;
+  padding:12px 15px;
+  background:var(--blue);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:disabled {opacity:.6;cursor:not-allowed}
+.btn-secondary {background:#eaf0f8;color:var(--navy)}
+.btn-danger {background:#fff0f0;color:var(--red)}
+.btn-small {padding:8px 10px;font-size:12px}
+.table-wrap {overflow-x:auto}
+table {width:100%;border-collapse:collapse;min-width:620px}
+th,td {
+  padding:14px 12px;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+  font-size:13px;
+}
+th {color:var(--muted);font-weight:bold}
+.status {
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  background:#e8f7ef;
+  color:var(--green);
+  font-size:11px;
+  font-weight:bold;
+}
+.status.off {background:#f1f2f5;color:#687386}
+.actions {display:flex;gap:7px}
+.message {
+  padding:12px;
+  border-radius:8px;
+  margin-bottom:15px;
+  display:none;
+  font-size:13px;
+}
+.message.error {display:block;background:#fff0f0;color:#b33}
+.message.success {display:block;background:#e9f8f0;color:#16734e}
+.empty {padding:25px;text-align:center;color:var(--muted)}
+.mobile-menu {display:none}
+@media(max-width:800px) {
+  .sidebar {
+    position:static;
+    width:100%;
+    padding:14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    overflow-x:auto;
+  }
+  .brand {margin:0 12px 0 0;white-space:nowrap}
+  .sidebar a {margin:0;white-space:nowrap;padding:10px}
+  .main {margin:0;padding:18px}
+  .form-grid {grid-template-columns:1fr}
+  .stats {grid-template-columns:1fr 1fr}
+  .top {align-items:flex-start;flex-direction:column}
+}
+@media(max-width:420px) {
+  .stats {grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+  <div class="brand"><i class="fa-solid fa-school"></i> Absensi Sekolah</div>
+  <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
+  <a class="active" href="kelola-kelas.html"><i class="fa-solid fa-door-open"></i> Manajemen Kelas</a>
+</aside>
+
+<main class="main">
+  <div class="top">
+    <div>
+      <h1>Manajemen Ruang Kelas</h1>
+      <div class="subtitle">Kelola kelas dan kapasitas siswa sekolah.</div>
+    </div>
+    <div class="account" id="accountInfo">Memeriksa akun...</div>
+  </div>
+
+  <div id="message" class="message"></div>
+
+  <section class="stats">
+    <div class="card">
+      <div class="stat-label">Total kelas</div>
+      <div class="stat-number" id="totalKelas">0</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Kelas aktif</div>
+      <div class="stat-number" id="kelasAktif">0</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Jumlah siswa terdaftar</div>
+      <div class="stat-number" id="totalSiswa">0</div>
+    </div>
+  </section>
+
+  <section class="card panel">
+    <h2 id="formTitle">Buat Ruang Kelas Baru</h2>
+
+    <form id="classForm">
+      <div class="form-grid">
+        <div>
+          <label for="namaKelas">Nama kelas</label>
+          <input id="namaKelas" maxlength="60"
+            placeholder="Contoh: XL TJKT2" required>
+        </div>
+
+        <div>
+          <label for="kapasitas">Kapasitas siswa</label>
+          <input id="kapasitas" type="number"
+            min="1" max="50" value="50" required>
+        </div>
+
+        <div>
+          <button id="submitButton" type="submit">
+            <i class="fa-solid fa-plus"></i> Buat Kelas
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div id="editActions" style="display:none;margin-top:12px">
+      <button class="btn-secondary" id="cancelEdit" type="button">
+        Batal mengedit
+      </button>
+    </div>
+  </section>
+
+  <section class="card panel">
+    <h2>Daftar Ruang Kelas</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nama kelas</th>
+            <th>Kapasitas</th>
+            <th>Terisi</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="classList">
+          <tr><td colspan="5" class="empty">Memuat data kelas...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script type="module">
+import { auth, db } from "./js/firebase.js";
+
+import {
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+
+import {
+  collection, doc, getDoc, getDocs, addDoc,
+  updateDoc, query, where, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+
+const kelasRef = collection(db, "sekolah", "utama", "kelas");
+
+const $ = id => document.getElementById(id);
+
+let currentUser = null;
+let currentRole = [];
+let kelasData = [];
+let editId = null;
+
+const isManager = () =>
+  currentRole.some(role =>
+    ["developer_admin", "super_admin", "admin"].includes(role)
+  );
+
+function showMessage(text, type = "error") {
+  const box = $("message");
+  box.textContent = text;
+  box.className = "message " + type;
+}
+
+function clearMessage() {
+  $("message").className = "message";
+  $("message").textContent = "";
+}
+
+function safeText(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#039;"
+  })[char]);
+}
+
+function canManage(item) {
+  if (isManager()) return true;
+
+  return currentRole.includes("guru") &&
+    (item.guruPengampu === currentUser.uid ||
+     item.dibuatOleh === currentUser.uid);
+}
+
+async function loadClasses() {
+  $("classList").innerHTML =
+    '<tr><td colspan="5" class="empty">Memuat data...</td></tr>';
+
+  try {
+    let snapshot;
+
+    if (isManager()) {
+      snapshot = await getDocs(kelasRef);
+    } else {
+      const q = query(
+        kelasRef,
+        where("guruPengampu", "==", currentUser.uid)
+      );
+      snapshot = await getDocs(q);
+    }
+
+    kelasData = snapshot.docs.map(item => ({
+      id: item.id,
+      ...item.data()
+    }));
+
+    // Guru juga dapat melihat kelas lama yang dibuat olehnya.
+    // Data yang tidak dimiliki guru tidak ditampilkan.
+    if (!isManager()) {
+      kelasData = kelasData.filter(item => canManage(item));
+    }
+
+    renderClasses();
+
+  } catch (error) {
+    console.error(error);
+    $("classList").innerHTML =
+      '<tr><td colspan="5" class="empty">Gagal memuat kelas. Periksa Firestore Rules.</td></tr>';
+
+    showMessage("Gagal membaca data kelas: " + error.message);
+  }
+}
+
+function renderClasses() {
+  const total = kelasData.length;
+  const aktif = kelasData.filter(x => x.statusKelas === "aktif").length;
+  const siswa = kelasData.reduce(
+    (sum, x) => sum + (Number(x.jumlahTerisi) || 0), 0
+  );
+
+  $("totalKelas").textContent = total;
+  $("kelasAktif").textContent = aktif;
+  $("totalSiswa").textContent = siswa;
+
+  if (!total) {
+    $("classList").innerHTML =
+      '<tr><td colspan="5" class="empty">Belum ada kelas yang tersedia.</td></tr>';
+    return;
+  }
+
+  $("classList").innerHTML = kelasData.map(item => {
+    const active = item.statusKelas === "aktif";
+    const editable = canManage(item);
+
+    return `
+      <tr>
+        <td><strong>${safeText(item.namaKelas || "Tanpa nama")}</strong></td>
+        <td>${Number(item.kapasitasSiswa) || 0}</td>
+        <td>${Number(item.jumlahTerisi) || 0}</td>
+        <td>
+          <span class="status ${active ? "" : "off"}">
+            ${active ? "Aktif" : "Nonaktif"}
+          </span>
+        </td>
+        <td>
+          ${editable ? `
+            <div class="actions">
+              <button class="btn-small btn-secondary"
+                data-edit="${safeText(item.id)}">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button class="btn-small ${active ? "btn-danger" : ""}"
+                data-toggle="${safeText(item.id)}">
+                ${active ? "Nonaktifkan" : "Aktifkan"}
+              </button>
+            </div>
+          ` : "-"}
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+  document.querySelectorAll("[data-edit]").forEach(button => {
+    button.addEventListener("click", () =>
+      startEdit(button.dataset.edit)
+    );
+  });
+
+  document.querySelectorAll("[data-toggle]").forEach(button => {
+    button.addEventListener("click", () =>
+      toggleStatus(button.dataset.toggle)
+    );
+  });
+}
+
+function startEdit(id) {
+  const item = kelasData.find(x => x.id === id);
+  if (!item || !canManage(item)) return;
+
+  editId = id;
+  $("namaKelas").value = item.namaKelas || "";
+  $("kapasitas").value = item.kapasitasSiswa || 50;
+  $("formTitle").textContent = "Edit Ruang Kelas";
+  $("submitButton").innerHTML =
+    '<i class="fa-solid fa-save"></i> Simpan Perubahan';
+  $("editActions").style.display = "block";
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function cancelEdit() {
+  editId = null;
+  $("classForm").reset();
+  $("kapasitas").value = 50;
+  $("formTitle").textContent = "Buat Ruang Kelas Baru";
+  $("submitButton").innerHTML =
+    '<i class="fa-solid fa-plus"></i> Buat Kelas';
+  $("editActions").style.display = "none";
+}
+
+$("cancelEdit").addEventListener("click", cancelEdit);
+
+$("classForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  clearMessage();
+
+  const namaKelas = $("namaKelas").value.trim();
+  const kapasitasSiswa = Number($("kapasitas").value);
+
+  if (!namaKelas) {
+    showMessage("Nama kelas wajib diisi.");
+    return;
+  }
+
+  if (!Number.isInteger(kapasitasSiswa) ||
+      kapasitasSiswa < 1 || kapasitasSiswa > 50) {
+    showMessage("Kapasitas harus berupa angka 1 sampai 50.");
+    return;
+  }
+
+  $("submitButton").disabled = true;
+
+  try {
+    if (editId) {
+      const item = kelasData.find(x => x.id === editId);
+
+      if (!item || !canManage(item)) {
+        throw new Error("Kamu tidak memiliki izin mengubah kelas ini.");
+      }
+
+      if (kapasitasSiswa < (Number(item.jumlahTerisi) || 0)) {
+        throw new Error("Kapasitas tidak boleh lebih kecil dari jumlah siswa terdaftar.");
+      }
+
+      await updateDoc(doc(kelasRef, editId), {
+        namaKelas,
+        kapasitasSiswa,
+        diperbaruiPada: serverTimestamp()
+      });
+
+      showMessage("Perubahan kelas berhasil disimpan.", "success");
+      cancelEdit();
+
+    } else {
+      const duplicate = kelasData.some(
+        x => (x.namaKelas || "").toLowerCase() === namaKelas.toLowerCase()
+      );
+
+      if (duplicate) {
+        throw new Error("Nama kelas tersebut sudah tersedia.");
+      }
+
+      await addDoc(kelasRef, {
+        namaKelas,
+        statusKelas: "aktif",
+        kapasitasSiswa,
+        jumlahTerisi: 0,
+        dibuatOleh: currentUser.uid,
+        guruPengampu: currentRole.includes("guru") && !isManager()
+          ? currentUser.uid
+          : null,
+        dibuatPada: serverTimestamp(),
+        diperbaruiPada: serverTimestamp()
+      });
+
+      showMessage("Ruang kelas berhasil dibuat.", "success");
+      $("classForm").reset();
+      $("kapasitas").value = 50;
+    }
+
+    await loadClasses();
+
+  } catch (error) {
+    console.error(error);
+    showMessage("Gagal menyimpan: " + error.message);
+  } finally {
+    $("submitButton").disabled = false;
+  }
+});
+
+async function toggleStatus(id) {
+  const item = kelasData.find(x => x.id === id);
+  if (!item || !canManage(item)) return;
+
+  const nextStatus = item.statusKelas === "aktif"
+    ? "nonaktif"
+    : "aktif";
+
+  if (!confirm(
+    `Ubah status kelas ${item.namaKelas} menjadi ${nextStatus}?`
+  )) return;
+
+  try {
+    await updateDoc(doc(kelasRef, id), {
+      statusKelas: nextStatus,
+      diperbaruiPada: serverTimestamp()
+    });
+
+    showMessage("Status kelas berhasil diperbarui.", "success");
+    await loadClasses();
+
+  } catch (error) {
+    showMessage("Gagal mengubah status: " + error.message);
+  }
+}
+
+onAuthStateChanged(auth, async user => {
+  if (!user) {
+    $("accountInfo").textContent = "Belum login";
+    showMessage("Silakan login terlebih dahulu.");
+    return;
+  }
+
+  currentUser = user;
+
+  try {
+    const profileRef = doc(
+      db, "sekolah", "utama", "pengguna", user.uid
+    );
+
+    const profileSnap = await getDoc(profileRef);
+
+    if (!profileSnap.exists()) {
+      throw new Error("Profil pengguna tidak ditemukan.");
+    }
+
+    const profile = profileSnap.data();
+
+    const status = String(
+      profile.statusAkun ?? profile["Status akun "] ?? ""
+    ).trim().toLowerCase();
+
+    if (status && status !== "aktif") {
+      throw new Error("Akun tidak aktif.");
+    }
+
+    currentRole = Array.isArray(profile.peran)
+      ? profile.peran
+      : [];
+
+    if (!currentRole.some(role =>
+      ["developer_admin","super_admin","admin","guru"].includes(role)
+    )) {
+      throw new Error("Akun tidak memiliki akses Manajemen Kelas.");
+    }
+
+    $("accountInfo").textContent =
+      profile.namaLengkap ||
+      profile["Nama lengkap "] ||
+      user.email ||
+      "Pengguna";
+
+    await loadClasses();
+
+  } catch (error) {
+    console.error(error);
+    showMessage(error.message);
+    $("classList").innerHTML =
+      '<tr><td colspan="5" class="empty">Akses tidak tersedia.</td></tr>';
+  }
+});
+</script>
+
+</body>
+</html>
