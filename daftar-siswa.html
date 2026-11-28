@@ -1,582 +1,337 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#edf4ff">
-
-  <title>Pendaftaran Siswa | Absensi Sekolah</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --primary: #3979d5;
-      --primary-dark: #285eaf;
-      --text: #243b63;
-      --muted: #7b8ba5;
-      --border: #e3ebf7;
-    }
-
-    body {
-      min-height: 100vh;
-      min-height: 100svh;
-      padding: 35px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Inter', Arial, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 10% 10%, #d8e9ff 0, transparent 34%),
-        radial-gradient(circle at 95% 90%, #dceaff 0, transparent 32%),
-        linear-gradient(135deg, #f5f8ff, #eaf2ff);
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    /* Dekorasi latar */
-
-    .background-shape {
-      position: fixed;
-      border-radius: 50%;
-      pointer-events: none;
-      animation: mengambang 10s ease-in-out infinite;
-      z-index: 0;
-    }
-
-    .shape-one {
-      width: 190px;
-      height: 190px;
-      top: 5%;
-      left: -85px;
-      background: #b9d7ff55;
-    }
-
-    .shape-two {
-      width: 230px;
-      height: 230px;
-      right: -100px;
-      bottom: 4%;
-      background: #c8ddff55;
-      animation-delay: -4s;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 480px;
-      position: relative;
-      z-index: 1;
-      animation: masuk .65s ease both;
-    }
-
-    /* Identitas website */
-
-    .brand {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .brand-icon {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto 14px;
-      display: grid;
-      place-items: center;
-      border-radius: 20px;
-      color: white;
-      background: linear-gradient(145deg, #5797ed, #326bc3);
-      box-shadow: 0 10px 25px #397bd735;
-      font-size: 25px;
-    }
-
-    .brand h1 {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -.5px;
-      color: #244a82;
-    }
-
-    .brand p {
-      margin-top: 7px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    /* Kartu formulir */
-
-    .card {
-      padding: 32px;
-      border: 1px solid rgba(255,255,255,.9);
-      border-radius: 25px;
-      background: rgba(255,255,255,.82);
-      box-shadow:
-        0 25px 65px rgba(56,91,145,.10),
-        0 5px 18px rgba(56,91,145,.04);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-    }
-
-    .heading {
-      margin-bottom: 23px;
-    }
-
-    .heading-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 7px 11px;
-      margin-bottom: 15px;
-      border-radius: 9px;
-      color: #3975c8;
-      background: #edf4ff;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .heading h2 {
-      font-size: 23px;
-      font-weight: 800;
-      letter-spacing: -.5px;
-      color: #244575;
-      margin-bottom: 9px;
-    }
-
-    .heading p {
-      font-size: 12px;
-      line-height: 1.8;
-      color: var(--muted);
-    }
-
-    /* Informasi pendaftaran */
-
-    .info {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 15px;
-      margin-bottom: 24px;
-      border: 1px solid #dce9fc;
-      border-radius: 14px;
-      background: #f1f7ff;
-      color: #607b9f;
-      font-size: 11px;
-      line-height: 1.8;
-    }
-
-    .info-icon {
-      flex-shrink: 0;
-      width: 30px;
-      height: 30px;
-      display: grid;
-      place-items: center;
-      border-radius: 9px;
-      color: #3979d5;
-      background: #dfebff;
-      font-size: 13px;
-    }
-
-    .info strong {
-      display: block;
-      color: #315d9e;
-      font-size: 12px;
-      margin-bottom: 2px;
-    }
-
-    /* Input */
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 9px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #405574;
-    }
-
-    .input-wrap {
-      position: relative;
-    }
-
-    .input-icon {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #8ba2c2;
-      font-size: 14px;
-      pointer-events: none;
-    }
-
-    input {
-      width: 100%;
-      height: 49px;
-      padding: 0 14px 0 43px;
-      outline: none;
-      border: 1px solid #dce5f1;
-      border-radius: 12px;
-      background: #fbfdff;
-      color: #263d5d;
-      font-family: inherit;
-      font-size: 13px;
-      transition: border-color .2s, box-shadow .2s, background .2s;
-    }
-
-    input:focus {
-      border-color: #5b91e3;
-      box-shadow: 0 0 0 4px #5b91e31c;
-      background: white;
-    }
-
-    input::placeholder {
-      color: #a8b4c5;
-    }
-
-    input:focus + .input-focus {
-      opacity: 1;
-    }
-
-    .hint {
-      margin-top: 8px;
-      font-size: 10px;
-      color: #91a0b4;
-      line-height: 1.6;
-    }
-
-    /* Informasi kelas */
-
-    .class-info {
-      display: flex;
-      align-items: flex-start;
-      gap: 11px;
-      padding: 14px;
-      margin-bottom: 22px;
-      border: 1px dashed #b9cce9;
-      border-radius: 13px;
-      background: #f7faff;
-      color: #7185a2;
-      font-size: 11px;
-      line-height: 1.8;
-    }
-
-    .class-info i {
-      color: #5487cf;
-      font-size: 15px;
-      margin-top: 2px;
-    }
-
-    .class-info strong {
-      display: block;
-      color: #315d9e;
-      font-size: 12px;
-      margin-bottom: 2px;
-    }
-
-    /* Tombol */
-
-    .submit-btn {
-      width: 100%;
-      min-height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(110deg, #4386df, #3265c0);
-      color: white;
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 8px 20px #397bd72c;
-      transition: transform .25s, box-shadow .25s, filter .25s;
-    }
-
-    .submit-btn:hover {
-      filter: brightness(1.06);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px #397bd738;
-    }
-
-    .submit-btn:active {
-      transform: scale(.99);
-    }
-
-    .submit-btn:focus-visible,
-    .back:focus-visible {
-      outline: 3px solid #8bb8f5;
-      outline-offset: 4px;
-    }
-
-    /* Navigasi kembali */
-
-    .back {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      width: fit-content;
-      margin: 23px auto 0;
-      padding: 9px 13px;
-      border-radius: 10px;
-      text-align: center;
-      text-decoration: none;
-      color: #6682a9;
-      font-size: 12px;
-      font-weight: 600;
-      transition: .2s;
-    }
-
-    .back:hover {
-      color: #3265c0;
-      background: #edf4ff;
-    }
-
-    /* Footer */
-
-    .footer {
-      margin-top: 22px;
-      text-align: center;
-      color: #94a4ba;
-      font-size: 10px;
-      letter-spacing: .2px;
-    }
-
-    /* Animasi */
-
-    @keyframes masuk {
-      from {
-        opacity: 0;
-        transform: translateY(18px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes mengambang {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-20px);
-      }
-    }
-
-    /* Tablet dan HP */
-
-    @media (max-width: 480px) {
-      body {
-        padding: 22px 14px;
-      }
-
-      .card {
-        padding: 25px 20px;
-        border-radius: 21px;
-      }
-
-      .heading h2 {
-        font-size: 21px;
-      }
-
-      .brand-icon {
-        width: 59px;
-        height: 59px;
-        border-radius: 18px;
-      }
-    }
-
-    @media (max-width: 360px) {
-      body {
-        padding: 16px 11px;
-      }
-
-      .card {
-        padding: 22px 16px;
-      }
-
-      .heading h2 {
-        font-size: 19px;
-      }
-
-      input {
-        font-size: 12px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation: none !important;
-        transition: none !important;
-        scroll-behavior: auto !important;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pendaftaran Siswa</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;padding:25px 14px;display:grid;place-items:center;background:linear-gradient(135deg,#edf4ff,#f8faff);font-family:Inter,Arial;color:#29466e}
+.container{width:100%;max-width:470px}
+.brand{text-align:center;margin-bottom:20px}
+.brand-icon{width:58px;height:58px;border-radius:18px;background:#3979d5;color:white;display:grid;place-items:center;margin:auto auto 12px;font-size:23px}
+.brand h1{font-size:22px;margin:0}
+.brand p{font-size:12px;color:#8495ad}
+.card{background:white;border:1px solid #e4ebf5;border-radius:22px;padding:25px;box-shadow:0 15px 45px #365d9015}
+h2{font-size:21px;margin:0 0 8px}
+.desc{font-size:12px;color:#8090a8;line-height:1.7;margin-bottom:20px}
+label{display:block;font-size:12px;font-weight:700;margin:17px 0 8px}
+input,select{width:100%;height:47px;border:1px solid #dce5f1;border-radius:11px;padding:0 13px;background:#fbfdff;font:13px Inter;color:#29466e;outline:none}
+input:focus,select:focus{border-color:#5791e3;box-shadow:0 0 0 3px #5791e322}
+button{width:100%;height:48px;border:0;border-radius:11px;background:#3979d5;color:white;font-weight:700;font-size:13px;margin-top:18px;cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+.secondary{background:#edf4ff;color:#3979d5}
+.info{padding:13px;background:#f0f6ff;border:1px solid #dce9fc;border-radius:12px;font-size:11px;line-height:1.7;color:#617b9d;margin:15px 0}
+.status{font-size:12px;line-height:1.7;margin-top:14px;padding:12px;border-radius:10px;display:none}
+.status.show{display:block}
+.error{background:#fff0f0;color:#a33}
+.success{background:#effaf3;color:#267044}
+.muted{color:#8b9ab0;font-size:11px;margin-top:7px}
+.hidden{display:none!important}
+.footer{text-align:center;color:#9aa8bb;font-size:10px;margin-top:18px}
+</style>
 </head>
-
 <body>
+<main class="container">
+<header class="brand">
+ <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+ <h1>Absensi Sekolah</h1>
+ <p>Sistem Informasi Kehadiran Sekolah</p>
+</header>
 
-  <div class="background-shape shape-one"></div>
-  <div class="background-shape shape-two"></div>
+<section class="card">
+ <h2>Pendaftaran Siswa</h2>
+ <p class="desc">Isi identitas dan pilih kelas untuk mengajukan pendaftaran sebagai siswa.</p>
 
-  <main class="container">
+ <div id="loginArea">
+  <div class="info">Login menggunakan akun Google yang akan digunakan untuk akun siswa.</div>
+  <button id="loginBtn"><i class="fa-brands fa-google"></i> Login dengan Google</button>
+ </div>
 
-    <header class="brand">
-      <div class="brand-icon">
-        <i class="fa-solid fa-graduation-cap"></i>
-      </div>
+ <form id="formSiswa" class="hidden">
+  <div class="info" id="akunInfo"></div>
 
-      <h1>Absensi Sekolah</h1>
-      <p>Sistem Informasi Kehadiran Sekolah</p>
-    </header>
+  <label for="nama">Nama lengkap</label>
+  <input id="nama" maxlength="100" autocomplete="name" required>
 
-    <section class="card">
+  <label for="absen">Nomor absen</label>
+  <input id="absen" type="number" min="1" step="1" required>
 
-      <div class="heading">
-        <div class="heading-label">
-          <i class="fa-solid fa-user-plus"></i>
-          FORMULIR PENDAFTARAN
-        </div>
+  <label for="kelas">Pilih kelas</label>
+  <select id="kelas" required>
+   <option value="">Memuat kelas...</option>
+  </select>
+  <div id="kapasitas" class="muted"></div>
 
-        <h2>Pendaftaran Siswa</h2>
+  <button id="submitBtn" type="submit">Kirim pengajuan</button>
+  <button id="logoutBtn" type="button" class="secondary">Keluar / Ganti akun</button>
+ </form>
 
-        <p>
-          Lengkapi identitas berikut untuk mengajukan
-          pendaftaran akun siswa.
-        </p>
-      </div>
+ <div id="pesan" class="status"></div>
+</section>
+<footer class="footer">© 2026 Sistem Absensi Sekolah</footer>
+</main>
 
-      <div class="info">
-        <div class="info-icon">
-          <i class="fa-solid fa-circle-info"></i>
-        </div>
+<script type="module">
+import {auth,db} from "./js/firebase.js";
+import {loginGoogle,logout,pantauLogin} from "./js/auth.js";
 
-        <div>
-          <strong>Informasi pendaftaran</strong>
-          Pendaftaran menggunakan akun Google. Akun baru dapat
-          digunakan setelah mendapatkan persetujuan administrator sekolah.
-        </div>
-      </div>
+import {
+ collection,doc,getDoc,getDocs,query,where,
+ runTransaction,serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
 
-      <form id="formSiswa">
+const form=document.getElementById("formSiswa");
+const loginArea=document.getElementById("loginArea");
+const loginBtn=document.getElementById("loginBtn");
+const logoutBtn=document.getElementById("logoutBtn");
+const submitBtn=document.getElementById("submitBtn");
+const kelasSelect=document.getElementById("kelas");
+const kapasitas=document.getElementById("kapasitas");
+const pesan=document.getElementById("pesan");
 
-        <div class="form-group">
-          <label for="nama">Nama Lengkap</label>
+let pengguna=null;
+let daftarKelas=[];
 
-          <div class="input-wrap">
-            <i class="fa-regular fa-user input-icon"></i>
+function tampilPesan(teks,jenis="error"){
+ pesan.textContent=teks;
+ pesan.className="status show "+jenis;
+}
 
-            <input
-              type="text"
-              id="nama"
-              name="nama"
-              placeholder="Masukkan nama lengkap"
-              maxlength="100"
-              autocomplete="name"
-              required
-            >
-          </div>
-        </div>
+function bersihkanPesan(){
+ pesan.textContent="";
+ pesan.className="status";
+}
 
-        <div class="form-group">
-          <label for="absen">Nomor Absen</label>
+function jalurProfil(uid){
+ return doc(db,"sekolah","utama","pengguna",uid);
+}
 
-          <div class="input-wrap">
-            <i class="fa-solid fa-list-ol input-icon"></i>
+async function muatKelas(){
+ kelasSelect.innerHTML='<option value="">Memuat kelas...</option>';
+ daftarKelas=[];
 
-            <input
-              type="number"
-              id="absen"
-              name="absen"
-              placeholder="Contoh: 12"
-              min="1"
-              max="50"
-              step="1"
-              required
-            >
-          </div>
+ const q=query(
+  collection(db,"sekolah","utama","kelas"),
+  where("statusKelas","==","aktif")
+ );
 
-          <p class="hint">
-            <i class="fa-solid fa-circle-question"></i>
-            Masukkan nomor absen sesuai data resmi kelas.
-          </p>
-        </div>
+ const hasil=await getDocs(q);
 
-        <div class="class-info">
-          <i class="fa-solid fa-school"></i>
+ kelasSelect.innerHTML='<option value="">Pilih kelas</option>';
 
-          <div>
-            <strong>Penentuan kelas</strong>
-            Kelas akan ditentukan otomatis melalui tautan undangan kelas.
-            Siswa tidak dapat memilih kelas sendiri.
-          </div>
-        </div>
+ hasil.forEach(d=>{
+  const data=d.data();
+  const kapasitasSiswa=Number(data.kapasitasSiswa ?? 50);
+  const jumlahTerisi=Number(data.jumlahTerisi ?? 0);
 
-        <button type="submit" class="submit-btn">
-          <i class="fa-solid fa-paper-plane"></i>
-          Kirim Pendaftaran
-        </button>
+  if(!Number.isFinite(kapasitasSiswa) ||
+     !Number.isFinite(jumlahTerisi)) return;
 
-      </form>
+  const tersedia=kapasitasSiswa-jumlahTerisi;
 
-      <a href="pilih-peran.html" class="back">
-        <i class="fa-solid fa-arrow-left"></i>
-        Kembali ke pilihan peran
-      </a>
+  daftarKelas.push({
+   id:d.id,
+   nama:data.namaKelas || d.id,
+   kapasitas:kapasitasSiswa,
+   terisi:jumlahTerisi,
+   tersedia
+  });
 
-    </section>
+  const option=document.createElement("option");
+  option.value=d.id;
+  option.textContent=
+   `${data.namaKelas || d.id} (${Math.max(0,tersedia)} slot tersedia)`;
+  option.disabled=tersedia<=0;
+  kelasSelect.appendChild(option);
+ });
 
-    <footer class="footer">
-      © 2026 Sistem Absensi Sekolah
-    </footer>
+ if(!daftarKelas.length){
+  kelasSelect.innerHTML='<option value="">Belum ada kelas aktif</option>';
+ }
+}
 
-  </main>
+kelasSelect.addEventListener("change",()=>{
+ const k=daftarKelas.find(x=>x.id===kelasSelect.value);
+ kapasitas.textContent=k
+  ? `Kapasitas: ${k.kapasitas} | Terisi: ${k.terisi} | Tersedia: ${Math.max(0,k.tersedia)}`
+  :"";
+});
 
-  <script>
-    const form = document.getElementById("formSiswa");
+async function periksaAkun(user){
+ const snap=await getDoc(jalurProfil(user.uid));
 
-    form.addEventListener("submit", function(event) {
-      event.preventDefault();
+ if(snap.exists()){
+  throw new Error("Akun ini sudah memiliki profil. Pendaftaran Siswa baru tidak dapat dilakukan.");
+ }
 
-      const nama = document.getElementById("nama").value.trim();
-      const absen = Number(document.getElementById("absen").value);
+ const email=user.email?.trim().toLowerCase();
+ if(!email || !user.emailVerified){
+  throw new Error("Gunakan akun Google dengan email yang sudah terverifikasi.");
+ }
 
-      if (nama.length < 3) {
-        alert("Nama lengkap minimal 3 karakter.");
-        return;
-      }
+ const pengajuan=await getDoc(
+  doc(db,"sekolah","utama","pengajuanSiswa",user.uid)
+ );
 
-      if (!Number.isInteger(absen) || absen < 1 || absen > 50) {
-        alert("Nomor absen harus berupa angka 1 sampai 50.");
-        return;
-      }
+ if(pengajuan.exists()){
+  throw new Error("Akun ini sudah memiliki pengajuan Siswa.");
+ }
+}
 
-      alert(
-        "Formulir berhasil divalidasi.\n\n" +
-        "Nama: " + nama +
-        "\nNomor absen: " + absen +
-        "\n\nPenyimpanan dan pemeriksaan undangan akan dihubungkan pada tahap Firebase."
-      );
-    });
-  </script>
+pantauLogin(async user=>{
+ pengguna=user;
+ bersihkanPesan();
 
+ if(!user){
+  loginArea.classList.remove("hidden");
+  form.classList.add("hidden");
+  return;
+ }
+
+ try{
+  await periksaAkun(user);
+  await muatKelas();
+
+  document.getElementById("akunInfo").textContent=
+   "Login sebagai: "+user.email;
+
+  document.getElementById("nama").value=
+   user.displayName || "";
+
+  loginArea.classList.add("hidden");
+  form.classList.remove("hidden");
+ }catch(e){
+  loginArea.classList.remove("hidden");
+  form.classList.add("hidden");
+  tampilPesan(e.message);
+ }
+});
+
+loginBtn.addEventListener("click",async()=>{
+ loginBtn.disabled=true;
+ bersihkanPesan();
+ try{
+  await loginGoogle();
+ }catch(e){
+  tampilPesan("Login gagal: "+e.message);
+ }finally{
+  loginBtn.disabled=false;
+ }
+});
+
+logoutBtn.addEventListener("click",async()=>{
+ try{
+  await logout();
+  form.reset();
+  kapasitas.textContent="";
+ }catch(e){
+  tampilPesan("Gagal keluar: "+e.message);
+ }
+});
+
+form.addEventListener("submit",async event=>{
+ event.preventDefault();
+ bersihkanPesan();
+
+ if(!pengguna){
+  tampilPesan("Silakan login terlebih dahulu.");
+  return;
+ }
+
+ const nama=document.getElementById("nama").value.trim();
+ const nomorAbsen=Number(document.getElementById("absen").value);
+ const idKelas=kelasSelect.value;
+
+ if(nama.length<3){
+  tampilPesan("Nama lengkap minimal 3 karakter.");
+  return;
+ }
+
+ if(!Number.isInteger(nomorAbsen)||nomorAbsen<1){
+  tampilPesan("Nomor absen harus bilangan bulat positif.");
+  return;
+ }
+
+ if(!idKelas){
+  tampilPesan("Pilih kelas terlebih dahulu.");
+  return;
+ }
+
+ submitBtn.disabled=true;
+ submitBtn.textContent="Mengirim pengajuan...";
+
+ try{
+  const uid=pengguna.uid;
+  const email=pengguna.email.trim().toLowerCase();
+
+  const profilRef=jalurProfil(uid);
+  const pengajuanRef=doc(db,"sekolah","utama","pengajuanSiswa",uid);
+  const kelasRef=doc(db,"sekolah","utama","kelas",idKelas);
+
+  await runTransaction(db,async tx=>{
+   const profilSnap=await tx.get(profilRef);
+   const pengajuanSnap=await tx.get(pengajuanRef);
+   const kelasSnap=await tx.get(kelasRef);
+
+   if(profilSnap.exists()){
+    throw new Error("Akun sudah terdaftar.");
+   }
+
+   if(pengajuanSnap.exists()){
+    throw new Error("Pengajuan akun ini sudah pernah dibuat.");
+   }
+
+   if(!kelasSnap.exists()){
+    throw new Error("Kelas tidak ditemukan.");
+   }
+
+   const data=kelasSnap.data();
+   const batas=Number(data.kapasitasSiswa ?? 50);
+   const terisi=Number(data.jumlahTerisi ?? 0);
+
+   if(data.statusKelas!=="aktif"){
+    throw new Error("Kelas tidak aktif.");
+   }
+
+   if(!Number.isInteger(batas)||!Number.isInteger(terisi)||
+      batas<1||terisi<0||terisi>=batas){
+    throw new Error("Kelas sudah penuh atau kapasitas kelas belum valid.");
+   }
+
+   tx.update(kelasRef,{
+    jumlahTerisi:terisi+1
+   });
+
+   tx.set(pengajuanRef,{
+    uid,
+    namaLengkap:nama,
+    email,
+    idKelas,
+    namaKelas:data.namaKelas || "",
+    nomorAbsen,
+    jenisPengajuan:"siswa",
+    statusPengajuan:"menunggu",
+    dibuatPada:serverTimestamp()
+   });
+  });
+
+  form.classList.add("hidden");
+  tampilPesan(
+   "Pengajuan berhasil dikirim dan sedang menunggu persetujuan Admin.",
+   "success"
+  );
+
+ }catch(e){
+  console.error("Pendaftaran siswa:",e);
+  tampilPesan(e.message || "Pendaftaran gagal. Silakan coba lagi.");
+ }finally{
+  submitBtn.disabled=false;
+  submitBtn.textContent="Kirim pengajuan";
+ }
+});
+</script>
 </body>
 </html>
